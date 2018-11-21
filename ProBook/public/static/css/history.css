@@ -1,0 +1,86 @@
+body {
+	font-family: 'Nunito', 'Arial Rounded MT Bold';
+}
+
+#history {
+	width:95%;
+}
+
+#title {
+	font-size: 70px;
+	color: #FF6029;
+	font-family: 'Arial Rounded MT Bold'
+}
+
+.book-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom : 20px;
+}
+
+.bc1 {
+	width: 80%;
+	color:#4E4E4E;
+}
+
+.imghistory {
+	width: 100px;
+	float: left;
+	margin-left: 5px;
+	border: 1px solid black;
+}
+
+.booktitle {
+	font-size: 30px;
+	color: #FF6029;
+	font-family: 'Arial Rounded MT Bold';
+	margin-left: 120px;
+}
+
+#jumlah {
+	margin-left: 15px;
+	float: left;
+	line-height: 2;
+}
+
+.banyakjumlah {
+	margin-left: 15px;
+	line-height: 2;
+}
+
+.status {
+	margin-left: 15px;
+	float: left;
+	font-family: 'Calibri', 'Nunito';
+}
+
+.bc2 {
+	margin-right: 10px;
+	font-weight: bold;
+	color: #4E4E4E;
+	
+}
+.waktupesan {
+	float: right;
+}
+
+#NoOrder {
+	float: right;
+}
+
+.order {
+	float: right;
+}
+
+.submit-button {
+	font-size: 1em;
+    color: white;
+    border: 1px solid #00AFEA;
+    border-radius: 5px;
+    padding:3px 15px 3px 15px;
+    margin: 0 auto;
+    background-color: #00AFEA;
+    float: right;
+	
+	margin-top: 20px;
+}

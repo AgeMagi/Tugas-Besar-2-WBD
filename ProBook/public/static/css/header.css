@@ -1,0 +1,82 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+nav {
+    display: flex;
+    flex-flow: column;
+    width:100%;
+    height:175px;
+    background-color:#0095C7;
+}
+
+#header{
+    width: 100%;
+    height: 95px;
+    background-color:#00AFEA;
+    display: flex;
+    font-family: 'Nunito', 'Calibri', 'Courier New', Courier, monospace;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.right-header{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+}
+
+#header_username {
+    font-size: 1.75em;
+    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-style: italic;
+    margin-top:10%;
+    margin-right:35px;
+}
+
+#logo {
+    font-size: 3.5em;
+    color: white;
+    font-weight: bold;
+    margin-left: 25px;
+    padding-top: 15px;
+    padding-left: 20px;
+    display: inline;
+    /* justify-self: flex-start; */
+}
+
+#logout_img {
+    height: 75px;
+    padding: 10px;
+    background-color: #FF6029;
+    align-self: end;
+    justify-self: flex-end;
+}
+
+#logout_img:hover{
+    cursor: pointer;
+}
+
+#menu {
+    height: 80px;
+    display: grid;
+    width:100%;
+    grid-template-columns: repeat(3,auto);
+}
+
+.menu-item{
+    border: 1pt;
+    font-size: 3em;
+    padding-top:3%;
+    font-family: 'Helvetica', Courier, monospace;
+    font-weight: lighter;
+    color:#ffffff;
+    text-align: center;
+    text-decoration: none;
+}
+
+.menu-item:hover{
+    background: #FF6029;
+    cursor: pointer;
+}

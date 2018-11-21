@@ -1,0 +1,46 @@
+<link rel="stylesheet" href="/static/css/register.css">
+<link rel="stylesheet" href="/static/css/base.css">
+
+<div class="container" >
+    <form class="register-form" action="/register/" method="POST">
+            <h1 class="form-title">REGISTER</h1>
+        <div class="row">
+            <label for="name_form" class="form-label">Name</label>
+            <input class="form-input" type="text" name="fullname"  id="name_form">
+        </div>
+        <div class="row">
+            <label for="username_form" class="form-label">Username</label>
+            <input class="form-input validation" type="text" name="username"  id="username_form">
+            <span class="check" id="username_check">✓</span>
+        </div>
+        <div class="row">
+            <label for="email_form" class="form-label">Email</label>
+            <input class="form-input validation" type="email" name="email"  id="email_form"
+            >
+            <span class="check" id="email_check">✓</span>
+        </div>
+        <div class="row">
+            <label for="password_form" class="form-label">Password</label>
+            <input class="form-input" type="password" name="password"  id="password_form">
+        </div>
+        <div class="row">
+            <label for="confirm_password_form" class="form-label">Confirm Password</label>
+            <input class="form-input" type="password" name="confirm_password"  id="confirm_password_form">
+        </div>
+        <div class="row">
+            <label for="address_form" class="form-label">Address</label>
+            <textarea class="form-input" type="text" name="address"  id="address_form"></textarea>
+        </div>
+        <div class="row">
+            <label for="phone_form" class="form-label">Phone Number</label>
+            <input class="form-input" type="tel" name="phone"  id="phone_form">
+        </div>
+        <a class="register-link" href="/login/">Already have an account?</a> 
+        <br>
+        <div class="row">
+            <button class="submit-button" id="register_button">Register</button>
+        </div>
+    </form>
+</div>
+
+<script src="/static/js/register.js"></script>

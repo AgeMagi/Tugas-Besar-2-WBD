@@ -1,0 +1,112 @@
+.edit-profile-container {
+    width: 95%;
+}
+
+/*.edit-profile-content{
+    padding: 5%;
+}*/
+
+input, textarea{
+    background-color: #ffffff;
+    color: black;
+}
+
+.image-upload-label{
+    margin-left: 10px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.edit-profile-headline {
+    color: #FF6029;
+    font-family: 'Arial Rounded MT Bold', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 5em;
+}
+
+.edit-profile-picture{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5%;
+    margin-left: 7px;
+}
+
+
+.edit-picture-img {
+
+    max-width: 250px;
+    min-width: 250px;
+    border: 2pt solid black;
+    height: 255px;
+    background-image: url("/static/img/profile.png");
+    background-color: white;
+    background-repeat: no-repeat;
+    background-size: 70%;
+    background-position: center;
+}
+
+.picture-input-file{
+    margin: 10px;
+}
+
+.picture-input-text{
+    flex-grow: 1;
+}
+
+.edit-picture-input {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5%;
+    flex-grow: 1;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.edit-profile-identity{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.row {
+    margin: 1%;
+    font-size: 1.5em;
+}
+
+.identity-column {
+    width: 30%;
+}
+
+.input-column {
+    width: 70%;
+
+}
+
+.edit-button-container{
+    margin-top: 5%;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.edit-button {
+    border-radius: 5px;
+    font-size: 1.5em;
+    padding: 5px 20px 5px 20px;
+    background-color: white;
+}
+
+.orange-button{
+    color: #FF6029;
+    border: 1pt solid #FF6029;
+}
+
+.orange-button:hover{
+    color: #ffffff;
+    background: #FF6029;
+}
+
+.blue-button{
+    color: #00aeef;
+    border: 1pt solid #00aeef;
+}
+
+.blue-button:hover{
+    color: #ffffff;
+    background: #00aeef;
+}
+
