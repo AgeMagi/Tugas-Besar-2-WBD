@@ -9,6 +9,14 @@ public class Book implements Serializable {
     private String description;
     private long price;
 
+    public Book(String id, String title, String[] authors, String description, long price) {
+        this.id = id;
+        this.title = title;
+        this.authors = authors;
+        this.description = description;
+        this.price = price;
+    }
+
     public String getId() {
         return id;
     }
