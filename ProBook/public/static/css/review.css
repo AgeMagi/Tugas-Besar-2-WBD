@@ -1,0 +1,114 @@
+body {
+    font-family: 'Arial Rounded MT Bold'
+}
+
+.review-title {
+    width: 72%;
+}
+
+.review-container {
+    width: 95%
+}
+
+.review-title, #gambar {
+    display: flex;
+    flex-direction: column;
+}
+
+#gambar {
+    padding-top:10px;
+}
+
+.review-title h1 {
+    margin-bottom: 0px;
+    font-size: 70px;
+    font-family: 'Arial Rounded MT Bold'
+}
+
+.review-title h2 {
+    margin-top: 0px;
+    font-size: 40px;
+    color: #4d4d4d;
+}
+
+.review-header h1 {
+    font-size: 60px;
+    color: #00374c;
+    font-family: 'Arial Rounded MT Bold'
+}
+
+#review-author {
+    color: #4E4E4E;
+    font-size: 25px;
+    font-family: 'Arial Rounded MT Bold'
+}
+
+.review-rating img {
+    width: 110px;
+    height: 110px;
+
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.book-img {
+    width: 100%;
+}
+
+.review-comment {
+    width: 100%;
+}
+
+textarea {
+    font-size: 20px;
+}
+
+.review-back {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    background-color: white;
+    border: 3px solid;
+    border-color: #d9534f;
+    border-radius: 10px;
+    text-align: center;
+    padding-top: 10px;
+
+    width: 150px;
+    height: 50px;
+}
+
+.review-back span {
+    font-size: 30px;
+    color: #d9534f;
+
+    text-decoration: none;
+}
+
+.review-back a {
+    text-decoration: none;
+}
+
+.review-submit {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    background-color: #0094cc;
+    border: 3px solid;
+    border-color: #0094cc;
+    border-radius: 10px;
+
+    width: 150px;
+    height: 60px;
+}
+
+.review-submit span {
+    font-size: 30px;
+    color: white;
+}
+
+#image-box {
+    width: 100%;
+    /*margin-right: 10px;*/
+    align-self: flex-end;
+    padding-right: 10%;
+}
+
