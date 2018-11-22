@@ -7,9 +7,11 @@ public class Book implements Serializable {
     private String title;
     private String[] authors;
     private String description;
-    private long price;
+    private Integer price;
 
-    public Book(String id, String title, String[] authors, String description, long price) {
+    public Book() {}
+
+    public Book(String id, String title, String[] authors, String description, Integer price) {
         this.id = id;
         this.title = title;
         this.authors = authors;
@@ -33,7 +35,7 @@ public class Book implements Serializable {
         return description;
     }
 
-    public long getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
@@ -53,7 +55,7 @@ public class Book implements Serializable {
         this.description = description;
     }
 
-    public void setPrice(long price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 }
