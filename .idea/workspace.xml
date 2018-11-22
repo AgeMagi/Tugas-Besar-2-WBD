@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2c154543-e01c-47c7-a219-27d5f3ee3b31" name="Default" comment="" />
+    <list default="true" id="2c154543-e01c-47c7-a219-27d5f3ee3b31" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -72,54 +74,6 @@
               <item name="tugasbesar2_2018" type="b2602c69:ProjectViewProjectNode" />
               <item name="tugasbesar2_2018" type="462c0819:PsiDirectoryNode" />
               <item name=".idea" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="tugasbesar2_2018" type="b2602c69:ProjectViewProjectNode" />
-              <item name="tugasbesar2_2018" type="462c0819:PsiDirectoryNode" />
-              <item name="ProBook" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="tugasbesar2_2018" type="b2602c69:ProjectViewProjectNode" />
-              <item name="tugasbesar2_2018" type="462c0819:PsiDirectoryNode" />
-              <item name="ProBook" type="462c0819:PsiDirectoryNode" />
-              <item name=".idea" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="tugasbesar2_2018" type="b2602c69:ProjectViewProjectNode" />
-              <item name="tugasbesar2_2018" type="462c0819:PsiDirectoryNode" />
-              <item name="ProBook" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="tugasbesar2_2018" type="b2602c69:ProjectViewProjectNode" />
-              <item name="tugasbesar2_2018" type="462c0819:PsiDirectoryNode" />
-              <item name="ProBook" type="462c0819:PsiDirectoryNode" />
-              <item name="config" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="tugasbesar2_2018" type="b2602c69:ProjectViewProjectNode" />
-              <item name="tugasbesar2_2018" type="462c0819:PsiDirectoryNode" />
-              <item name="ProBook" type="462c0819:PsiDirectoryNode" />
-              <item name="db" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="tugasbesar2_2018" type="b2602c69:ProjectViewProjectNode" />
-              <item name="tugasbesar2_2018" type="462c0819:PsiDirectoryNode" />
-              <item name="ProBook" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="tugasbesar2_2018" type="b2602c69:ProjectViewProjectNode" />
-              <item name="tugasbesar2_2018" type="462c0819:PsiDirectoryNode" />
-              <item name="ProBook" type="462c0819:PsiDirectoryNode" />
-              <item name="util" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="tugasbesar2_2018" type="b2602c69:ProjectViewProjectNode" />
-              <item name="tugasbesar2_2018" type="462c0819:PsiDirectoryNode" />
-              <item name="ProBook" type="462c0819:PsiDirectoryNode" />
-              <item name="util" type="462c0819:PsiDirectoryNode" />
-              <item name="Routing" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="tugasbesar2_2018" type="b2602c69:ProjectViewProjectNode" />
