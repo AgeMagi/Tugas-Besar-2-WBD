@@ -1,21 +1,23 @@
 package service;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import javax.jws.WebService;
+import javax.xml.transform.Result;
 
 import model.Book;
 import org.json.JSONArray;
 import org.json.JSONException;
 import utility.GoogleBookAPI;
 import org.json.JSONObject;
+import utility.DBConnection;
 
 @WebService()
 public class BookServiceImpl implements  BookService {
-    private static Map<String, Book> books = new HashMap<String, Book>();
-
     @Override
     public Book getBook(String id) {
         GoogleBookAPI coba = new GoogleBookAPI("yulys");
@@ -37,10 +39,11 @@ public class BookServiceImpl implements  BookService {
     }
 
     @Override
-    public boolean addBook(Book b) {
-        if (books.get(b.getId()) != null) return false;
-        books.put(b.getId(), b);
-        return true;
+    public int addBook(String id, int price) {
+        DBConnection bookDb = new DBConnection();
+        int result = bookDb.doPostQuery(String.format("INSERT INTO book_detail(id, price) VALUES(\"%s\", %d)", id, price));
+
+        return result;
     }
 
     @Override

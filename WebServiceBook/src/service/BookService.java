@@ -6,11 +6,13 @@ import javax.jws.soap.SOAPBinding;
 
 import model.Book;
 
+import java.sql.ResultSet;
+
 @WebService
 @SOAPBinding(style = SOAPBinding.Style.RPC)
 public interface BookService {
     @WebMethod
-    public boolean addBook(Book p);
+    public int addBook(String id, int price);
 
     @WebMethod
     public Book getBook(String id);
