@@ -20,21 +20,6 @@ import utility.DBConnection;
 public class BookServiceImpl implements  BookService {
     @Override
     public Book getBook(String id) {
-        GoogleBookAPI coba = new GoogleBookAPI("yulys");
-        JSONObject hasilJSON = new JSONObject();
-        hasilJSON = coba.searchBook();
-        try {
-            JSONArray authorsJSON = new JSONArray(hasilJSON.get("authors").toString());
-            String[] authors = new String[authorsJSON.length()];
-            for(int i = 0; i < authorsJSON.length(); i++) {
-                authors[i] = (String) authorsJSON.get(i);
-            }
-            Book cobaBook = new Book((String) hasilJSON.get("id"), (String) hasilJSON.get("title"), authors, (String) hasilJSON.get("description"), (Integer) hasilJSON.get("price"));
-            return cobaBook;
-        } catch (JSONException err) {
-            System.out.println(err);
-        }
-
         return null;
     }
 
@@ -59,6 +44,7 @@ public class BookServiceImpl implements  BookService {
                 String id = "";
                 String title = "";
                 String[] authors = {""};
+                String[] categories = {""};
                 String description = "";
                 Integer price = 0;
 
@@ -69,6 +55,7 @@ public class BookServiceImpl implements  BookService {
                 if (volumeInfo.has("title")) {
                     title = volumeInfo.get("title").toString();
                 }
+
                 if (volumeInfo.has("authors")) {
                     JSONArray authorsJSON = new JSONArray(volumeInfo.get("authors").toString());
                     authors = new String[authorsJSON.length()];
@@ -76,6 +63,15 @@ public class BookServiceImpl implements  BookService {
                         authors[j] = authorsJSON.get(j).toString();
                     }
                 }
+
+                if (volumeInfo.has("categories")) {
+                    JSONArray categoriesJSON = new JSONArray(volumeInfo.get("categories").toString());
+                    categories = new String[categoriesJSON.length()];
+                    for (int j = 0; j < categoriesJSON.length(); j++) {
+                        categories[j] = categoriesJSON.get(j).toString();
+                    }
+                }
+
                 if (volumeInfo.has("description")) {
                     description = volumeInfo.get("description").toString();
                 }
@@ -90,7 +86,7 @@ public class BookServiceImpl implements  BookService {
                     }
                 }
 
-                Book bookResult = new Book(id, title, authors, description, price);
+                Book bookResult = new Book(id, title, authors, description, price, categories);
                 bookResults[i] = bookResult;
             }
 
