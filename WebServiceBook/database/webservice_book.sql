@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.7.24, for Linux (x86_64)
 --
--- Host: localhost    Database: book
+-- Host: localhost    Database: webservice_book
 -- ------------------------------------------------------
 -- Server version	5.7.24-0ubuntu0.18.04.1
 
@@ -16,26 +16,27 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `book_detail`
+-- Table structure for table `book`
 --
 
-DROP TABLE IF EXISTS `book_detail`;
+DROP TABLE IF EXISTS `book`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `book_detail` (
-  `id` varchar(30) NOT NULL,
-  `price` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE `book` (
+  `book_id` int(11) NOT NULL,
+  `price` varchar(45) DEFAULT NULL,
+  `ordered_count` int(11) DEFAULT NULL,
+  PRIMARY KEY (`book_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `book_detail`
+-- Dumping data for table `book`
 --
 
-LOCK TABLES `book_detail` WRITE;
-/*!40000 ALTER TABLE `book_detail` DISABLE KEYS */;
-/*!40000 ALTER TABLE `book_detail` ENABLE KEYS */;
+LOCK TABLES `book` WRITE;
+/*!40000 ALTER TABLE `book` DISABLE KEYS */;
+/*!40000 ALTER TABLE `book` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -47,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-26  0:25:16
+-- Dump completed on 2018-11-27 22:25:08

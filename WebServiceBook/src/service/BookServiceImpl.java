@@ -33,6 +33,7 @@ public class BookServiceImpl implements  BookService {
 
     @Override
     public Book[] searchBook(String query) {
+        System.out.println(query);
         GoogleBookAPI googleBookAPI = new GoogleBookAPI(query);
         JSONObject hasilJSON = new JSONObject();
         hasilJSON = googleBookAPI.searchBook();
@@ -40,7 +41,7 @@ public class BookServiceImpl implements  BookService {
             JSONArray resultItems = new JSONArray(hasilJSON.get("items").toString());
             Book[] bookResults = new Book[resultItems.length()];
 
-            for(int i = 0; i < Math.min(5, resultItems.length()); i++) {
+            for(int i = 0; i < Math.min(10, resultItems.length()); i++) {
                 String id = "";
                 String title = "";
                 String[] authors = {""};
