@@ -4,7 +4,7 @@
     ini_set('default_socket_timeout', 15);
 
     class SOAPClientUtility {
-        public function searchBook() {
+        public function searchBook($query) {
             $options = array(
                 'uri'=>'http://schemas.xmlsoap.org/soap/envelope/',
                 'style'=>SOAP_RPC,
@@ -16,7 +16,7 @@
                 'encoding'=>'UTF-8',
                 'exceptions'=>true,
             );
-            $params = array('query' => 'yulys');
+            $params = array('arg0' => $query);
             $wsdl = "http://localhost:8888/ws/book/?wsdl";
             
             try {
