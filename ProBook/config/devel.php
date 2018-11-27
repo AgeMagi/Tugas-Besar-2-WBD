@@ -10,6 +10,7 @@
         "jwt_alg"=>"sha256",
         "jwt_key"=>"weirdgenius2018",
         "jwt_duration"=>300,
-        "cookie_duration" => 3000
+        "cookie_duration" => 3000,
+        "wsdl_url" => "localhost:8888/ws/book/?wsdl",
     )
 ?>

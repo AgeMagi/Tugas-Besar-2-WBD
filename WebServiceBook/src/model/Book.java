@@ -7,14 +7,18 @@ public class Book implements Serializable {
     private String title;
     private String[] authors;
     private String description;
-    private long price;
+    private Integer price;
+    private String[] categories;
 
-    public Book(String id, String title, String[] authors, String description, long price) {
+    public Book() {}
+
+    public Book(String id, String title, String[] authors, String description, Integer price, String[] categories) {
         this.id = id;
         this.title = title;
         this.authors = authors;
         this.description = description;
         this.price = price;
+        this.categories = categories;
     }
 
     public String getId() {
@@ -33,8 +37,12 @@ public class Book implements Serializable {
         return description;
     }
 
-    public long getPrice() {
+    public Integer getPrice() {
         return price;
+    }
+
+    public String[] getCategories() {
+        return categories;
     }
 
     public void setId(String id) {
@@ -53,8 +61,12 @@ public class Book implements Serializable {
         this.description = description;
     }
 
-    public void setPrice(long price) {
+    public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public void setCategories(String[] categories) {
+        this.categories = categories;
     }
 }
 

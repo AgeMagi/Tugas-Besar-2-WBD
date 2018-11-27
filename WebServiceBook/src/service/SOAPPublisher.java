@@ -1,7 +1,10 @@
 
 package service;
 
+import utility.DBConnection;
+
 import javax.xml.ws.Endpoint;
+import java.sql.Connection;
 
 public class SOAPPublisher {
 
