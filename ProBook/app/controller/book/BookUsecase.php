@@ -1,5 +1,6 @@
 <?php
     require_once __ROOT__.'/app/controller/book/BookDb.php';
+    require_once __ROOT__.'/util/SOAPClient.php';
 
     class BookUsecase {
         private $bookDb;
@@ -25,13 +26,11 @@
         }
 
         function searchBook(Request $request) {
-            $title = $request->queries["title"];
-            $books = $this->bookDb->getBookByTitle($title);
+            $query = $request->queries["query"];
+            $bookSOAPClient = new SOAPClientUtility();
+            $result = $bookSOAPClient->searchBook($query);
 
-            $data = [
-                "books" => $books,
-            ];
-            render('searchResult.php', $data);
+            writeResponse(200, "sucess search book", $result);
         }
     }
 

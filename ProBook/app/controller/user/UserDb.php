@@ -87,6 +87,36 @@
             return null;
         }
 
+        function createSessionStorage($session_storage_id, $username, $hpass, 
+                                        $user_id, $http_user_agent, $ip_address, $expired_time) {
+            $sql = 'INSERT INTO session_storage(session_storage_id, username, 
+                    hpass, user_id, http_user_agent, ip_address, expired_time) VALUES(?, ?, ?, ?, ?, ?, ?)';
+            $stmt = $this->conn->prepare($sql);
+            if ($stmt->execute([$session_storage_id, $username, $hpass, $user_id, $http_user_agent, $ip_address, $expired_time])) {
+                $row = $stmt->fetch();
+                return $session_storage_id;
+            } else {
+                echo "error";
+            }
+            return null;
+        }
+
+        function getSessionStorage($session_storage_id, $http_user_agent, $ip_address) {
+            $sql = 'SELECT * FROM session_storage WHERE session_storage_id=? AND 
+                    http_user_agent=? AND ip_address=?';
+            
+            $stmt = $this->conn->prepare($sql);
+            if ($stmt->execute([$session_storage_id, $http_user_agent, $ip_address])) {
+                $row = $stmt->fetch();
+                $result = array(
+                    "username" => $row["username"],
+                    "user_id" => $row["user_id"],
+                );
+                return $result;
+            }
+            return null;
+        }
+
         function isEmailExist($email){
             $sql = 'SELECT 1 from user WHERE email=?';
             $stmt = $this->conn->prepare($sql);
