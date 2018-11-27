@@ -55,21 +55,25 @@ app.get('/bank/:nomor_kartu',(req,res)=>{
 		res.json(rows)});
 });
 
-app.post('/validate',async (req,res)=>{
+app.post('/validation',(req,res)=>{
 
-	// const noKartu = req.body.nomor_kartu;
+	const noKartu = req.body.nomor_kartu;
 
-    // var sql = "SELECT * FROM Users WHERE user = ?";
-	
-	// var rows = 0;
-    // db.query(sql,[noKarut], (err, result, fields)=>{
-    //   console.log(result.length);
-    //   rows += result.length;
-	// });
-	
-	// console.log("Success");
-	res.send("Habibi");
-	// return rows > 0;
+	const queryselect = "SELECT * FROM nasabah WHERE nomor_kartu=?";
+	db.query(queryselect,[noKartu],(err,rows,fields)=>{
+		if (err){
+			console.log("Failed to query for users: "+err)
+			res.sendStatus(500);
+			return;
+			//throw err
+		};
+
+		if (rows.length==0){
+			res.send(JSON.stringify({nomor_kartu: "invalid"}));
+		}else{
+			res.send(JSON.stringify({nomor_kartu: "valid"}));
+		}
+	});
 });
 
 app.listen('5000',()=> {
