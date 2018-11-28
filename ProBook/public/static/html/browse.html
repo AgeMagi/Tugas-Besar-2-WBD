@@ -1,24 +1,47 @@
 <link rel="stylesheet" href="/static/css/base.css">
 <link rel="stylesheet" href="/static/css/browse.css">
-<div class="content">
-    <div class="title">
-        <h2>
-            Search Book
-        </h2>
-    </div>  
-    <form action="/results/" method="GET" onsubmit="return validateForm()">
-        <input 
-            type="text"
-            class="search-book"
-            name="title"
-            placeholder="Input search terms..."
-            required
+<link rel="stylesheet" href="/static/css/search_result.css">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<div ng-app = "myApp" ng-controller = "bookCtrl" class="content search-result">
+    <div class="search-result-title row">
+        <h1 class="title">Search</h1>
+    </div>
+    <div>
+        <input type="text"
+               class="search-book"
+               name="title"
+               placeholder="Input search terms..."
+               ng-model="query"
+
         />
         <div class="justify-content-end">
-                <button class="button-search-book" id="button-search-book"><span>Search</span></button>
+            <button ng-click="searchQuery('{{query}}')" class="button-search-book" id="button-search-book"><span>Search</span></button>
         </div>
-    </form>
-    
+
+        <div ng-show = "search" id="results">
+            <div ng-repeat= "book in books" class="result row justify-content-between">
+                <div class="result-img">
+                    <img
+                        src={{book.img_path}}
+                    />
+                </div>
+                <div class=\"result-content\">
+                    <h1 class=\"result-title\">{{book.title}}</h1>
+                    <h2 class=\"result-author\">{{book.author}} - {{book.rating}}</h2>
+                    <p class=\"result-description\">
+                        {{book.description}}
+                    </p>
+                    <div class=\"justify-content-end\">
+                        <a href="/book/$book->1/">
+                            <button type=\"submit\"><span>Detail</span></button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
+
 <script src="/static/js/browse.js"></script>
+<script src="/static/js/book.js"
