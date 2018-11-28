@@ -23,9 +23,10 @@ DROP TABLE IF EXISTS `book`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `book` (
-  `book_id` int(11) NOT NULL,
-  `price` varchar(45) DEFAULT NULL,
+  `book_id` varchar(45) NOT NULL,
+  `price` int(11) DEFAULT NULL,
   `ordered_count` int(11) DEFAULT NULL,
+  `category` varchar(125) DEFAULT NULL,
   PRIMARY KEY (`book_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -36,6 +37,7 @@ CREATE TABLE `book` (
 
 LOCK TABLES `book` WRITE;
 /*!40000 ALTER TABLE `book` DISABLE KEYS */;
+INSERT INTO `book` VALUES ('8CSFs_Usw8MC',17998,0,'Nature'),('AwGialii_IkC',79856,0,'Juvenile Nonfiction'),('Ff72AAAAQBAJ',74100,0,'Art'),('fiBbdJ1sdA8C',273405,0,'Literary Criticism'),('gBrmaR0q4OEC',97914,0,'Music'),('LOZhAAAAcAAJ',95931,0,'Botany'),('NxR98ogUaAUC',213025,0,'Health & Fitness'),('svMpjjnnig0C',82056,0,'Juvenile Nonfiction'),('TqFLDwAAQBAJ',124000,0,'Crafts & Hobbies'),('_ojXNuzgHRcC',73701,0,'Juvenile Nonfiction');
 /*!40000 ALTER TABLE `book` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -48,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-27 22:25:08
+-- Dump completed on 2018-11-28 21:08:12
