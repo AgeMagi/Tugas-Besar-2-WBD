@@ -10,7 +10,7 @@ public class devel {
         attribute.put("host", "localhost:3306");
         attribute.put("username", "root");
         attribute.put("password", "06071998");
-        attribute.put("dbName", "book");
+        attribute.put("dbName", "webservice_book");
 
         return attribute;
     }

@@ -3,22 +3,31 @@ package model;
 import java.io.Serializable;
 
 public class Book implements Serializable {
-    private String id;
-    private String title;
+    private String id = "";
+    private String title = "";
     private String[] authors;
     private String description;
     private Integer price;
-    private String[] categories;
+    private String category;
+    private int orderedCount;
 
     public Book() {}
 
-    public Book(String id, String title, String[] authors, String description, Integer price, String[] categories) {
+    public Book(String id, String title, String[] authors, String description, Integer price, String category) {
         this.id = id;
         this.title = title;
         this.authors = authors;
         this.description = description;
         this.price = price;
-        this.categories = categories;
+        this.category = category;
+        this.orderedCount = 0;
+    }
+
+    public Book(String id, int price, int orderedCount, String category) {
+        this.id = id;
+        this.price = price;
+        this.orderedCount = orderedCount;
+        this.category = category;
     }
 
     public String getId() {
@@ -41,8 +50,12 @@ public class Book implements Serializable {
         return price;
     }
 
-    public String[] getCategories() {
-        return categories;
+    public String getCategory() {
+        return category;
+    }
+
+    public int getOrderedCount() {
+        return orderedCount;
     }
 
     public void setId(String id) {
@@ -65,8 +78,12 @@ public class Book implements Serializable {
         this.price = price;
     }
 
-    public void setCategories(String[] categories) {
-        this.categories = categories;
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setOrderedCount(int orderedCount) {
+        this.orderedCount = orderedCount;
     }
 }
 
