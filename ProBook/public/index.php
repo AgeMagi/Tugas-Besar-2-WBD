@@ -5,6 +5,7 @@
     define('__CONTROLLER__', __ROOT__.'/app/controller');
     define('__VIEW__', __ROOT__.'/app/view');
     define('__STATIC__', __ROOT__.'/public/static');
+    define('__UTIL__', __ROOT__.'/util');
 
     require_once __ROOT__.'/util/Routing/Router.php';
     require_once __ROOT__.'/util/Routing/Request.php';
@@ -28,11 +29,13 @@
     require_once __CONTROLLER__.'/user/routes.php';
     require_once __CONTROLLER__.'/review/routes.php';
 
+    require_once __UTIL__.'/SOAPClient.php';
+
     $conn = Database::createDBConnection(APP_CONFIG["db"]["host"], 
                                         APP_CONFIG["db"]["user"], 
                                         APP_CONFIG["db"]["password"], 
                                         APP_CONFIG["db"]["db_name"]);
-
+                                        
     $authMiddleware = new AuthMiddleware();
     $userDb = new UserDb($conn);
     $userUsecase = new UserUsecase($userDb);

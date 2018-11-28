@@ -5,6 +5,8 @@
     require_once __ROOT__.'/util/JWT.php';
     require __ROOT__.'/config/devel.php';
 
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
     class UserUsecase {
         private $userDb;
         function __construct(UserDb $userDb){
@@ -76,6 +78,7 @@
                 $user = $this->userDb->updateUser($user);
                 if ($user){
                     header('Location: /profile/');
+                    exit;
                 }
             }
         }
@@ -95,14 +98,22 @@
             $hpass = hash('sha256', $password);
             $user_id = $this->userDb->authenticateUser($username, $hpass);
             if ($user_id) {
-                $payload = array(
-                    "user_id"=> (int)$user_id,
-                    "exp"=> time()+3000,
-                    "username" => $username
-                );
-                $jwt =  generateJWT($payload);
-                setcookie("Authorization", $jwt["token"], time()+APP_CONFIG["jwt_duration"],"/");
-                header('Location: /browse/');
+                if ($_COOKIE["Authorization"]) {
+                    header('Location: /browse/');
+                    exit;
+                } else {
+                    $http_user_agent = $_SERVER['HTTP_USER_AGENT'];
+                    $ip_address = $_SERVER['REMOTE_ADDR'];
+                    $session_storage_id = generateRandomString(16);
+                    $expired_time = microtime(true) + 7200;
+                    $session_storage_id = $this->userDb->createSessionStorage($session_storage_id,
+                                            $username, $hpass, $user_id, $http_user_agent, $ip_address, $expired_time);
+                    setcookie("Authorization", $session_storage_id, time() + 3600, '/');
+                    if ($session_storage_id) {
+                        header('Location: /browse/');
+                        exit;
+                    }
+                }                
             } else {
                 render('login.php',array("isError"=>true));
             }

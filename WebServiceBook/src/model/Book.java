@@ -8,15 +8,17 @@ public class Book implements Serializable {
     private String[] authors;
     private String description;
     private Integer price;
+    private String[] categories;
 
     public Book() {}
 
-    public Book(String id, String title, String[] authors, String description, Integer price) {
+    public Book(String id, String title, String[] authors, String description, Integer price, String[] categories) {
         this.id = id;
         this.title = title;
         this.authors = authors;
         this.description = description;
         this.price = price;
+        this.categories = categories;
     }
 
     public String getId() {
@@ -39,6 +41,10 @@ public class Book implements Serializable {
         return price;
     }
 
+    public String[] getCategories() {
+        return categories;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -57,6 +63,10 @@ public class Book implements Serializable {
 
     public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public void setCategories(String[] categories) {
+        this.categories = categories;
     }
 }
 

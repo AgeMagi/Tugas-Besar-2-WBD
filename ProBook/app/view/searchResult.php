@@ -48,6 +48,5 @@
 </div>
 
 <?php
-
-include __STATIC__.'/html/footer.html';
+    include __STATIC__.'/html/footer.html';
 ?>
