@@ -13,14 +13,12 @@ import java.util.List;
 @SOAPBinding(style = SOAPBinding.Style.RPC)
 public interface BookService {
     @WebMethod
-    Book getBookByIdGBA(String id);
+    Book getBookDetail(String id);
 
     @WebMethod
     public Book[] searchBook(String query);
 
-    @WebMethod
-    public Book getBookByIdDb(String id);
 
     @WebMethod
-    public Book recommendationBooks(String[] categories);
+    public Book recommendationBook(String[] categories);
 }

@@ -17,7 +17,7 @@ import utility.DBConnection;
 
 @WebService()
 public class BookServiceImpl implements  BookService {
-    @Override
+
     public Book getBookByIdDb(String id) {
         DBConnection bookDb = new DBConnection();
         ResultSet result = bookDb.doGetQuery(String.format("SELECT * FROM book WHERE book_id = \"%s\"", id));
@@ -107,7 +107,12 @@ public class BookServiceImpl implements  BookService {
 
                 if (bookOnDb == null) {
                     if (price == 0) {
-                        price = ThreadLocalRandom.current().nextInt(10000, 100000);
+                        int not_for_sale = ThreadLocalRandom.current().nextInt(0, 2);
+                        if (not_for_sale == 1) {
+                            price = ThreadLocalRandom.current().nextInt(10000, 100000);
+                        } else {
+                            price = 0;
+                        }
                     }
 
                     int rowBook = this.addBook(id, price, category_result);
@@ -129,7 +134,6 @@ public class BookServiceImpl implements  BookService {
         return null;
     }
 
-    @Override
     public Book getBookByIdGBA(String id) {
         GoogleBookAPI googleBookAPI = new GoogleBookAPI(id);
         JSONObject book;
@@ -229,7 +233,18 @@ public class BookServiceImpl implements  BookService {
     }
 
     @Override
-    public Book recommendationBooks(String[] categories) {
+    public Book getBookDetail(String id) {
+        Book bookOnDb = this.getBookByIdDb(id);
+        if (bookOnDb != null) {
+            Book bookResult = this.getBookByIdGBA(id);
+            return bookResult;
+        }
+
+        return null;
+    }
+
+    @Override
+    public Book recommendationBook(String[] categories) {
         List<Book> results = new ArrayList<>();
 
         for (int i = 0; i < categories.length; i++ ) {
@@ -324,7 +339,12 @@ public class BookServiceImpl implements  BookService {
 
                 if (bookOnDb == null) {
                     if (price == 0) {
-                        price = ThreadLocalRandom.current().nextInt(10000, 100000);
+                        int not_for_sale = ThreadLocalRandom.current().nextInt(0, 2);
+                        if (not_for_sale == 1) {
+                            price = ThreadLocalRandom.current().nextInt(10000, 100000);
+                        } else {
+                            price = 0;
+                        }
                     }
 
                     int rowBook = this.addBook(id, price, category);
