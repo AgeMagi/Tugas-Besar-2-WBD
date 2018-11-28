@@ -28,7 +28,7 @@
         function searchBook(Request $request) {
             $query = $request->queries["query"];
             $bookSOAPClient = new SOAPClientUtility();
-            $result = $bookSOAPClient->searchBook($query);
+            $result = $bookSOAPClient->recommendationBooks("Habibi");
 
             writeResponse(200, "sucess search book", $result);
         }
