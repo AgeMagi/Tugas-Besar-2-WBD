@@ -98,22 +98,17 @@
             $hpass = hash('sha256', $password);
             $user_id = $this->userDb->authenticateUser($username, $hpass);
             if ($user_id) {
-                if ($_COOKIE["Authorization"]) {
+                $http_user_agent = $_SERVER['HTTP_USER_AGENT'];
+                $ip_address = $_SERVER['REMOTE_ADDR'];
+                $session_storage_id = generateRandomString(16);
+                $expired_time = microtime(true) + 3600;
+                $session_storage_id = $this->userDb->createSessionStorage($session_storage_id,
+                                        $username, $hpass, $user_id, $http_user_agent, $ip_address, $expired_time);
+                setcookie("Authorization", $session_storage_id, time() + 600, '/');
+                if ($session_storage_id) {
                     header('Location: /browse/');
                     exit;
-                } else {
-                    $http_user_agent = $_SERVER['HTTP_USER_AGENT'];
-                    $ip_address = $_SERVER['REMOTE_ADDR'];
-                    $session_storage_id = generateRandomString(16);
-                    $expired_time = microtime(true) + 7200;
-                    $session_storage_id = $this->userDb->createSessionStorage($session_storage_id,
-                                            $username, $hpass, $user_id, $http_user_agent, $ip_address, $expired_time);
-                    setcookie("Authorization", $session_storage_id, time() + 3600, '/');
-                    if ($session_storage_id) {
-                        header('Location: /browse/');
-                        exit;
-                    }
-                }                
+                }            
             } else {
                 render('login.php',array("isError"=>true));
             }

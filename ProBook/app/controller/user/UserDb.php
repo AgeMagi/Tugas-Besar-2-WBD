@@ -102,16 +102,23 @@
         }
 
         function getSessionStorage($session_storage_id, $http_user_agent, $ip_address) {
+            $timeNow = microtime(true);
+            var_dump($timeNow);
+
             $sql = 'SELECT * FROM session_storage WHERE session_storage_id=? AND 
-                    http_user_agent=? AND ip_address=?';
+                    http_user_agent=? AND ip_address=? AND expired_time > ?';
             
             $stmt = $this->conn->prepare($sql);
-            if ($stmt->execute([$session_storage_id, $http_user_agent, $ip_address])) {
+            if ($stmt->execute([$session_storage_id, $http_user_agent, $ip_address, $timeNow])) {
                 $row = $stmt->fetch();
-                $result = array(
-                    "username" => $row["username"],
-                    "user_id" => $row["user_id"],
-                );
+                if ($row) {
+                    $result = array(
+                        "username" => $row["username"],
+                        "user_id" => $row["user_id"],
+                    );
+                } else {
+                    return null;
+                }
                 return $result;
             }
             return null;
