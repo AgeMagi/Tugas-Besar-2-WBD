@@ -1,0 +1,222 @@
+body {
+	font-family: 'Calibri';
+}
+
+#book-detail {
+	width:95%;
+}
+
+.book {
+	display: flex;
+}
+
+.kiri {
+	width: 85%;
+}
+
+#book-title{
+	font-size: 70px;
+	color: rgb(242, 102, 0);;
+	font-family: 'Arial Rounded MT Bold';
+	padding-bottom: 1%;
+}
+
+#author {
+	color: #4E4E4E;
+	font-weight: bold;
+	margin-left: 5px;
+	padding-bottom: 2%;
+	font-size: 20px;
+}
+
+#book-description {
+	margin-left: 5px;
+	font-family: 'Calibri', 'Nunito';
+	font-size: 20px;
+}
+
+.submit-button {
+	font-size: 1.5em;
+    color: white;
+    border: 1px solid #00AFEA;
+    border-radius: 5px;
+    padding:3px 40px 3px 40px;
+    background-color: #00AFEA;
+    float: right;
+    margin-right: 30px;
+}
+
+#banyak-jumlah {
+	margin-bottom: 2%;
+}
+
+#subtitle {
+	font-size: 35px;
+	color: #003B4C;
+	font-family: 'Arial Rounded MT Bold'
+}
+
+.review-container{
+	display: flex;
+	width: 100%;
+	margin-bottom: 20px;
+	justify-content: space-between;
+}
+
+.review, .rate {
+	align-self: flex-end;
+}
+
+.review {
+	width: 95%;
+}
+
+.review-desc {
+	font-family: 'Calibri', 'Nunito';
+}
+
+
+.rate {
+	text-align: right;
+	margin-right: 50px;
+}
+
+.img-review-user {
+	height: 120px;
+	width: 100px;
+	float: left;
+	margin-left: 5px;
+	border: 1px solid black;
+
+
+    background-image: url("/static/img/profile.png");
+    background-color: white;
+    background-repeat: no-repeat;
+    background-size: 70%;
+    background-position: center;
+}
+
+.username {
+	margin-left: 120px;
+	font-size: 25px;
+	color: #4E4E4E;
+	font-family: 'Arial Rounded MT Bold';
+	font-weight: bold;
+}
+
+.review-desc {
+	margin-left: 120px;
+	color:#4E4E4E;
+}
+
+.starfull {
+	text-align: center;
+	width: 50%;
+}
+
+.rating {
+	margin-right: 8px;
+}
+
+.book-rating {
+	width: 40px;
+	height: 40px;
+	float: right;
+	margin-top: 10px;
+}
+
+.kanan {
+	padding-top: 10px;
+}
+
+.book-image {
+	width:100%;
+}
+
+.rating-number {
+	float: right;
+	display: block;
+	text-align: center;
+}
+
+.rating-detail {
+	display: flex;
+	flex-direction: column;
+	align-self: flex-end;
+}
+
+.star-rating {
+	display: flex;
+	flex-direction: row;
+	align-self: flex-end;
+}
+
+#submit-order {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	padding-top: 100px;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgb(0,0,0);
+	background-color: rgba(0,0,0,0.4);
+	padding-top: 35vh;
+}
+
+.modal-content {
+	background-color: #fefefe;
+	margin: auto;
+	padding: 20px;
+	border: 1px solid #888;
+    width: 300px;
+}
+
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#checklist {
+	float: left;
+	width: 80;
+	margin-top: 10;
+	margin-right: 20;
+}
+
+#berhasil {
+	font-weight: bold;
+}
+
+#tulisan {
+	font-family: 'Arial Rounded MT Bold';
+}
+
+.justify-content-center {
+	padding-left: 10px;
+    padding-right: 10px;
+}
+
+.kiri,
+.kanan {
+	display: flex;
+	flex-direction: column;
+}
+
+#img-box {
+	width:60%;
+	height: 180px;
+	align-self: flex-end;
+	padding-right: 35px;
+}

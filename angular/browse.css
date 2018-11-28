@@ -1,0 +1,28 @@
+.search-book {
+    height: 40px;
+    width: 100%;
+    border: 3px solid;
+    border-color: #898989;
+    border-radius: 6px;
+    font-family: 'Calibri';
+    margin-bottom: 30px;
+    padding: 10px;
+}
+
+.button-search-book {
+    width: 150px;
+    height: 40px;
+    background-color: #00aeef;
+    border-color: #00aeef;
+}
+
+.button-search-book span {
+    color: white;
+    font-size: 20px;
+    opacity: 0.8;
+    font-family: 'Arial Rounded MT Bold'
+}
+
+.title {
+    font-family: 'Arial Rounded MT Bold';
+}
