@@ -119,6 +119,66 @@ public class BookServiceImpl implements  BookService {
         return null;
     }
 
+    @Override
+    public Book getBookByIdGBA(String id) {
+        GoogleBookAPI googleBookAPI = new GoogleBookAPI(id);
+        JSONObject book;
+        book = googleBookAPI.searchById();
+        try {
+            String book_id = "";
+            String title = "";
+            String[] authors = {""};
+            String category = "";
+            String description = "";
+            Integer price = 0;
+
+            book_id = book.getString("id");
+
+            JSONObject volumeInfo = new JSONObject(book.get("volumeInfo").toString());
+            if (volumeInfo.has("title")) {
+                title = volumeInfo.get("title").toString();
+            }
+
+            if (volumeInfo.has("authors")) {
+                JSONArray authorsJSON = new JSONArray(volumeInfo.get("authors").toString());
+                authors = new String[authorsJSON.length()];
+                for(int j = 0; j < authorsJSON.length(); j++) {
+                    authors[j] = authorsJSON.get(j).toString();
+                }
+            }
+
+            if (volumeInfo.has("categories")) {
+                JSONArray categoriesJSON = new JSONArray(volumeInfo.get("categories").toString());
+                for (int j = 0; j < categoriesJSON.length(); j++) {
+                    category = categoriesJSON.get(j).toString();
+                    break;
+                }
+            }
+
+            if (volumeInfo.has("description")) {
+                description = volumeInfo.get("description").toString();
+            }
+
+            if (book.has("saleInfo")) {
+                JSONObject saleInfo = new JSONObject(book.get("saleInfo").toString());
+                if (saleInfo.has("listPrice")) {
+                    JSONObject listPrice = new JSONObject(saleInfo.get("listPrice").toString());
+                    if (listPrice.has("amount")) {
+                        price = listPrice.getInt("amount");
+                    }
+                }
+            }
+
+            Book bookResult = new Book(book_id, title, authors, description, price, category);
+
+            return bookResult;
+        } catch (Exception err) {
+            System.out.println(err);
+        }
+
+        return null;
+    }
+
     public List<Book> getBooksByCategoryDb(String category) {
         DBConnection bookDb = new DBConnection();
         ResultSet result = bookDb.doGetQuery(String.format("SELECT * FROM book WHERE category LIKE \"%s\"", category));
@@ -127,7 +187,7 @@ public class BookServiceImpl implements  BookService {
 
         try {
             while(result.next()) {
-                String book_id = result.getString("id");
+                String book_id = result.getString("book_id");
                 int price = result.getInt("price");
                 int ordered_count = result.getInt("ordered_count");
                 String categoryDb = result.getString("category");
@@ -164,9 +224,12 @@ public class BookServiceImpl implements  BookService {
             }
         });
 
-        if (results != null) {
+        if (results.size() != 0) {
             Book bestBook = results.get(0);
             Book bookResult = this.getBookByIdGBA(bestBook.getId());
+
+            bookResult.setOrderedCount(bestBook.getOrderedCount());
+            bookResult.setCategory(bestBook.getCategory());
 
             return bookResult;
         } else {
@@ -176,70 +239,6 @@ public class BookServiceImpl implements  BookService {
 
             return bookResult;
         }
-    }
-
-    @Override
-    public Book getBookByIdGBA(String id) {
-        GoogleBookAPI googleBookAPI = new GoogleBookAPI(id);
-        JSONObject hasilJSON = new JSONObject();
-        hasilJSON = googleBookAPI.searchById();
-        try {
-            JSONArray resultItems = new JSONArray(hasilJSON.get("items").toString());
-            for (int i = 0; i < resultItems.length(); i++) {
-                String book_id = "";
-                String title = "";
-                String[] authors = {""};
-                String category = "";
-                String description = "";
-                Integer price = 0;
-
-                JSONObject book = new JSONObject(resultItems.get(i).toString());
-                book_id = book.get("id").toString();
-
-                JSONObject volumeInfo = new JSONObject(book.get("volumeInfo").toString());
-                if (volumeInfo.has("title")) {
-                    title = volumeInfo.get("title").toString();
-                }
-
-                if (volumeInfo.has("authors")) {
-                    JSONArray authorsJSON = new JSONArray(volumeInfo.get("authors").toString());
-                    authors = new String[authorsJSON.length()];
-                    for(int j = 0; j < authorsJSON.length(); j++) {
-                        authors[j] = authorsJSON.get(j).toString();
-                    }
-                }
-
-                if (volumeInfo.has("categories")) {
-                    JSONArray categoriesJSON = new JSONArray(volumeInfo.get("categories").toString());
-                    for (int j = 0; j < categoriesJSON.length(); j++) {
-                        category = categoriesJSON.get(j).toString();
-                        break;
-                    }
-                }
-
-                if (volumeInfo.has("description")) {
-                    description = volumeInfo.get("description").toString();
-                }
-
-                if (book.has("saleInfo")) {
-                    JSONObject saleInfo = new JSONObject(book.get("saleInfo").toString());
-                    if (saleInfo.has("listPrice")) {
-                        JSONObject listPrice = new JSONObject(saleInfo.get("listPrice").toString());
-                        if (listPrice.has("amount")) {
-                            price = listPrice.getInt("amount");
-                        }
-                    }
-                }
-
-                Book bookResult = new Book(book_id, title, authors, description, price, category);
-
-                return bookResult;
-            }
-        } catch (Exception err) {
-            System.out.println(err);
-        }
-
-        return null;
     }
 
     @Override

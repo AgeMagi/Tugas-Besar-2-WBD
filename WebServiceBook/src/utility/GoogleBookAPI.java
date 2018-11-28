@@ -42,7 +42,7 @@ public class GoogleBookAPI {
 
     public JSONObject searchById() {
         try {
-            HTTPRequest googleBookAPIRequest = new HTTPRequest(String.format("https://www.googleapis.com/books/v1/volumes?q=id:%s&key=%s", this.query, this.API_KEY));
+            HTTPRequest googleBookAPIRequest = new HTTPRequest(String.format("https://www.googleapis.com/books/v1/volumes/%s", this.query));
             String resultRequest = googleBookAPIRequest.doRequest("GET");
             JSONObject hasilJSON = new JSONObject(resultRequest);
             return hasilJSON;
