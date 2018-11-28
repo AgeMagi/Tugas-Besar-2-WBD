@@ -17,9 +17,8 @@
                 $data = [
                     "books" => $books,
                     "reviews" => $reviews,
-                ];
-                
-                render('bookDetail.php', $data);
+                ];               
+                 render('bookDetail.php', $data);
             } else {
                 writeResponse(500, 'Failed get book detail');
             }
@@ -27,11 +26,14 @@
 
         function searchBook(Request $request) {
             $query = $request->queries["query"];
+
             $bookSOAPClient = new SOAPClientUtility();
-            $result = $bookSOAPClient->recommendationBooks("Habibi");
+            $result = $bookSOAPClient->searchBook($query);
 
             writeResponse(200, "sucess search book", $result);
         }
+
+        
     }
 
 ?>

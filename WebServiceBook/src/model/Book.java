@@ -13,14 +13,14 @@ public class Book implements Serializable {
 
     public Book() {}
 
-    public Book(String id, String title, String[] authors, String description, Integer price, String category) {
+    public Book(String id, String title, String[] authors, String description, Integer price, String category, int orderedCount) {
         this.id = id;
         this.title = title;
         this.authors = authors;
         this.description = description;
         this.price = price;
         this.category = category;
-        this.orderedCount = 0;
+        this.orderedCount = orderedCount;
     }
 
     public Book(String id, int price, int orderedCount, String category) {

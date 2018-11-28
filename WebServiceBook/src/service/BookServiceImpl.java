@@ -3,6 +3,7 @@ package service;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.jws.WebService;
 import javax.xml.transform.Result;
@@ -62,6 +63,7 @@ public class BookServiceImpl implements  BookService {
                 String category_result = "";
                 String description = "";
                 Integer price = 0;
+                Integer ordered_count = 0;
 
                 JSONObject book = new JSONObject(resultItems.get(i).toString());
                 id = book.get("id").toString();
@@ -101,12 +103,20 @@ public class BookServiceImpl implements  BookService {
                     }
                 }
 
-                Book bookResult = new Book(id, title, authors, description, price, category_result);
                 Book bookOnDb = this.getBookByIdDb(id);
 
                 if (bookOnDb == null) {
+                    if (price == 0) {
+                        price = ThreadLocalRandom.current().nextInt(10000, 100000);
+                    }
+
                     int rowBook = this.addBook(id, price, category_result);
+                } else {
+                    price = bookOnDb.getPrice();
+                    ordered_count = bookOnDb.getOrderedCount();
                 }
+
+                Book bookResult = new Book(id, title, authors, description, price, category_result, ordered_count);
 
                 bookResults.add(bookResult);
             }
@@ -131,6 +141,7 @@ public class BookServiceImpl implements  BookService {
             String category = "";
             String description = "";
             Integer price = 0;
+            Integer ordered_count = 0;
 
             book_id = book.getString("id");
 
@@ -169,7 +180,20 @@ public class BookServiceImpl implements  BookService {
                 }
             }
 
-            Book bookResult = new Book(book_id, title, authors, description, price, category);
+            Book bookOnDb = this.getBookByIdDb(book_id);
+            if (bookOnDb != null) {
+                if (category == "") {
+                    category = bookOnDb.getCategory();
+                }
+                if (price == 0) {
+                    price = bookOnDb.getPrice();
+                }
+                if (ordered_count == 0) {
+                    ordered_count = bookOnDb.getOrderedCount();
+                }
+            }
+
+            Book bookResult = new Book(book_id, title, authors, description, price, category, ordered_count);
 
             return bookResult;
         } catch (Exception err) {
@@ -257,6 +281,7 @@ public class BookServiceImpl implements  BookService {
                 String category = "";
                 String description = "";
                 Integer price = 0;
+                Integer ordered_count = 0;
 
                 JSONObject book = new JSONObject(resultItems.get(i).toString());
                 id = book.get("id").toString();
@@ -295,13 +320,20 @@ public class BookServiceImpl implements  BookService {
                         }
                     }
                 }
-
-                Book bookResult = new Book(id, title, authors, description, price, category);
                 Book bookOnDb = this.getBookByIdDb(id);
 
                 if (bookOnDb == null) {
+                    if (price == 0) {
+                        price = ThreadLocalRandom.current().nextInt(10000, 100000);
+                    }
+
                     int rowBook = this.addBook(id, price, category);
+                } else {
+                    price = bookOnDb.getPrice();
+                    ordered_count = bookOnDb.getOrderedCount();
                 }
+
+                Book bookResult = new Book(id, title, authors, description, price, category, ordered_count);
 
                 bookResults[i] = bookResult;
             }
