@@ -21,6 +21,23 @@
             return $banyak_review;
         }
 
+        function getBookRating($book_id) {
+            $banyak_review = $this->getReviewsCount($book_id);
+            if ($banyak_review == 0) {
+                return 0;
+            } else {
+                $total_review = 0;
+                $sql = 'SELECT SUM(rating) AS total_rating FROM review where book_id=?';
+                $stmt = $this->conn->prepare($sql);
+                if ($stmt->execute([$book_id])) {
+                    $row = $stmt->fetch();
+                    $total_review = (int)$row["total_rating"];
+                };
+
+            }
+            return $total_review/$banyak_review;
+        }
+
         function getReviewsByBookId($book_id) {
             $reviews = [];
             $sql = 'SELECT * FROM review WHERE book_id = ?';

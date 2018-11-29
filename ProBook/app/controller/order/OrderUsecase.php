@@ -9,7 +9,7 @@
         }
 
         function getOrder(Request $request){
-            $user_id = (int)getJwtData($_COOKIE["Authorization"])->user_id;
+            $user_id = getUserDetail()["user_id"];
 
             $orders = $this->orderDb->getOrder($user_id);
 

@@ -24,7 +24,7 @@ import utility.DBConnection;
 
 @WebService()
 public class BookServiceImpl implements  BookService {
-     public Integer getOrderedCount(String id) {
+    public Integer getOrderedCount(String id) {
          DBConnection bookDb = new DBConnection();
          Integer ordered_count = 0;
          ResultSet result = bookDb.doGetQuery(String.format("SELECT SUM(ordered_count) AS ordered_count FROM ordered_book WHERE book_id=\"%s\"", id));
@@ -39,7 +39,7 @@ public class BookServiceImpl implements  BookService {
          }
 
          return ordered_count;
-     }
+    }
 
     public Book getBookByIdDb(String id) {
         DBConnection bookDb = new DBConnection();
@@ -74,9 +74,9 @@ public class BookServiceImpl implements  BookService {
         GoogleBookAPI googleBookAPI = new GoogleBookAPI(category);
         JSONObject hasilJSON = new JSONObject();
         hasilJSON = googleBookAPI.searchByCategory();
+        List<Book> bookResults = new ArrayList<>();
         try {
             JSONArray resultItems = new JSONArray(hasilJSON.get("items").toString());
-            List<Book> bookResults = new ArrayList<>();
 
             for(int i = 0; i < Math.min(10, resultItems.length()); i++) {
                 String id = "";
@@ -165,11 +165,10 @@ public class BookServiceImpl implements  BookService {
             System.out.println(err);
         }
 
-        return null;
+        return bookResults;
     }
 
     public Book getBookByIdGBA(String id) {
-
         GoogleBookAPI googleBookAPI = new GoogleBookAPI(id);
         JSONObject book;
         book = googleBookAPI.searchById();
@@ -282,10 +281,11 @@ public class BookServiceImpl implements  BookService {
         Book bookOnDb = this.getBookByIdDb(id);
         if (bookOnDb != null) {
             Book bookResult = this.getBookByIdGBA(id);
+
             return bookResult;
         }
 
-        return null;
+        return new Book();
     }
 
     @Override
@@ -326,13 +326,13 @@ public class BookServiceImpl implements  BookService {
     }
 
     @Override
-    public Book[] searchBook(String query) {
+    public List<Book> searchBook(String query) {
         GoogleBookAPI googleBookAPI = new GoogleBookAPI(query);
         JSONObject hasilJSON = new JSONObject();
         hasilJSON = googleBookAPI.searchBook();
+        List<Book> bookResults = new ArrayList<>();
         try {
             JSONArray resultItems = new JSONArray(hasilJSON.get("items").toString());
-            Book[] bookResults = new Book[resultItems.length()];
 
             for(int i = 0; i < Math.min(10, resultItems.length()); i++) {
                 String id = "";
@@ -410,16 +410,13 @@ public class BookServiceImpl implements  BookService {
 
                 Book bookResult = new Book(id, title, authors, description, price, category, ordered_count, imgPath);
 
-                bookResults[i] = bookResult;
+                bookResults.add(bookResult);
             }
 
             return bookResults;
         } catch (JSONException err) {
             System.out.println(err);
         }
-
-        return null;
-    }
 
     public TransferStatus checkTransfer(String senderCard, Integer price ){
         String urlParameters ="sender_card_number"+ senderCard + "&amount=" + price;

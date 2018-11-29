@@ -1,6 +1,7 @@
 <?php
     require_once __ROOT__."/util/Database.php";
     require_once __ROOT__."/app/controller/order/Order.php";
+    require_once __ROOT__.'/util/SOAPClient.php';
 
     class OrderDb extends Database{
 
@@ -47,14 +48,10 @@
 					$has_review = false;
 				}
 
-				$sqlBook = 'SELECT title, img_path FROM book WHERE book_id = ?';
-				$stmtBook = $this->conn->prepare($sqlBook);
-				$stmtBook->execute([$book_id]);
-				$rowBook = $stmtBook->fetch();
-				$book_title = $rowBook["title"];
-				$book_img_path = $rowBook["img_path"];
+				$bookSOAPClient = new SOAPClientUtility();
+            	$book = $bookSOAPClient->bookDetail($book_id);
 
-				$order = new Order($order_id, $user_id, $book_id, $item_count, $date, $has_review, $book_title, $book_img_path);
+				$order = new Order($order_id, $user_id, $book_id, $item_count, $date, $has_review, $book->title, $book->imgPath);
         		array_push($orders,$order);
 			};
         	return $orders;

@@ -1,5 +1,7 @@
 <?php
-    $username = getJwtData($_COOKIE["Authorization"])->username;
+    $result = getUserDetail();
+
+    $username = $result["username"];
 ?>
 
 <link rel="stylesheet" href="/static/css/base.css">

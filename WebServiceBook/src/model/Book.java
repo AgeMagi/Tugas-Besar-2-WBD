@@ -7,13 +7,12 @@ import java.io.Serializable;
 public class Book implements Serializable {
     private String id = "";
     private String title = "";
-    private String[] authors;
-    private String description;
-    private Integer price;
-    private String category;
-    private int orderedCount;
-    private String imgPath;
-    private JSONObject transferStatus;
+    private String[] authors = {""};
+    private String description = "";
+    private Integer price = 0;
+    private String category = "";
+    private int orderedCount = 0;
+    private String imgPath = "";
 
     public Book() {}
 
@@ -66,7 +65,7 @@ public class Book implements Serializable {
     public String getImgPath() {
         return imgPath;
     }
-
+  
     public void setId(String id) {
         this.id = id;
     }
