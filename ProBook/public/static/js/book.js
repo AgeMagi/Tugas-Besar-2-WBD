@@ -7,7 +7,7 @@ angular.module('myApp', []).controller('bookCtrl', function($scope) {
     ];
 
     $scope.search = false;
-    #scope.searchQuery = function(query) {
+    $scope.searchQuery = function(query) {
         $scope.search = true;
 
     };
