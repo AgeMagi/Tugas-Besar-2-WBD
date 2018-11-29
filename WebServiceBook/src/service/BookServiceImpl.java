@@ -417,6 +417,7 @@ public class BookServiceImpl implements  BookService {
         } catch (JSONException err) {
             System.out.println(err);
         }
+    }
 
     public TransferStatus checkTransfer(String senderCard, Integer price ){
         String urlParameters ="sender_card_number"+ senderCard + "&amount=" + price;
@@ -473,13 +474,13 @@ public class BookServiceImpl implements  BookService {
 
         Integer countOrder = getOrderedCount(id);
         Book bookOnDb = this.getBookByIdDb(id);
-        Integer price = bookOnDb.getPrice();
+        Integer totalPrice = (bookOnDb.getPrice() * counts);
         DBConnection bookDb = new DBConnection();
 
         String urlParameter =  "sender_card_number=" + sender + "&amount=";
         String url = "http://localhost:8000/transaction";
 
-        TransferStatus transferStatus = checkTransfer(sender,price);
+        TransferStatus transferStatus = checkTransfer(sender,totalPrice);
         try {
             if (transferStatus.status == 0){
                 bookDb.doGetQuery(String.format("INSERT INTO ordered_book ( book_id, sender_card_number, ordered_count) VALUES (\"%s\",\"%s\",%d) WHERE book_id = \"%s\"",id,sender,counts, id));
@@ -490,5 +491,5 @@ public class BookServiceImpl implements  BookService {
         }
 
         return transferStatus;
-    }
-}
+        }
+    }   
