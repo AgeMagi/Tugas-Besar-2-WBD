@@ -23,6 +23,19 @@ angular.module('myApp', []).controller('bookCtrl', function($scope) {
             }
         }
 
+
     };
 
 });
+//
+// $.ajax({
+//     type:"GET",
+//     url: "http://localhost:4000/search/?query=Flowers",
+//     success: function(data) {
+//         $("body").append(JSON.stringify(data));
+//     },
+//     error: function(jqXHR, textStatus, errorThrown) {
+//         alert(jqXHR.status);
+//     },
+//     dataType: "jsonp"
+// });​​​​​​​​​​​​​​​

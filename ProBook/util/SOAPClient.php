@@ -17,7 +17,7 @@
                 'exceptions'=>true,
             );
             $params = array('arg0' => $query);
-            $wsdl = "http://9dd68ac5.ngrok.io/ws/book/?wsdl";
+            $wsdl = "http://f48d95a1.ngrok.io/ws/book/?wsdl";
             
             try {
                 $soap = new SoapClient($wsdl, $options);
