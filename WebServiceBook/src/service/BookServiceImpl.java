@@ -273,7 +273,7 @@ public class BookServiceImpl implements  BookService {
             System.out.println(err);
         }
 
-        return null;
+        return bookResults;
     }
 
     @Override
@@ -417,6 +417,8 @@ public class BookServiceImpl implements  BookService {
         } catch (JSONException err) {
             System.out.println(err);
         }
+
+        return bookResults;
     }
 
     public TransferStatus checkTransfer(String senderCard, Integer price ){

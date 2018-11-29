@@ -1,5 +1,6 @@
 .idea/
 ProBook/.idea/
+ProBook/config/devel.php
 WebServiceBank/node_modules/
 WebServiceBank/.idea/
 WebServiceBook/.idea/
