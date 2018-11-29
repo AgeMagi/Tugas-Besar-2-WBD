@@ -2,8 +2,8 @@
     return array(
         "db" => array(
             "host" => "127.0.0.1",
-            "user" => "root",
-            "password" => "06071998",
+            "user" => "thareqyusuf",
+            "password" => "Ayahbundaku1!",
             "db_name" => "tayo_book_store"
         ),
         "base_url" => "http://localhost:4000/",
