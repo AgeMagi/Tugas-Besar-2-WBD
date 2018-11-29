@@ -1,4 +1,5 @@
-angular.module('myApp', []).controller('bookCtrl', function($scope, $http, $timeout) {
+var app = angular.module('myApp', []);
+app.controller('bookCtrl', function($scope, $http, $timeout) {
 
     $scope.bookbases = [
         {id:1, imgPath:'/static/img/contoh_buku.png', title:'Merangkai Mimpi', authors:'thareq', price:'4', description:'Satu kata yaitu mantuy bet gakuat kaka'},
@@ -6,17 +7,25 @@ angular.module('myApp', []).controller('bookCtrl', function($scope, $http, $time
         {id:3, imgPath:'/static/img/contoh_buku.png', title:'Demi Kehidupan yang Indah', authors:'yasya', price:'5', description:'Pege'}
     ];
     $scope.search = false;
-    $scope.change = function(text) {
+    $scope.load = false
+
+    $scope.change = function() {
         $scope.books = [];
-        $scope.search = true;
+        $scope.load = true;
         send = $scope.searchText;
         console.log(send);
-        doAjax('http://localhost:4000/search/?query=' + send, "GET", null, function(response) {
-            console.log(response);
-            $scope.books = response.data;
-            console.log($scope.books[0].title)
-        })
-        $scope.search = false;
+        $timeout(function () {
+            doAjax('http://localhost:4000/search/?query=' + send, "GET", null, function(response) {
+                console.log(response);
+                $scope.books = response.data;
+                console.log($scope.books[0].title)
+                $scope.load = false;
+                $scope.search = true;
+            });
+
+        }, 1000);
+
+        // $scope.search = false;
         // $http.get('http://localhost:4000/search/?query=' + send).then(function(result){
         //     $scope.books = result.data;
         // })

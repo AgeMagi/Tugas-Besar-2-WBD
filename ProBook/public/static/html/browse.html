@@ -12,20 +12,20 @@
         <h1 class="title">Search</h1>
     </div>
     <div>
-        <form ng-submit="change(text)">
-        <input type="text"
-               class="search-book"
-               name="title"
-               placeholder="Input search terms..."
-               ng-model="searchText"
-        />
+            <input type="text"
+                   class="search-book"
+                   name="title"
+                   placeholder="Input search terms..."
+                   ng-model="searchText"
+            />
 
-        <div class="justify-content-end">
-            <button class="button-search-book" id="button-search-book"><span>Search</span></button>
-        </div>
-        </form>
+            <div class="justify-content-end">
+                <button ng-click="change()" class="button-search-book" id="button-search-book"><span>Search</span></button>
+            </div>
+
+        <div ng-show="load" class="loader"></div>
         <div id="results">
-            <div ng-show = "search" ng-repeat= "book in bookbases" class="result row justify-content-between">
+            <div ng-show ="search" ng-repeat= "book in books" class="result row justify-content-between">
                 <div class="result-img">
                     <img
                         src= {{book.imgPath}}
