@@ -21,4 +21,7 @@ public interface BookService {
 
     @WebMethod
     public Book recommendationBook(String[] categories);
+
+    @WebMethod
+    public Book buyBook(String id, Integer counts, String sender );
 }

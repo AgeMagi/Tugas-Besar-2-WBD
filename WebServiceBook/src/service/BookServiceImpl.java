@@ -412,4 +412,110 @@ public class BookServiceImpl implements  BookService {
 
         return null;
     }
+
+    @Override
+    public Book buyBook(String id, Integer counts, String sender ){
+
+
+        GoogleBookAPI googleBookAPI = new GoogleBookAPI(id);
+        Integer countOrder = getOrderedCount(id);
+        Book bookOnDb = this.getBookByIdDb(id);
+
+        String urlParameter =  "sender_card_number=" + sender;
+        String url = "/transaction";
+
+        
+
+
+
+        try {
+            JSONArray resultItems = new JSONArray(hasilJSON.get("items").toString());
+            Book[] bookResults = new Book[resultItems.length()];
+
+            for(int i = 0; i < Math.min(10, resultItems.length()); i++) {
+                String id = "";
+                String title = "";
+                String[] authors = {""};
+                String category = "";
+                String description = "";
+                Integer price = 0;
+                Integer ordered_count = 0;
+                String imgPath = "";
+
+                JSONObject book = new JSONObject(resultItems.get(i).toString());
+                id = book.get("id").toString();
+
+                JSONObject volumeInfo = new JSONObject(book.get("volumeInfo").toString());
+                if (volumeInfo.has("title")) {
+                    title = volumeInfo.get("title").toString();
+                }
+
+                if (volumeInfo.has("authors")) {
+                    JSONArray authorsJSON = new JSONArray(volumeInfo.get("authors").toString());
+                    authors = new String[authorsJSON.length()];
+                    for(int j = 0; j < authorsJSON.length(); j++) {
+                        authors[j] = authorsJSON.get(j).toString();
+                    }
+                }
+
+                if (volumeInfo.has("categories")) {
+                    JSONArray categoriesJSON = new JSONArray(volumeInfo.get("categories").toString());
+                    for (int j = 0; j < categoriesJSON.length(); j++) {
+                        category = categoriesJSON.get(j).toString();
+                        break;
+                    }
+                }
+
+                if (volumeInfo.has("description")) {
+                    description = volumeInfo.get("description").toString();
+                }
+
+                if (volumeInfo.has("imageLinks")) {
+                    JSONObject imageLinks = new JSONObject(volumeInfo.get("imageLinks").toString());
+                    if (imageLinks.has("smallThumbnail")) {
+                        imgPath = imageLinks.get("smallThumbnail").toString();
+                    } else if (imageLinks.has("thumbnail")) {
+                        imgPath = imageLinks.get("thumbnail").toString();
+                    }
+                }
+
+                if (book.has("saleInfo")) {
+                    JSONObject saleInfo = new JSONObject(book.get("saleInfo").toString());
+                    if (saleInfo.has("listPrice")) {
+                        JSONObject listPrice = new JSONObject(saleInfo.get("listPrice").toString());
+                        if (listPrice.has("amount")) {
+                            price = listPrice.getInt("amount");
+                        }
+                    }
+                }
+                Book bookOnDb = this.getBookByIdDb(id);
+
+                if (bookOnDb == null) {
+                    if (price == 0) {
+                        int not_for_sale = ThreadLocalRandom.current().nextInt(0, 2);
+                        if (not_for_sale == 1) {
+                            price = ThreadLocalRandom.current().nextInt(10000, 100000);
+                        } else {
+                            price = 0;
+                        }
+                    }
+
+                    int rowBook = this.addBook(id, price, category);
+                } else {
+                    price = bookOnDb.getPrice();
+                    ordered_count = bookOnDb.getOrderedCount();
+                }
+
+                Book bookResult = new Book(id, title, authors, description, price, category, ordered_count, imgPath);
+
+                bookResults[i] = bookResult;
+            }
+
+            return bookResults;
+        } catch (JSONException err) {
+            System.out.println(err);
+        }
+
+        return null;
+    }
 }
