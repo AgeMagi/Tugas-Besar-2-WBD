@@ -12,34 +12,33 @@
         <h1 class="title">Search</h1>
     </div>
     <div>
-        <form>
+        <form ng-submit="change(text)">
         <input type="text"
                class="search-book"
                name="title"
                placeholder="Input search terms..."
-               ng-model="query"
-
+               ng-model="searchText"
         />
-        </form>
-        <div class="justify-content-end">
-            <button class="button-search-book" id="button-search-book" ng-click="searchQuery(query)">&#9998; <span>Search</span></button>
-        </div>
 
+        <div class="justify-content-end">
+            <button class="button-search-book" id="button-search-book"><span>Search</span></button>
+        </div>
+        </form>
         <div id="results">
-            <div ng-show = "search" ng-repeat= "book in books" class="result row justify-content-between">
+            <div ng-show = "search" ng-repeat= "book in bookbases" class="result row justify-content-between">
                 <div class="result-img">
                     <img
-                        src= {{book.img_path}}
+                        src= {{book.imgPath}}
                     />
                 </div>
-                <div class=\"result-content\">
-                    <h1 class=\"result-title\">{{book.title}}</h1>
-                    <h2 class=\"result-author\">{{book.author}} - {{book.rating}}</h2>
-                    <p class=\"result-description\">
+                <div class="result-content">
+                    <h1 class="result-title">{{book.title}}</h1>
+                    <h2 class="result-author">{{book.authors}} - {{book.price}}</h2>
+                    <p class="result-description">
                         {{book.description}}
                     </p>
-                    <div class=\"justify-content-end\">
-                        <button type=\"submit\"><span>Detail</span></button>
+                    <div class="justify-content-end">
+                        <button type="submit"><span>Detail</span></button>
                     </div>
                 </div>
             </div>

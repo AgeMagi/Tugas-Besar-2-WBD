@@ -14,12 +14,21 @@
         }
         
         function getProfile(Request $request){
-            $id = getJwtData($_COOKIE["Authorization"])->user_id;
-            $user= $this->userDb->getUserById($id);
+            $user_storage_id = $_COOKIE["Authorization"];
+            $http_user_agent = $_SERVER["HTTP_USER_AGENT"];
+            $ip_address = $_SERVER["REMOTE_ADDR"];
+
+            $result = $this->userDb->getSessionStorage($user_storage_id, $http_user_agent,
+            $ip_address);
+
+            $user_id= $result['user_id'];
+            $user= $this->userDb->getUserById($user_id);
             if ($user){
                 $data = ["user"=>$user];
                 render('profile.php', $data);
             }
+
+            
         }
 
         function registerUser(Request $request){
@@ -28,11 +37,12 @@
             $email = $request->payload["email"];
             $address = $request->payload["address"];
             $phone = $request->payload["phone"];
+            $card_number= $request->payload["card_number"];
             $password = $request->payload["password"];
             $hpass = hash('sha256', $password);
 
             if (!$this->userDb->isEmailOrUsernameExist($email,$username)){
-                $user = new User(null,$username,$fullname,$email,$address,$phone,$hpass);
+                $user = new User(null,$username,$fullname,$email,$address,$phone,$card_number,$hpass);
                 $user = $this->userDb->createUser($user);
                 if ($user){
                     $payload = array(
@@ -49,8 +59,16 @@
         }
 
         function getEditProfile(Request $request){
-            $id = getJwtData($_COOKIE["Authorization"])->user_id;
-            $user= $this->userDb->getUserById($id);
+            $user_storage_id = $_COOKIE["Authorization"];
+            $http_user_agent = $_SERVER["HTTP_USER_AGENT"];
+            $ip_address = $_SERVER["REMOTE_ADDR"];
+
+            $result = $this->userDb->getSessionStorage($user_storage_id, $http_user_agent,
+            $ip_address);
+
+            $user_id= $result['user_id'];
+            $user= $this->userDb->getUserById($user_id);
+
             if ($user){
                 $data = ["user"=>$user];
                 render('edit-profile.php', $data);
@@ -58,8 +76,17 @@
         }
 
         function editProfile(Request $request){
-            $id = getJwtData($_COOKIE["Authorization"])->user_id;
-            $user = $this->userDb->getUserById($id);
+            $user_storage_id = $_COOKIE["Authorization"];
+            $http_user_agent = $_SERVER["HTTP_USER_AGENT"];
+            $ip_address = $_SERVER["REMOTE_ADDR"];
+
+            $result = $this->userDb->getSessionStorage($user_storage_id, $http_user_agent,
+            $ip_address);
+            
+            $user_id= $result['user_id'];
+            $user= $this->userDb->getUserById($user_id);
+        
+
             if ($user){
                 $imageFile = $_FILES["profile_picture"];
                 $uploadImage = $this->userDb->uploadImage($imageFile);
@@ -69,6 +96,7 @@
                 $user->email = array_key_exists("email",$_POST) ? $_POST["email"] : $user->email;
                 $user->address = array_key_exists("address",$_POST) ? $_POST["address"] : $user->address;
                 $user->phone= array_key_exists("phone",$_POST) ? $_POST["phone"] : $user->phone;
+                $user->card_number= array_key_exists("card_number",$_POST) ? $_POST["card_number"] : $user->card_number;
                 if ($uploadImage["path"]){
                     $user->imgPath = $uploadImage["path"];
                 }
@@ -76,6 +104,7 @@
                 $user->setPassword($newPass);
 
                 $user = $this->userDb->updateUser($user);
+
                 if ($user){
                     header('Location: /profile/');
                     exit;
@@ -98,22 +127,17 @@
             $hpass = hash('sha256', $password);
             $user_id = $this->userDb->authenticateUser($username, $hpass);
             if ($user_id) {
-                if ($_COOKIE["Authorization"]) {
+                $http_user_agent = $_SERVER['HTTP_USER_AGENT'];
+                $ip_address = $_SERVER['REMOTE_ADDR'];
+                $session_storage_id = generateRandomString(16);
+                $expired_time = microtime(true) + 3600;
+                $session_storage_id = $this->userDb->createSessionStorage($session_storage_id,
+                                        $username, $hpass, $user_id, $http_user_agent, $ip_address, $expired_time);
+                setcookie("Authorization", $session_storage_id, time() + 600, '/');
+                if ($session_storage_id) {
                     header('Location: /browse/');
                     exit;
-                } else {
-                    $http_user_agent = $_SERVER['HTTP_USER_AGENT'];
-                    $ip_address = $_SERVER['REMOTE_ADDR'];
-                    $session_storage_id = generateRandomString(16);
-                    $expired_time = microtime(true) + 7200;
-                    $session_storage_id = $this->userDb->createSessionStorage($session_storage_id,
-                                            $username, $hpass, $user_id, $http_user_agent, $ip_address, $expired_time);
-                    setcookie("Authorization", $session_storage_id, time() + 3600, '/');
-                    if ($session_storage_id) {
-                        header('Location: /browse/');
-                        exit;
-                    }
-                }                
+                }            
             } else {
                 render('login.php',array("isError"=>true));
             }

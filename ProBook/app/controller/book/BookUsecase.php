@@ -10,28 +10,34 @@
         }
         
         function getBookDetail(Request $request) {
-            $id = (int)$request->params["book_id"];
-            $books = $this->bookDb->getBookById($id);
-            $reviews = $this->bookDb->getReviewsDetailByBookId($id);
-            if ($books) {
-                $data = [
-                    "books" => $books,
-                    "reviews" => $reviews,
-                ];
-                
-                render('bookDetail.php', $data);
-            } else {
-                writeResponse(500, 'Failed get book detail');
-            }
+            $book_id = $request->queries["book_id"];
+
+            $bookSOAPClient = new SOAPClientUtility();
+            $result = $bookSOAPClient->bookDetail($book_id);
+
+            $data = [
+                "book" => $result,
+            ];
+
+            render('bookDetail.php', $data);
         }
 
         function searchBook(Request $request) {
             $query = $request->queries["query"];
+
             $bookSOAPClient = new SOAPClientUtility();
             $result = $bookSOAPClient->searchBook($query);
 
             writeResponse(200, "sucess search book", $result);
+        }      
+        
+        function recommendationBook(Request $request) {
+            $categories = $request->queries["categories"];
+
+            $bookSOAPClient = new SOAPClientUtility();
+            $result = $bookSOAPClient->recommendationBook($categories);
+
+            writeResponse(200, "success get recommendation book", $result);
         }
     }
-
 ?>

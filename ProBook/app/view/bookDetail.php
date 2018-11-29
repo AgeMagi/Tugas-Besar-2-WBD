@@ -1,5 +1,5 @@
 <?php
-    render('header.php');
+	render('header.php');
 ?>
 
 <link rel="stylesheet" href="/static/css/base.css">
@@ -14,7 +14,7 @@
 <input
 	type="hidden"
 	id="book_id"
-	value=<?=$books[0]->book_id?>
+	value=<?=$book->book_id?>
 >
 
 
@@ -23,28 +23,28 @@
 		<div class="kiri">
 			<div id="book-title">
 				<?php
-					echo($books[0]->title);
+					echo($book->title);
 				?>
 			</div>
 			<div id="author">
 				<?php
-					echo($books[0]->author)
+					echo($book->author)
 				?>	
 			</div><br>
 			<div id="book-description">
 				<?php
-					echo($books[0]->description)
+					echo($book->description)
 				?>
 			</div>
 		</div>
 		<div class="kanan justify-content-center">
 			<div class="justify-content-center" id="img-box">
-				<img src=<?=$books[0]->img_path?> class="book-image">	
+				<img src=<?=$book->imgPath?> class="book-image">	
 			</div>
 			<div class="rating-detail justify-content-center">
 				<div class="star-rating">
 					<?php
-						$rating = $books[0]->rating;
+						$rating = $book->rating;
 
 						for ($i = 0; $i < 5; $i++) {
 							if ($rating > 0) {
@@ -57,7 +57,7 @@
 					?>
 				</div>				
 				<?php
-					$rating = $books[0]->rating;
+					$rating = $book->rating;
 					echo("
 						<div class=\"rating-number\">
 							<h1>

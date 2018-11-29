@@ -13,41 +13,45 @@
             $stmt = $this->conn->prepare($sql);
             if ($stmt->execute([$id])){
                 $row = $stmt->fetch();
+                
                 $user_id = (int) $row["user_id"];
                 $fullname = $row["fullname"];
                 $username = $row["username"];
                 $email = $row["email"];
                 $address = $row["address"];
                 $phone = $row["phone"];
+                $card_number= $row["card_number"];
                 $imgPath = $row["img_path"];
                 $hpass = $row["hpass"];
                 
-                $user = new User($user_id, $username, $fullname, $email, $address, $phone, $hpass, $imgPath);
+
+                $user = new User($user_id, $username, $fullname, $email, $address, $phone, $card_number, $hpass, $imgPath);
+               
             };      
             return $user;
         }
 
         function createUser($user){
             $userRes = null;
-            $sql = 'INSERT INTO user(username,fullname,email,address,phone,hpass) VALUES(?,?,?,?,?,?)';
+            $sql = 'INSERT INTO user(username,fullname,email,address,phone,card_number,hpass) VALUES(?,?,?,?,?,?)';
             $stmt = $this->conn->prepare($sql);
 
-            if ($stmt->execute([$user->username, $user->fullname, $user->email, $user->address,$user->phone, $user->getPassword()])){
+            if ($stmt->execute([$user->username, $user->fullname, $user->email, $user->address,$user->phone, $user->card_number, $user->getPassword()])){
                 $user_id = 0;
                 $last_insert_id = $this->conn->query("SELECT LAST_INSERT_ID()");
                 foreach($last_insert_id as $row){
                     $user_id = $row["LAST_INSERT_ID()"]; 
                 };
-                $userRes = new User($user_id, $user->username, $user->fullname, $user->email, $user->address, $user->phone, $user->getPassword());
+                $userRes = new User($user_id, $user->username, $user->fullname, $user->email, $user->address, $user->phone, $user->card_number, $user->getPassword());
             }
             return $userRes;
         }
 
         function updateUser($user){
-            $sql = 'UPDATE user SET username=?, fullname=?, email=?, address=?, phone=?, img_path=?, hpass=? WHERE user_id=?';
+            $sql = 'UPDATE user SET username=?, fullname=?, email=?, address=?, phone=?, card_number=?, img_path=? WHERE user_id=?';
             $stmt = $this->conn->prepare($sql);
-
-            if ($stmt->execute([$user->username, $user->fullname, $user->email, $user->address,  $user->phone, $user->imgPath, $user->getPassword(), $user->user_id])){
+            
+            if ($stmt->execute([$user->username, $user->fullname, $user->email, $user->address,  $user->phone, $user->card_number, $user->imgPath, $user->user_id])){
                 return $user;
             } else {
                 return null;
@@ -102,16 +106,22 @@
         }
 
         function getSessionStorage($session_storage_id, $http_user_agent, $ip_address) {
+            $timeNow = microtime(true);
+
             $sql = 'SELECT * FROM session_storage WHERE session_storage_id=? AND 
-                    http_user_agent=? AND ip_address=?';
+                    http_user_agent=? AND ip_address=? AND expired_time > ?';
             
             $stmt = $this->conn->prepare($sql);
-            if ($stmt->execute([$session_storage_id, $http_user_agent, $ip_address])) {
+            if ($stmt->execute([$session_storage_id, $http_user_agent, $ip_address, $timeNow])) {
                 $row = $stmt->fetch();
-                $result = array(
-                    "username" => $row["username"],
-                    "user_id" => $row["user_id"],
-                );
+                if ($row) {
+                    $result = array(
+                        "username" => $row["username"],
+                        "user_id" => $row["user_id"],
+                    );
+                } else {
+                    return null;
+                }
                 return $result;
             }
             return null;

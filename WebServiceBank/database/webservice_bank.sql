@@ -16,13 +16,13 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `nasabah`
+-- Table structure for table `customer`
 --
 
-DROP TABLE IF EXISTS `nasabah`;
+DROP TABLE IF EXISTS `customer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `nasabah` (
+CREATE TABLE `customer` (
   `card_number` varchar(45) NOT NULL,
   `name` varchar(100) DEFAULT NULL,
   `balance` int(11) DEFAULT NULL,
@@ -31,40 +31,41 @@ CREATE TABLE `nasabah` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `nasabah`
+-- Dumping data for table `customer`
 --
 
-LOCK TABLES `nasabah` WRITE;
-/*!40000 ALTER TABLE `nasabah` DISABLE KEYS */;
-/*!40000 ALTER TABLE `nasabah` ENABLE KEYS */;
+LOCK TABLES `customer` WRITE;
+/*!40000 ALTER TABLE `customer` DISABLE KEYS */;
+/*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `transaksi`
+-- Table structure for table `transaction`
 --
 
-DROP TABLE IF EXISTS `transaksi`;
+DROP TABLE IF EXISTS `transaction`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `transaksi` (
+CREATE TABLE `transaction` (
+  `transaction_id` int(11) NOT NULL AUTO_INCREMENT,
   `sender_card_number` varchar(45) NOT NULL,
   `receiver_card_number` varchar(45) NOT NULL,
-  `amount` int(11) DEFAULT NULL,
+  `amount` int(11) NOT NULL,
   `transaction_time` int(11) NOT NULL,
-  PRIMARY KEY (`transaction_time`,`sender_card_number`,`receiver_card_number`),
+  PRIMARY KEY (`transaction_id`),
   KEY `fk_sender_card_number_idx` (`sender_card_number`),
-  CONSTRAINT `fk_receiver_card_number` FOREIGN KEY (`sender_card_number`) REFERENCES `nasabah` (`card_number`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_sender_card_number` FOREIGN KEY (`sender_card_number`) REFERENCES `nasabah` (`card_number`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_receiver_card_number` FOREIGN KEY (`sender_card_number`) REFERENCES `customer` (`card_number`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_sender_card_number` FOREIGN KEY (`sender_card_number`) REFERENCES `customer` (`card_number`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `transaksi`
+-- Dumping data for table `transaction`
 --
 
-LOCK TABLES `transaksi` WRITE;
-/*!40000 ALTER TABLE `transaksi` DISABLE KEYS */;
-/*!40000 ALTER TABLE `transaksi` ENABLE KEYS */;
+LOCK TABLES `transaction` WRITE;
+/*!40000 ALTER TABLE `transaction` DISABLE KEYS */;
+/*!40000 ALTER TABLE `transaction` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -76,4 +77,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-27 22:25:50
+-- Dump completed on 2018-11-29 11:43:23

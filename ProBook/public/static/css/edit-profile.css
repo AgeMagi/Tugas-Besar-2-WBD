@@ -72,6 +72,16 @@ input, textarea{
     width: 30%;
 }
 
+.card-column{
+    width: 25%;
+}
+
+
+.check{
+    width: 5%;
+    color: red;
+}
+
 .input-column {
     width: 70%;
 
