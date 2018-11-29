@@ -16,7 +16,6 @@
                                         APP_CONFIG["db"]["user"], 
                                         APP_CONFIG["db"]["password"], 
                                         APP_CONFIG["db"]["db_name"]);
-                $session_storage_id = 
 
                 $userDb = new UserDb($conn);
                 $result = $userDb->getSessionStorage($user_storage_id, $http_user_agent,

@@ -12,12 +12,16 @@ const db = mysql.createConnection({
 
 const app = express();
 
-app.use(bodyParser.urlencoded({extended:false }));
-app.use(bodyParser.json());
-
+app.use(express.urlencoded({extended:false}));
+app.use(express.json());
+app.use(function(req, res, next) {
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	next();
+})
 
 app.get('/insertdb',(req,res) => {
-	let sql = "INSERT INTO nasabah (nama, nomor_kartu,saldo) VALUES ('Yasya', '9','1000')";
+	let sql = "INSERT INTO nasabah (nama, card_number,saldo) VALUES ('Yasya', '9','1000')";
 	let query = db.query(sql, function (err, result) {
 	  if (err) throw err;
 	  console.log(result);
@@ -34,11 +38,11 @@ app.get('/bank',(req,res)=>{
 	
 });
 
-app.get('/bank/:nomor_kartu',(req,res)=>{
-	console.log("Fetching user with id:" + req.params.nomor_kartu);
+app.get('/bank/:card_number',(req,res)=>{
+	console.log("Fetching user with id:" + req.params.card_number);
 
-	const nokartu = req.params.nomor_kartu;
-	const queryselect = "SELECT * FROM nasabah WHERE nomor_kartu=?";
+	const nokartu = req.params.card_number;
+	const queryselect = "SELECT * FROM nasabah WHERE card_number=?";
 	db.query(queryselect,[nokartu],(err,rows,fields)=>{
 		if (err){
 			console.log("Failed to query for users: "+err)
@@ -48,7 +52,7 @@ app.get('/bank/:nomor_kartu',(req,res)=>{
 		}
 
 		const nasabah = rows.map((row)=> {
-			return {nama: row.nama, nomorKartu: row.nomor_kartu, saldo: row.saldo};
+			return {nama: row.nama, nomorKartu: row.card_number, saldo: row.saldo};
 		});
 
 		console.log("Fetched successfully");
@@ -56,10 +60,12 @@ app.get('/bank/:nomor_kartu',(req,res)=>{
 });
 
 app.post('/validation',(req,res)=>{
+	if (!req.body) return res.sendStatus(400);
+	const noKartu = req.body.card_number;
 
-	const noKartu = req.body.nomor_kartu;
-
-	const queryselect = "SELECT * FROM nasabah WHERE nomor_kartu=?";
+	console.log(req.body);
+	console.log(noKartu);
+	const queryselect = "SELECT * FROM nasabah WHERE card_number=?";
 	db.query(queryselect,[noKartu],(err,rows,fields)=>{
 		if (err){
 			console.log("Failed to query for users: "+err)
@@ -67,15 +73,16 @@ app.post('/validation',(req,res)=>{
 			return;
 			//throw err
 		};
-
+		
 		if (rows.length==0){
-			res.send(JSON.stringify({nomor_kartu: "invalid"}));
+			res.send(JSON.stringify({card_number: 0}));
 		}else{
-			res.send(JSON.stringify({nomor_kartu: "valid"}));
+			res.send(JSON.stringify({card_number: req.body.card_number}));
 		}
 	});
 });
 
-app.listen('5000',()=> {
-	console.log('Server started on port 5000');
+
+app.listen('8000',()=> {
+	console.log('Server started on port 8000');
 });
