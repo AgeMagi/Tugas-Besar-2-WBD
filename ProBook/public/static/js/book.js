@@ -19,6 +19,7 @@ angular.module('myApp', []).controller('bookCtrl', function($scope, $http, $time
             $scope.books = response.data;
             console.log($scope.books[0].title)
         })
+        $scope.search = false;
         // $http.get('http://localhost:4000/search/?query=' + send).then(function(result){
         //     $scope.books = result.data;
         // })
