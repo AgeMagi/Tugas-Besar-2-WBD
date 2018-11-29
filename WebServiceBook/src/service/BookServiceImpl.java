@@ -121,7 +121,7 @@ public class BookServiceImpl implements  BookService {
                     ordered_count = bookOnDb.getOrderedCount();
                 }
 
-                Book bookResult = new Book(id, title, authors, description, price, category_result, ordered_count);
+                Book bookResult = new Book(id, t itle, authors, description, price, category_result, ordered_count);
 
                 bookResults.add(bookResult);
             }
