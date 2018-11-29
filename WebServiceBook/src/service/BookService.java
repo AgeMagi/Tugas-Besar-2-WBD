@@ -16,9 +16,12 @@ public interface BookService {
     Book getBookDetail(String id);
 
     @WebMethod
-    public Book[] searchBook(String query);
+    public List<Book> searchBook(String query);
 
 
     @WebMethod
     public Book recommendationBook(String[] categories);
+
+    @WebMethod
+    public Book buyBook(String id, Integer counts, String sender );
 }

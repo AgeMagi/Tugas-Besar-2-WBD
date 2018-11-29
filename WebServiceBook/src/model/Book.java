@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONObject;
+
 import java.io.Serializable;
 
 public class Book implements Serializable {
@@ -11,6 +13,7 @@ public class Book implements Serializable {
     private String category;
     private int orderedCount;
     private String imgPath;
+    private JSONObject transferStatus;
 
     public Book() {}
 
@@ -63,6 +66,8 @@ public class Book implements Serializable {
     public String getImgPath() {
         return imgPath;
     }
+
+    public JSONObject checkTransfer(){ return transferStatus; }
 
     public void setId(String id) {
         this.id = id;

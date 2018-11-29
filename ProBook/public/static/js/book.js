@@ -6,9 +6,6 @@ angular.module('myApp', []).controller('bookCtrl', function($scope, $http, $time
         {id:3, imgPath:'/static/img/contoh_buku.png', title:'Demi Kehidupan yang Indah', authors:'yasya', price:'5', description:'Pege'}
     ];
     $scope.search = false;
-    $scope.books = [];
-    $scope.searchText = null;
-
     $scope.change = function(text) {
         $scope.books = [];
         $scope.search = true;

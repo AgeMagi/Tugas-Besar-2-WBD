@@ -5,10 +5,10 @@ let saveButton = document.getElementById('save_button');
 let cardNumberInput = document.getElementById('edit_card_number');
 let checkIcon = document.getElementById('card_number_check');
 
-let isNameValid = false;
-let isAddressValid = false;
-let isPhoneValid = false;
-let isCardValid = false;
+let isNameValid = true;
+let isAddressValid = true;
+let isPhoneValid = true;
+let isCardNumberValid = true;
 
 const errorStyle = "1pt solid red";
 
@@ -56,7 +56,7 @@ function enableValidateCardNumber(){
         const cardNumberValue = cardNumberInput.value;
         if (cardNumberValue.length>0){
             
-            cardNumberInput.style.border = "";
+             cardNumberInput.style.border = "";
             
             let url= 'http://localhost:8000/validation';
             let postData = {"card_number":cardNumberValue};
@@ -70,11 +70,10 @@ function enableValidateCardNumber(){
                     isCardNumberValid = true;
                 }else{
                     checkIcon.innerHTML= '✗';
+                    isCardNumberValid = false;                    
                 }
             };
-            fetchDataPost(url,postData,fun);    
-
-            
+            fetchDataPost(url,postData,fun);      
         } else {
             isCardNumberValid = false;
             cardNumberInput.style.border = errorStyle;
@@ -82,30 +81,11 @@ function enableValidateCardNumber(){
     });
 }
 
-function enableValidateUsername(){
-    username.addEventListener("focusout", function(){
-        const usernameValue = username.value;
-        const validateUsernameURL = '/api/user/validateUsername/?username='+username.value;
-        doAjax(validateUsernameURL, "GET", null, function(response){
-            console.log(response);
-            if ((usernameValue.length<=20 && usernameValue.length>0) && !response.data){
-                isUsernameValid = true;
-                username.style.border = "";
-                usernameCheck.style.display = "inline";
-            }else {
-                isUsernameValid = false;
-                username.style.border = errorStyle;
-                usernameCheck.style.display = "none";
-            }
-        })
-    });
-}
-
 function validateForm(){
     enableValidateName();
     enableValidateAddress();
     enableValidatePhone();
-    enableValidateCardNumber()
+    enableValidateCardNumber();
 }
 
 window.onload = function(){
@@ -114,6 +94,10 @@ window.onload = function(){
         if (nameInput.value === '' || addressInput.value=== '' || phoneInput.value === ''||cardNumberInput.value == '') {
             e.preventDefault();
             alert("Data cannot be empty!")
+        }
+        if (!isNameValid || !isAddressValid || !isCardNumberValid || !isPhoneValid) {
+            e.preventDefault();
+            alert("Data is not valid");
         }
     })
 }
