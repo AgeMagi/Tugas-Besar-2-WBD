@@ -6,7 +6,7 @@ const bodyParser = require ('body-parser');
 const db = mysql.createConnection({
 	host		: '127.0.0.1',
 	user		: 'root',
-	password	: '',
+	password	: '06071998',
 	database	: 'webservice_bank' 
 });
 
@@ -21,11 +21,11 @@ app.use(function(req, res, next) {
 })
 
 app.get('/insertdb',(req,res) => {
-	let sql = "INSERT INTO nasabah (nama, card_number,saldo) VALUES ('Yasya', '9','1000')";
+	let sql = "INSERT INTO customer(name, card_number,balance) VALUES ('Yasya', '9','1000')";
 	let query = db.query(sql, function (err, result) {
 	  if (err) throw err;
 	  console.log(result);
-	  res.send("1 record inserted into nasabah, ID: " + result.insertId);
+	  res.send("1 record inserted into customer, ID: " + result.insertId);
 	});
   });
 
@@ -81,6 +81,89 @@ app.post('/validation',(req,res)=>{
 		}
 	});
 });
+
+app.post('/transaction', (req, res) => {
+	if (!req.body) return res.sendStatus(400);
+	const sender_card_number = req.body.sender_card_number;
+	const receiver_card_number = '7371130607980003';
+	const amount = req.body.amount;
+	const now = new Date().getTime();
+	let getUserQuery = 'SELECT * FROM customer where card_number=?';
+	db.query(getUserQuery, [sender_card_number], (err, rows, fields) => {
+		if (err) {
+			res.send({
+				'message': 'failed to transfer',
+				'error': err,
+				'status': -1,
+			})
+		} else {
+			const balance = rows[0].balance;
+			if (balance < amount) {
+				res.send({
+					'message': 'Don\'t have money',
+					'error': err,
+					'status': -1,
+				}) 
+			} else {
+				let insertTransactionQuery = 'INSERT INTO transaction(sender_card_number, receiver_card_number, amount, transaction_time) VALUES(?, ?, ?, ?)'; 
+				db.query(insertTransactionQuery, [sender_card_number, receiver_card_number, amount, now], (err, result) => {
+					if (err) {
+						res.send({
+							'message': 'failed to transfer',
+							'error': err,
+						})
+					} else {
+						let nowBalance = balance - amount;
+						const transactionId = result.insertId;
+						let updateBalanceQuery = 'UPDATE customer SET balance=? WHERE card_number=?';
+						db.query(updateBalanceQuery, [nowBalance, sender_card_number], (err, result) => {
+							if (err) {
+								res.send({
+									'message': 'failed to transfer',
+									'error': err,
+									'status': -1,
+								})
+							} else {
+								getUserQuery = 'SELECT * FROM customer where card_number=?';
+								db.query(getUserQuery, [receiver_card_number], (err, rows) => {
+									if (err) {
+										res.send({
+											'message': 'failed to transfer',
+											'error': err,
+											'status': -1,
+										})
+									} else {
+										nowBalance = rows[0].balance + amount;
+										updateBalanceQuery = 'UPDATE customer SET balance=? WHERE card_number=?';
+										db.query(updateBalanceQuery, [nowBalance, receiver_card_number], (err, result) => {
+											if (err) {
+												res.send({
+													'message': 'failed to transfer',
+													'error': err,
+													'status': -1,
+												})
+											} else {
+												res.send({
+													'message': 'success transfer',
+													'error': err,
+													'status': 0,
+													'data': {
+														'transaction_id': transactionId,
+													}
+												})
+											}
+										})
+									}																		
+								})								
+							}
+						})
+					}
+				});
+			}
+		}
+	})
+	
+})
 
 
 app.listen('8000',()=> {
