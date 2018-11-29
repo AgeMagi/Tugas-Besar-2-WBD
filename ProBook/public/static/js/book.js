@@ -15,15 +15,14 @@ app.controller('bookCtrl', function($scope, $http, $timeout) {
         send = $scope.searchText;
         console.log(send);
         $timeout(function () {
-            doAjax('http://localhost:4000/search/?query=' + send, "GET", null, function(response) {
-                console.log(response);
-                $scope.books = response.data;
-                console.log($scope.books[0].title)
+            $http.get('http://localhost:4000/search/?query='+send).then(function(response) {
+                $scope.books = response.data.data;
                 $scope.load = false;
                 $scope.search = true;
+                console.log($scope);
             });
-
         }, 1000);
+
 
         // $scope.search = false;
         // $http.get('http://localhost:4000/search/?query=' + send).then(function(result){
