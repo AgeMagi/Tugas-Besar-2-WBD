@@ -13,11 +13,11 @@
             $book_id = $request->queries["book_id"];
 
             $bookSOAPClient = new SOAPClientUtility();
-            $result = $bookSOAPClient->bookDetail($book_id);
-            $recommendation = $bookSOAPClient->recommendationBook($result->category);
+            $book = $bookSOAPClient->bookDetail($book_id);
+            $recommendation = $bookSOAPClient->recommendationBook([$book->category]);
 
             $data = [
-                "book" => $result,
+                "book" => $book,
                 "recommendation" => $recommendation,
             ];
 
@@ -28,18 +28,23 @@
             $query = $request->queries["query"];
 
             $bookSOAPClient = new SOAPClientUtility();
-            $result = $bookSOAPClient->searchBook($query);
+            $books = $bookSOAPClient->searchBook($query);
+            
+            foreach($books as $book) {
+                $rating = $this->bookDb->getReviewsCount($book-id);
+                $book->rating = $rating;
+            }
 
-            writeResponse(200, "sucess search book", $result);
+            writeResponse(200, "sucess search book", $books);
         }      
         
         function recommendationBook(Request $request) {
             $categories = $request->queries["categories"];
 
             $bookSOAPClient = new SOAPClientUtility();
-            $result = $bookSOAPClient->recommendationBook($categories);
+            $book = $bookSOAPClient->recommendationBook($categories);
 
-            writeResponse(200, "success get recommendation book", $result);
+            writeResponse(200, "success get recommendation book", $book);
         }
     }
 ?>

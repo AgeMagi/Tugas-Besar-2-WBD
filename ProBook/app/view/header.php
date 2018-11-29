@@ -1,15 +1,5 @@
 <?php
-    $conn = Database::createDBConnection(APP_CONFIG["db"]["host"], 
-                                    APP_CONFIG["db"]["user"], 
-                                    APP_CONFIG["db"]["password"], 
-                                    APP_CONFIG["db"]["db_name"]);
-    $session_storage_id = $_COOKIE["Authorization"];
-    $http_user_agent = $_SERVER["HTTP_USER_AGENT"];
-    $ip_address = $_SERVER["REMOTE_ADDR"];
-
-    $userDb = new UserDb($conn);
-    $result = $userDb->getSessionStorage($session_storage_id, $http_user_agent,
-                $ip_address);
+    $result = getUserDetail();
 
     $username = $result["username"];
 ?>

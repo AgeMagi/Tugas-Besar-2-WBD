@@ -19,7 +19,7 @@ import utility.DBConnection;
 
 @WebService()
 public class BookServiceImpl implements  BookService {
-     public Integer getOrderedCount(String id) {
+    public Integer getOrderedCount(String id) {
          DBConnection bookDb = new DBConnection();
          Integer ordered_count = 0;
          ResultSet result = bookDb.doGetQuery(String.format("SELECT SUM(ordered_count) AS ordered_count FROM ordered_book WHERE book_id=\"%s\"", id));
@@ -34,7 +34,7 @@ public class BookServiceImpl implements  BookService {
          }
 
          return ordered_count;
-     }
+    }
 
     public Book getBookByIdDb(String id) {
         DBConnection bookDb = new DBConnection();
@@ -164,7 +164,6 @@ public class BookServiceImpl implements  BookService {
     }
 
     public Book getBookByIdGBA(String id) {
-
         GoogleBookAPI googleBookAPI = new GoogleBookAPI(id);
         JSONObject book;
         book = googleBookAPI.searchById();
@@ -277,10 +276,11 @@ public class BookServiceImpl implements  BookService {
         Book bookOnDb = this.getBookByIdDb(id);
         if (bookOnDb != null) {
             Book bookResult = this.getBookByIdGBA(id);
+
             return bookResult;
         }
 
-        return null;
+        return new Book();
     }
 
     @Override
@@ -416,42 +416,42 @@ public class BookServiceImpl implements  BookService {
         return bookResults;
     }
 
-    @Override
-    public JSONObject checkTransfer(String senderCard, Integer price ){
-        String urlParameters ="sender_card_number"= senderCard + "&amount=" + price;
-        String url = "http://localhost:8000/transacton";
-        HttpURLConnection connectionl
-        connection = (HttpURLConnection) new URL(url).openCon
-    }
+//    @Override
+//    public JSONObject checkTransfer(String senderCard, Integer price ){
+//        String urlParameters ="sender_card_number"= senderCard + "&amount=" + price;
+//        String url = "http://localhost:8000/transacton";
+//        HttpURLConnection connectionl;
+//        connection = (HttpURLConnection) new URL(url).openCon;
+//    }
 
-    @Override
-    public Book buyBook(String id, Integer counts, String sender ){
-
-
-        DBConnection bookDb = new DBConnection();
-
-        Integer countOrder = getOrderedCount(id);
-        Book bookOnDb = this.getBookByIdDb(id);
-        Integer price = bookOnDb.getPrice();
-
-        String urlParameter =  "sender_card_number=" + sender + "&amount=";
-        String url = "http://localhost:8000/transaction";
-
-        //anggap aja hasil = hasil
-
-        try {
-            //ambil ke nodejs{messa ad, data: 'status'}
-
-            if (data["status"]== 0){
-                ResultSet result =
-                        bookDb.doGetQuery(String.format("INSERT INTO ordered_book ( book_id, sender_card_number, ordered_count) VALUES (\"%s\",\"%s\",%d) WHERE book_id = \"%s\"",id,sender,counts, id));
-                return
-            }
-
-        }
-        catch () {
-        }
-
-        return null;
-    }
+//    @Override
+//    public Book buyBook(String id, Integer counts, String sender ){
+//
+//
+//        DBConnection bookDb = new DBConnection();
+//
+//        Integer countOrder = getOrderedCount(id);
+//        Book bookOnDb = this.getBookByIdDb(id);
+//        Integer price = bookOnDb.getPrice();
+//
+//        String urlParameter =  "sender_card_number=" + sender + "&amount=";
+//        String url = "http://localhost:8000/transaction";
+//
+//        //anggap aja hasil = hasil
+//
+//        try {
+//            //ambil ke nodejs{messa ad, data: 'status'}
+//
+//            if (data["status"]== 0){
+//                ResultSet result =
+//                        bookDb.doGetQuery(String.format("INSERT INTO ordered_book ( book_id, sender_card_number, ordered_count) VALUES (\"%s\",\"%s\",%d) WHERE book_id = \"%s\"",id,sender,counts, id));
+//                return
+//            }
+//
+//        }
+//        catch () {
+//        }
+//
+//        return null;
+//    }
 }

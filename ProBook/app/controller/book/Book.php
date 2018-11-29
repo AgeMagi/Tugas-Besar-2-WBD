@@ -8,7 +8,7 @@
         public $img_path;
         public $jumlah_review;
 
-        function __construct($book_id, $title, $author, $description, $rating, $img_path = null, $jumlah_review = 0) {
+        function __construct($book_id = "", $title = "", $author = "", $description = "", $rating = 0, $img_path = null, $jumlah_review = 0) {
             $this->book_id = $book_id;
             $this->title = $title;
             $this->author = $author;
