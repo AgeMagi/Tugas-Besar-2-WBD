@@ -56,7 +56,7 @@ function enableValidateCardNumber(){
         const cardNumberValue = cardNumberInput.value;
         if (cardNumberValue.length>0){
             
-            cardNumberInput.style.border = "";
+             cardNumberInput.style.border = "";
             
             let url= 'http://localhost:8000/validation';
             let postData = {"card_number":cardNumberValue};

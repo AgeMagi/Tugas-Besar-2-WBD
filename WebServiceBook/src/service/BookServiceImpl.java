@@ -1,5 +1,6 @@
 package service;
 
+import java.net.HttpURLConnection;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.*;
@@ -14,6 +15,7 @@ import org.json.JSONException;
 import utility.GoogleBookAPI;
 import org.json.JSONObject;
 import utility.DBConnection;
+
 
 @WebService()
 public class BookServiceImpl implements  BookService {
@@ -146,7 +148,9 @@ public class BookServiceImpl implements  BookService {
                     ordered_count = bookOnDb.getOrderedCount();
                 }
 
+
                 Book bookResult = new Book(id, title, authors, description, price, category_result, ordered_count, imgPath);
+
 
                 bookResults.add(bookResult);
             }
@@ -160,6 +164,7 @@ public class BookServiceImpl implements  BookService {
     }
 
     public Book getBookByIdGBA(String id) {
+
         GoogleBookAPI googleBookAPI = new GoogleBookAPI(id);
         JSONObject book;
         book = googleBookAPI.searchById();
@@ -409,5 +414,44 @@ public class BookServiceImpl implements  BookService {
         }
 
         return bookResults;
+    }
+
+    @Override
+    public JSONObject checkTransfer(String senderCard, Integer price ){
+        String urlParameters ="sender_card_number"= senderCard + "&amount=" + price;
+        String url = "http://localhost:8000/transacton";
+        HttpURLConnection connectionl
+        connection = (HttpURLConnection) new URL(url).openCon
+    }
+
+    @Override
+    public Book buyBook(String id, Integer counts, String sender ){
+
+
+        DBConnection bookDb = new DBConnection();
+
+        Integer countOrder = getOrderedCount(id);
+        Book bookOnDb = this.getBookByIdDb(id);
+        Integer price = bookOnDb.getPrice();
+
+        String urlParameter =  "sender_card_number=" + sender + "&amount=";
+        String url = "http://localhost:8000/transaction";
+
+        //anggap aja hasil = hasil
+
+        try {
+            //ambil ke nodejs{messa ad, data: 'status'}
+
+            if (data["status"]== 0){
+                ResultSet result =
+                        bookDb.doGetQuery(String.format("INSERT INTO ordered_book ( book_id, sender_card_number, ordered_count) VALUES (\"%s\",\"%s\",%d) WHERE book_id = \"%s\"",id,sender,counts, id));
+                return
+            }
+
+        }
+        catch () {
+        }
+
+        return null;
     }
 }
