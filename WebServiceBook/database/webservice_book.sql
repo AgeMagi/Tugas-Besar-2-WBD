@@ -25,7 +25,6 @@ DROP TABLE IF EXISTS `book`;
 CREATE TABLE `book` (
   `book_id` varchar(45) NOT NULL,
   `price` int(11) DEFAULT NULL,
-  `ordered_count` int(11) DEFAULT NULL,
   `category` varchar(125) DEFAULT NULL,
   PRIMARY KEY (`book_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -37,8 +36,35 @@ CREATE TABLE `book` (
 
 LOCK TABLES `book` WRITE;
 /*!40000 ALTER TABLE `book` DISABLE KEYS */;
-INSERT INTO `book` VALUES ('8CSFs_Usw8MC',17998,0,'Nature'),('AwGialii_IkC',79856,0,'Juvenile Nonfiction'),('Ff72AAAAQBAJ',74100,0,'Art'),('fiBbdJ1sdA8C',273405,0,'Literary Criticism'),('gBrmaR0q4OEC',97914,0,'Music'),('LOZhAAAAcAAJ',95931,0,'Botany'),('NxR98ogUaAUC',213025,0,'Health & Fitness'),('svMpjjnnig0C',82056,0,'Juvenile Nonfiction'),('TqFLDwAAQBAJ',124000,0,'Crafts & Hobbies'),('_ojXNuzgHRcC',73701,0,'Juvenile Nonfiction');
+INSERT INTO `book` VALUES ('2bCdaZ7KvDsC',17967,'Flower language'),('2en3CwAAQBAJ',58300,'Literary Criticism'),('3eAkPwAACAAJ',96274,'Juvenile Nonfiction'),('7FfZCNAi3k0C',0,'Flower arrangement'),('8CSFs_Usw8MC',36162,'Nature'),('8lIdBAAAQBAJ',12532,'Juvenile Fiction'),('dvQVAAAAYAAJ',0,''),('Ff72AAAAQBAJ',74100,'Art'),('fiBbdJ1sdA8C',273405,'Literary Criticism'),('H4m6P7k5XqYC',0,'Literary Collections'),('IfhH9rmvts8C',53136,'Science'),('itTPYQ75V34C',97147,'Social Science'),('ksrbqonI-TAC',0,'Fiction'),('Lc9XAAAAYAAJ',80787,'History'),('LOZhAAAAcAAJ',60914,'Botany'),('MpeE1mAl5FwC',0,'Spirit art'),('MsJluAAACAAJ',52519,'Horror'),('NxR98ogUaAUC',213025,'Health & Fitness'),('oAmUFf_d62EC',0,'Juvenile Fiction'),('P2GS1m876L4C',189846,'Nature'),('PLq0q53zBk4C',12734,'Psychology'),('qhIFAAAAQAAJ',0,''),('RGa2VeA8HiMC',28577,'Floriculture'),('vPS65zz97EAC',87226,'Social Science'),('w1cDAAAAQAAJ',85018,'Flower gardening'),('x5nPG6nwyOQC',43520,'Juvenile Fiction'),('xyh5ss9sKMoC',0,'History'),('Z7uwAAAAIAAJ',16432,'Fiction'),('zy8ADAAAQBAJ',25000,'Juvenile Fiction'),('_ojXNuzgHRcC',36855,'Juvenile Nonfiction');
 /*!40000 ALTER TABLE `book` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ordered_book`
+--
+
+DROP TABLE IF EXISTS `ordered_book`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ordered_book` (
+  `order_id` int(11) NOT NULL AUTO_INCREMENT,
+  `book_id` varchar(45) NOT NULL,
+  `sender_card_number` varchar(45) NOT NULL,
+  `ordered_count` int(11) NOT NULL,
+  PRIMARY KEY (`order_id`),
+  KEY `fk_ordered_book_1_idx` (`book_id`),
+  CONSTRAINT `fk_ordered_book_1` FOREIGN KEY (`book_id`) REFERENCES `book` (`book_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ordered_book`
+--
+
+LOCK TABLES `ordered_book` WRITE;
+/*!40000 ALTER TABLE `ordered_book` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ordered_book` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -50,4 +76,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-28 21:08:12
+-- Dump completed on 2018-11-29 11:43:55

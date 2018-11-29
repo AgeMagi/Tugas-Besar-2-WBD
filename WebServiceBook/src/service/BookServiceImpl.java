@@ -146,6 +146,7 @@ public class BookServiceImpl implements  BookService {
             String description = "";
             Integer price = 0;
             Integer ordered_count = 0;
+            String imgPath = "";
 
             book_id = book.getString("id");
 
@@ -174,6 +175,15 @@ public class BookServiceImpl implements  BookService {
                 description = volumeInfo.get("description").toString();
             }
 
+            if (volumeInfo.has("imageLinks")) {
+                JSONObject imageLinks = new JSONObject(volumeInfo.get("imageLinks").toString());
+                if (imageLinks.has("smallThumbnail")) {
+                    imgPath = imageLinks.get("smallThumbnail").toString();
+                } else if (imageLinks.has("thumbnail")) {
+                    imgPath = imageLinks.get("thumbnail").toString();
+                }
+            }
+
             if (book.has("saleInfo")) {
                 JSONObject saleInfo = new JSONObject(book.get("saleInfo").toString());
                 if (saleInfo.has("listPrice")) {
@@ -197,7 +207,7 @@ public class BookServiceImpl implements  BookService {
                 }
             }
 
-            Book bookResult = new Book(book_id, title, authors, description, price, category, ordered_count);
+            Book bookResult = new Book(book_id, title, authors, description, price, category, ordered_count, imgPath);
 
             return bookResult;
         } catch (Exception err) {

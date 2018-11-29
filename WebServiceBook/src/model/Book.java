@@ -10,10 +10,11 @@ public class Book implements Serializable {
     private Integer price;
     private String category;
     private int orderedCount;
+    private String imgPath;
 
     public Book() {}
 
-    public Book(String id, String title, String[] authors, String description, Integer price, String category, int orderedCount) {
+    public Book(String id, String title, String[] authors, String description, Integer price, String category, int orderedCount, String imgPath) {
         this.id = id;
         this.title = title;
         this.authors = authors;
@@ -21,6 +22,7 @@ public class Book implements Serializable {
         this.price = price;
         this.category = category;
         this.orderedCount = orderedCount;
+        this.imgPath = imgPath;
     }
 
     public Book(String id, int price, int orderedCount, String category) {
@@ -58,6 +60,10 @@ public class Book implements Serializable {
         return orderedCount;
     }
 
+    public String getImgPath() {
+        return imgPath;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -84,6 +90,10 @@ public class Book implements Serializable {
 
     public void setOrderedCount(int orderedCount) {
         this.orderedCount = orderedCount;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
     }
 }
 

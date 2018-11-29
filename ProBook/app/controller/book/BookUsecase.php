@@ -15,7 +15,11 @@
             $bookSOAPClient = new SOAPClientUtility();
             $result = $bookSOAPClient->bookDetail($book_id);
 
-            writeResponse(200, "success get recommendation book", $result);
+            $data = [
+                "book" => $result,
+            ];
+
+            render('bookDetail.php', $data);
         }
 
         function searchBook(Request $request) {
