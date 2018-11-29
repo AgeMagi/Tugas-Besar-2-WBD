@@ -30,7 +30,7 @@ app.get('/insertdb',(req,res) => {
   });
 
 app.get('/bank',(req,res)=>{
-	const all = "SELECT * FROM nasabah";
+	const all = "SELECT * FROM customer";
 	db.query(all,(err,rows,fields)=>{
 		console.log("Fetched successfully");
 		res.json(rows);
@@ -42,7 +42,7 @@ app.get('/bank/:card_number',(req,res)=>{
 	console.log("Fetching user with id:" + req.params.card_number);
 
 	const nokartu = req.params.card_number;
-	const queryselect = "SELECT * FROM nasabah WHERE card_number=?";
+	const queryselect = "SELECT * FROM customer WHERE card_number=?";
 	db.query(queryselect,[nokartu],(err,rows,fields)=>{
 		if (err){
 			console.log("Failed to query for users: "+err)
@@ -51,7 +51,7 @@ app.get('/bank/:card_number',(req,res)=>{
 			//throw err
 		}
 
-		const nasabah = rows.map((row)=> {
+		const customer = rows.map((row)=> {
 			return {nama: row.nama, nomorKartu: row.card_number, saldo: row.saldo};
 		});
 
@@ -62,10 +62,9 @@ app.get('/bank/:card_number',(req,res)=>{
 app.post('/validation',(req,res)=>{
 	if (!req.body) return res.sendStatus(400);
 	const noKartu = req.body.card_number;
-
 	console.log(req.body);
 	console.log(noKartu);
-	const queryselect = "SELECT * FROM nasabah WHERE card_number=?";
+	const queryselect = "SELECT * FROM customer WHERE card_number=?";
 	db.query(queryselect,[noKartu],(err,rows,fields)=>{
 		if (err){
 			console.log("Failed to query for users: "+err)
