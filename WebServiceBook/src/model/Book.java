@@ -67,8 +67,6 @@ public class Book implements Serializable {
         return imgPath;
     }
 
-    public JSONObject checkTransfer(){ return transferStatus; }
-
     public void setId(String id) {
         this.id = id;
     }
