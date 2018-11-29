@@ -8,7 +8,7 @@
     class AuthMiddleware implements IMiddleware {
         function run($next, $nextRequest) {
             if ($_COOKIE["Authorization"]){
-                $user_storage_id = $_COOKIE["Authorization"];
+                $session_storage_id = $_COOKIE["Authorization"];
                 $http_user_agent = $_SERVER["HTTP_USER_AGENT"];
                 $ip_address = $_SERVER["REMOTE_ADDR"];
 
@@ -18,13 +18,16 @@
                                         APP_CONFIG["db"]["db_name"]);
 
                 $userDb = new UserDb($conn);
-                $result = $userDb->getSessionStorage($user_storage_id, $http_user_agent,
+                $result = $userDb->getSessionStorage($session_storage_id, $http_user_agent,
                                     $ip_address);
 
                 if ($result) {
+                    setcookie("Authorization", $session_storage_id, time() + 300, '/');
                     $next($nextRequest);
                     exit;
                 } else {
+                    unset($_COOKIE["Authorization"]);
+                    setcookie("Authorization", null, -1, '/');
                     $url = APP_CONFIG["base_url"]."login/";
                     header('Location: '.$url);
                     exit;
