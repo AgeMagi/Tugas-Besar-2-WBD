@@ -39,6 +39,11 @@
                 <td>Phone Number</td>
                 <td id="phone_column"><?= $user->phone ?></td>
             </tr>
+            <tr class="table-row" height=75>
+                <td><img class="profile-icon" src="/static/img/phone.png"></td>
+                <td>Card Number</td>
+                <td id="card_number_column"><?= $user->card_number ?></td>
+            </tr>
         </table>
     </div>
 </div>

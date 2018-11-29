@@ -35,6 +35,11 @@
                 <span class="identity-column">Phone Number </span>
                 <input type="text" class="input-column" id="edit_phone" name="phone" value="<?= $user->phone ?>">
             </div>
+            <div class="row">
+                <span class="card-column">Card Number</span>
+               <span class="check" id="card_number_check"> </span>
+                <input type="text" class="input-column" id="edit_card_number" name="card_number" value="<?= $user->card_number ?>">
+            </div>
         </div>
 
         <div class="edit-button-container">

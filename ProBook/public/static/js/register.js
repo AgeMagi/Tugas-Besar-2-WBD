@@ -7,6 +7,8 @@ const password = document.getElementById('password_form');
 const confirmPassword = document.getElementById('confirm_password_form');
 const address = document.getElementById('address_form');
 const phone = document.getElementById('phone_form');
+const cardNumber = document.getElementById('card_form');
+let checkIcon = document.getElementById('card_check');
 
 let isNameValid = false;
 let isEmailValid = false;
@@ -15,6 +17,7 @@ let isPasswordValid = false;
 let isConfirmPasswordValid = false;
 let isAddressValid = false;
 let isPhoneValid = false;
+let isCardValid = false;
 
 const errorStyle = "1pt solid red";
 
@@ -55,7 +58,6 @@ function enableValidateEmail(){
         })
     });
 }
-
 function enableValidateName(){
     name.addEventListener("focusout", function(){
         const nameValue = name.value;
@@ -120,8 +122,41 @@ function enableValidatePhone(){
         }
     });
 }
+ 
+function enableValidateCardNumber(){
 
+    cardNumber.addEventListener("focusout", function(){
+        const cardNumberValue = cardNumber.value;
+        if (cardNumberValue.length>0){   
+            cardNumber.style.border = "";
+            
+            let url= 'http://localhost:8000/validation';
+            let postData = {"card_number":cardNumberValue};
 
+            let fun = function(data){
+                console.log(data);
+                if (data['card_number']!=0){
+                    checkIcon.innerHTML= '✓';
+                    isUsernameValid = true;
+                    cardNumber.style.border = "";
+                    checkIcon.style.display = "inline";
+                }else{
+                    checkIcon.innerHTML= '✗';
+                    isUsernameValid = false;
+                    cardNumber.style.border = errorStyle;
+                    checkIcon.style.display = "none";
+                    checkIcon.style.display = "inline";
+                }
+            };
+            fetchDataPost(url,postData,fun);    
+
+            
+        } else {
+            isCardNumberValid = false;
+            cardNumber.style.border = errorStyle;
+        }
+    });
+}
 
 function validateForm(){
     enableValidateName();
@@ -131,10 +166,11 @@ function validateForm(){
     enableValidateConfirmPassword();
     enableValidateAddress();
     enableValidatePhone();
+    enableValidateCardNumber();
 }
 
 const doRegister = function(e){
-    if (!(isNameValid && isEmailValid && isPasswordValid && isUsernameValid && isConfirmPasswordValid && isAddressValid && isPhoneValid)){
+    if (!(isNameValid && isEmailValid && isPasswordValid && isUsernameValid && isConfirmPasswordValid && isAddressValid && isPhoneValid && isCardValid)){
         e.preventDefault();
         alert("Please fill in the form with the correct details!");
     }

@@ -6,16 +6,18 @@
         public $email;
         public $address;
         public $phone;
+        public $card_number;
         public $imgPath;
         private $hpass;
 
-        function __construct($user_id,$username,$fullname,$email,$address,$phone,$hpass, $imgPath=null){
+        function __construct($user_id,$username,$fullname,$email,$address,$phone,$card_number,$hpass, $imgPath=null){
             $this->user_id = $user_id;
             $this->username = $username;
             $this->fullname = $fullname;
             $this->email = $email;
             $this->address = $address;
             $this->phone = $phone;
+            $this->card_number = $card_number;
             $this->imgPath = $imgPath;
             $this->hpass = $hpass;
         }
