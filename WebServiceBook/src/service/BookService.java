@@ -5,6 +5,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
 import model.Book;
+import model.TransferStatus;
 
 import java.sql.ResultSet;
 import java.util.List;
@@ -21,6 +22,6 @@ public interface BookService {
     @WebMethod
     public Book recommendationBook(String[] categories);
 
-//    @WebMethod
-//    public Book buyBook(String id, Integer counts, String sender );
+    @WebMethod
+    public TransferStatus buyBook(String id, Integer counts, String sender );
 }

@@ -1,15 +1,20 @@
 package service;
 
+import java.io.*;
 import java.net.HttpURLConnection;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.net.URL;
 
 import javax.jws.WebService;
 import javax.xml.transform.Result;
 
+import com.google.gson.Gson;
 import model.Book;
+import model.TransferStatus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import utility.GoogleBookAPI;
@@ -413,45 +418,77 @@ public class BookServiceImpl implements  BookService {
             System.out.println(err);
         }
 
-        return bookResults;
+    public TransferStatus checkTransfer(String senderCard, Integer price ){
+        String urlParameters ="sender_card_number"+ senderCard + "&amount=" + price;
+        String url = "http://localhost:8000/transacton";
+        HttpURLConnection connection;
+        TransferStatus transferStatus = null;
+        connection = null;
+
+        try {
+            connection = (HttpURLConnection) new URL(url).openConnection();
+            connection.setDoOutput(true); //triggered post
+            connection.setRequestProperty("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
+            connection.setRequestProperty("Accept-Charset",urlParameters);
+            connection.setRequestMethod("POST");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        try (OutputStream output= connection.getOutputStream()){
+            output.write(urlParameters.getBytes(StandardCharsets.UTF_8));
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
+
+        try {
+            InputStream response = connection.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(response));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line=br.readLine())!=null){
+                sb.append(line + "\n");
+            }
+            br.close();
+
+            Gson gson = new Gson();
+            String parsedString = sb.toString();
+
+            System.out.println(parsedString);
+
+            transferStatus = gson.fromJson(parsedString, TransferStatus.class);
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+        return transferStatus;
+
     }
 
-//    @Override
-//    public JSONObject checkTransfer(String senderCard, Integer price ){
-//        String urlParameters ="sender_card_number"= senderCard + "&amount=" + price;
-//        String url = "http://localhost:8000/transacton";
-//        HttpURLConnection connectionl;
-//        connection = (HttpURLConnection) new URL(url).openCon;
-//    }
+    @Override
+    public TransferStatus buyBook(String id, Integer counts, String sender ){
 
-//    @Override
-//    public Book buyBook(String id, Integer counts, String sender ){
-//
-//
-//        DBConnection bookDb = new DBConnection();
-//
-//        Integer countOrder = getOrderedCount(id);
-//        Book bookOnDb = this.getBookByIdDb(id);
-//        Integer price = bookOnDb.getPrice();
-//
-//        String urlParameter =  "sender_card_number=" + sender + "&amount=";
-//        String url = "http://localhost:8000/transaction";
-//
-//        //anggap aja hasil = hasil
-//
-//        try {
-//            //ambil ke nodejs{messa ad, data: 'status'}
-//
-//            if (data["status"]== 0){
-//                ResultSet result =
-//                        bookDb.doGetQuery(String.format("INSERT INTO ordered_book ( book_id, sender_card_number, ordered_count) VALUES (\"%s\",\"%s\",%d) WHERE book_id = \"%s\"",id,sender,counts, id));
-//                return
-//            }
-//
-//        }
-//        catch () {
-//        }
-//
-//        return null;
-//    }
+        Integer countOrder = getOrderedCount(id);
+        Book bookOnDb = this.getBookByIdDb(id);
+        Integer price = bookOnDb.getPrice();
+        DBConnection bookDb = new DBConnection();
+
+        String urlParameter =  "sender_card_number=" + sender + "&amount=";
+        String url = "http://localhost:8000/transaction";
+
+        TransferStatus transferStatus = checkTransfer(sender,price);
+        try {
+            if (transferStatus.status == 0){
+                bookDb.doGetQuery(String.format("INSERT INTO ordered_book ( book_id, sender_card_number, ordered_count) VALUES (\"%s\",\"%s\",%d) WHERE book_id = \"%s\"",id,sender,counts, id));
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return transferStatus;
+    }
 }
