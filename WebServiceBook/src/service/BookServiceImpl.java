@@ -17,6 +17,22 @@ import utility.DBConnection;
 
 @WebService()
 public class BookServiceImpl implements  BookService {
+     public Integer getOrderedCount(String id) {
+         DBConnection bookDb = new DBConnection();
+         Integer ordered_count = 0;
+         ResultSet result = bookDb.doGetQuery(String.format("SELECT SUM(ordered_count) AS ordered_count FROM ordered_book WHERE book_id=\"%s\"", id));
+         try {
+             while(result.next()) {
+                 ordered_count = result.getInt("ordered_count");
+
+                 return ordered_count;
+             }
+         } catch (Exception err) {
+             System.out.println(err);
+         }
+
+         return ordered_count;
+     }
 
     public Book getBookByIdDb(String id) {
         DBConnection bookDb = new DBConnection();
@@ -26,9 +42,8 @@ public class BookServiceImpl implements  BookService {
             while(result.next()) {
                 String book_id = result.getString("book_id");
                 int price = result.getInt("price");
-                int orderedCount = result.getInt("ordered_count");
                 String category = result.getString("category");
-
+                Integer orderedCount = this.getOrderedCount(book_id);
                 Book resultBook = new Book(book_id, price, orderedCount, category);
 
                 return resultBook;
@@ -42,8 +57,8 @@ public class BookServiceImpl implements  BookService {
 
     public int addBook(String id, int price, String category) {
         DBConnection bookDb = new DBConnection();
-        int result = bookDb.doPostQuery(String.format("INSERT INTO book(book_id, price, ordered_count, category)" +
-            "                                      VALUES(\"%s\", %d, 0, \"%s\")", id, price, category));
+        int result = bookDb.doPostQuery(String.format("INSERT INTO book(book_id, price, category)" +
+            "                                      VALUES(\"%s\", %d, \"%s\")", id, price, category));
 
         return result;
     }
@@ -64,6 +79,7 @@ public class BookServiceImpl implements  BookService {
                 String description = "";
                 Integer price = 0;
                 Integer ordered_count = 0;
+                String imgPath = "";
 
                 JSONObject book = new JSONObject(resultItems.get(i).toString());
                 id = book.get("id").toString();
@@ -91,6 +107,15 @@ public class BookServiceImpl implements  BookService {
 
                 if (volumeInfo.has("description")) {
                     description = volumeInfo.get("description").toString();
+                }
+
+                if (volumeInfo.has("imageLinks")) {
+                    JSONObject imageLinks = new JSONObject(volumeInfo.get("imageLinks").toString());
+                    if (imageLinks.has("smallThumbnail")) {
+                        imgPath = imageLinks.get("smallThumbnail").toString();
+                    } else if (imageLinks.has("thumbnail")) {
+                        imgPath = imageLinks.get("thumbnail").toString();
+                    }
                 }
 
                 if (book.has("saleInfo")) {
@@ -121,7 +146,9 @@ public class BookServiceImpl implements  BookService {
                     ordered_count = bookOnDb.getOrderedCount();
                 }
 
-                Book bookResult = new Book(id, t itle, authors, description, price, category_result, ordered_count);
+
+                Book bookResult = new Book(id, title, authors, description, price, category_result, ordered_count, imgPath);
+
 
                 bookResults.add(bookResult);
             }
@@ -227,8 +254,8 @@ public class BookServiceImpl implements  BookService {
             while(result.next()) {
                 String book_id = result.getString("book_id");
                 int price = result.getInt("price");
-                int ordered_count = result.getInt("ordered_count");
                 String categoryDb = result.getString("category");
+                Integer ordered_count = this.getOrderedCount(book_id);
 
                 Book bookResult = new Book(book_id, price, ordered_count, categoryDb);
                 bookResults.add(bookResult);
@@ -307,6 +334,7 @@ public class BookServiceImpl implements  BookService {
                 String description = "";
                 Integer price = 0;
                 Integer ordered_count = 0;
+                String imgPath = "";
 
                 JSONObject book = new JSONObject(resultItems.get(i).toString());
                 id = book.get("id").toString();
@@ -336,6 +364,15 @@ public class BookServiceImpl implements  BookService {
                     description = volumeInfo.get("description").toString();
                 }
 
+                if (volumeInfo.has("imageLinks")) {
+                    JSONObject imageLinks = new JSONObject(volumeInfo.get("imageLinks").toString());
+                    if (imageLinks.has("smallThumbnail")) {
+                        imgPath = imageLinks.get("smallThumbnail").toString();
+                    } else if (imageLinks.has("thumbnail")) {
+                        imgPath = imageLinks.get("thumbnail").toString();
+                    }
+                }
+
                 if (book.has("saleInfo")) {
                     JSONObject saleInfo = new JSONObject(book.get("saleInfo").toString());
                     if (saleInfo.has("listPrice")) {
@@ -363,7 +400,7 @@ public class BookServiceImpl implements  BookService {
                     ordered_count = bookOnDb.getOrderedCount();
                 }
 
-                Book bookResult = new Book(id, title, authors, description, price, category, ordered_count);
+                Book bookResult = new Book(id, title, authors, description, price, category, ordered_count, imgPath);
 
                 bookResults[i] = bookResult;
             }

@@ -1,6 +1,5 @@
 <?php
 	render('header.php');
-	
 ?>
 
 <link rel="stylesheet" href="/static/css/base.css">
@@ -40,7 +39,7 @@
 		</div>
 		<div class="kanan justify-content-center">
 			<div class="justify-content-center" id="img-box">
-				<img src=<?=$book->img_path?> class="book-image">	
+				<img src=<?=$book->imgPath?> class="book-image">	
 			</div>
 			<div class="rating-detail justify-content-center">
 				<div class="star-rating">
