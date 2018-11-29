@@ -22,8 +22,9 @@
         />
         </form>
         <div class="justify-content-end">
-            <button class="button-search-book" id="button-search-book" ng-click="searchQuery('q')">&#9998; <span>Search</span></button>
+            <button class="button-search-book" id="button-search-book" ng-click="searchQuery(query)">&#9998; <span>Search</span></button>
         </div>
+        <!--Awal = {{bookbases}} Akhir = {{books}}-->
         <div id="results">
             <div ng-show = "search" ng-repeat= "book in books" class="result row justify-content-between">
                 <div class="result-img">
