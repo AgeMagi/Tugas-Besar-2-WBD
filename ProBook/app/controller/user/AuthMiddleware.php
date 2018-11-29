@@ -20,7 +20,7 @@
                 $userDb = new UserDb($conn);
                 $result = $userDb->getSessionStorage($session_storage_id, $http_user_agent,
                                     $ip_address);
-
+                $deleteSession = $userDb->deleteExpiredSessionStorage();
                 if ($result) {
                     setcookie("Authorization", $session_storage_id, time() + 300, '/');
                     $next($nextRequest);
@@ -33,6 +33,13 @@
                     exit;
                 }
             }  else {
+                $conn = Database::createDBConnection(APP_CONFIG["db"]["host"], 
+                                        APP_CONFIG["db"]["user"], 
+                                        APP_CONFIG["db"]["password"], 
+                                        APP_CONFIG["db"]["db_name"]);
+                $userDb = new UserDb($conn);
+                $deleteSession = $userDb->deleteExpiredSessionStorage();
+
                 $url = APP_CONFIG["base_url"]."login/";
                 header('Location: '.$url);
                 exit;

@@ -105,11 +105,33 @@
             return null;
         }
 
+        function deleteSessionStorageById($session_storage_id) {
+            $sql = 'DELETE FROM session_storage WHERE session_storage_id=?';
+            $stmt = $this->conn->prepare($sql);
+            if ($stmt->execute([$session_storage_id])) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function deleteExpiredSessionStorage() {
+            $timeNow = microtime(true);
+
+            $sql = 'DELETE FROM session_storage WHERE expired_time<?';
+            $stmt = $this->conn->prepare($sql);
+            if ($stmt->execute([$timeNow])) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
         function getSessionStorage($session_storage_id, $http_user_agent, $ip_address) {
             $timeNow = microtime(true);
 
             $sql = 'SELECT * FROM session_storage WHERE session_storage_id=? AND 
-                    http_user_agent=? AND ip_address=? AND expired_time > ?';
+                    http_user_agent=? AND ip_address=? AND expired_time >= ?';
             
             $stmt = $this->conn->prepare($sql);
             if ($stmt->execute([$session_storage_id, $http_user_agent, $ip_address, $timeNow])) {
