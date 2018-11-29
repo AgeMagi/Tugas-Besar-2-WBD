@@ -67,9 +67,9 @@ public class BookServiceImpl implements  BookService {
         GoogleBookAPI googleBookAPI = new GoogleBookAPI(category);
         JSONObject hasilJSON = new JSONObject();
         hasilJSON = googleBookAPI.searchByCategory();
+        List<Book> bookResults = new ArrayList<>();
         try {
             JSONArray resultItems = new JSONArray(hasilJSON.get("items").toString());
-            List<Book> bookResults = new ArrayList<>();
 
             for(int i = 0; i < Math.min(10, resultItems.length()); i++) {
                 String id = "";
@@ -156,7 +156,7 @@ public class BookServiceImpl implements  BookService {
             System.out.println(err);
         }
 
-        return null;
+        return bookResults;
     }
 
     public Book getBookByIdGBA(String id) {
@@ -316,13 +316,13 @@ public class BookServiceImpl implements  BookService {
     }
 
     @Override
-    public Book[] searchBook(String query) {
+    public List<Book> searchBook(String query) {
         GoogleBookAPI googleBookAPI = new GoogleBookAPI(query);
         JSONObject hasilJSON = new JSONObject();
         hasilJSON = googleBookAPI.searchBook();
+        List<Book> bookResults = new ArrayList<>();
         try {
             JSONArray resultItems = new JSONArray(hasilJSON.get("items").toString());
-            Book[] bookResults = new Book[resultItems.length()];
 
             for(int i = 0; i < Math.min(10, resultItems.length()); i++) {
                 String id = "";
@@ -400,7 +400,7 @@ public class BookServiceImpl implements  BookService {
 
                 Book bookResult = new Book(id, title, authors, description, price, category, ordered_count, imgPath);
 
-                bookResults[i] = bookResult;
+                bookResults.add(bookResult);
             }
 
             return bookResults;
@@ -408,6 +408,6 @@ public class BookServiceImpl implements  BookService {
             System.out.println(err);
         }
 
-        return null;
+        return bookResults;
     }
 }

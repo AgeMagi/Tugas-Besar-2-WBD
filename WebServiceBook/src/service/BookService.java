@@ -16,7 +16,7 @@ public interface BookService {
     Book getBookDetail(String id);
 
     @WebMethod
-    public Book[] searchBook(String query);
+    public List<Book> searchBook(String query);
 
 
     @WebMethod

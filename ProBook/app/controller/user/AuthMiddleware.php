@@ -23,8 +23,14 @@
                 $deleteSession = $userDb->deleteExpiredSessionStorage();
                 if ($result) {
                     setcookie("Authorization", $session_storage_id, time() + 300, '/');
-                    $next($nextRequest);
-                    exit;
+                    if ($nextRequest == "register.php" || $nextRequest == "login.php") {
+                        $url = APP_CONFIG["base_url"]."browse/";
+                        header('Location: '.$url);
+                        exit;
+                    } else {
+                        $next($nextRequest);
+                        exit;
+                    }                    
                 } else {
                     unset($_COOKIE["Authorization"]);
                     setcookie("Authorization", null, -1, '/');
@@ -40,9 +46,14 @@
                 $userDb = new UserDb($conn);
                 $deleteSession = $userDb->deleteExpiredSessionStorage();
 
-                $url = APP_CONFIG["base_url"]."login/";
-                header('Location: '.$url);
-                exit;
+                if ($nextRequest == "login.php" || $nextRequest == "register.php") {
+                    $next($nextRequest);
+                } else {
+                    $url = APP_CONFIG["base_url"]."login/";
+                    header('Location: '.$url);
+                    exit;
+                }
+               
             }
         }
     }

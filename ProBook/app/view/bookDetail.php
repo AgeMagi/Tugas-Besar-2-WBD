@@ -134,7 +134,7 @@
 					$recommendation->description
 				</p>
 				<div class=\"justify-content-end\">
-					<a href=\"/book/$recommendation->book_id/\">
+					<a href=\"/book/?book_id=$recommendation->id\">
 						<button type=\"submit\"><span>Detail</span></button>
 					</a>
 				</div>
