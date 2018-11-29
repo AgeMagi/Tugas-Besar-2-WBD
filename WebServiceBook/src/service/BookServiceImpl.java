@@ -64,6 +64,7 @@ public class BookServiceImpl implements  BookService {
                 String description = "";
                 Integer price = 0;
                 Integer ordered_count = 0;
+                String imgPath = "";
 
                 JSONObject book = new JSONObject(resultItems.get(i).toString());
                 id = book.get("id").toString();
@@ -91,6 +92,15 @@ public class BookServiceImpl implements  BookService {
 
                 if (volumeInfo.has("description")) {
                     description = volumeInfo.get("description").toString();
+                }
+
+                if (volumeInfo.has("imageLinks")) {
+                    JSONObject imageLinks = new JSONObject(volumeInfo.get("imageLinks").toString());
+                    if (imageLinks.has("smallThumbnail")) {
+                        imgPath = imageLinks.get("smallThumbnail").toString();
+                    } else if (imageLinks.has("thumbnail")) {
+                        imgPath = imageLinks.get("thumbnail").toString();
+                    }
                 }
 
                 if (book.has("saleInfo")) {
@@ -121,7 +131,7 @@ public class BookServiceImpl implements  BookService {
                     ordered_count = bookOnDb.getOrderedCount();
                 }
 
-                Book bookResult = new Book(id, title, authors, description, price, category_result, ordered_count);
+                Book bookResult = new Book(id, title, authors, description, price, category_result, ordered_count, imgPath);
 
                 bookResults.add(bookResult);
             }
@@ -307,6 +317,7 @@ public class BookServiceImpl implements  BookService {
                 String description = "";
                 Integer price = 0;
                 Integer ordered_count = 0;
+                String imgPath = "";
 
                 JSONObject book = new JSONObject(resultItems.get(i).toString());
                 id = book.get("id").toString();
@@ -336,6 +347,15 @@ public class BookServiceImpl implements  BookService {
                     description = volumeInfo.get("description").toString();
                 }
 
+                if (volumeInfo.has("imageLinks")) {
+                    JSONObject imageLinks = new JSONObject(volumeInfo.get("imageLinks").toString());
+                    if (imageLinks.has("smallThumbnail")) {
+                        imgPath = imageLinks.get("smallThumbnail").toString();
+                    } else if (imageLinks.has("thumbnail")) {
+                        imgPath = imageLinks.get("thumbnail").toString();
+                    }
+                }
+
                 if (book.has("saleInfo")) {
                     JSONObject saleInfo = new JSONObject(book.get("saleInfo").toString());
                     if (saleInfo.has("listPrice")) {
@@ -363,7 +383,7 @@ public class BookServiceImpl implements  BookService {
                     ordered_count = bookOnDb.getOrderedCount();
                 }
 
-                Book bookResult = new Book(id, title, authors, description, price, category, ordered_count);
+                Book bookResult = new Book(id, title, authors, description, price, category, ordered_count, imgPath);
 
                 bookResults[i] = bookResult;
             }
