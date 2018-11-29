@@ -14,9 +14,11 @@
 
             $bookSOAPClient = new SOAPClientUtility();
             $result = $bookSOAPClient->bookDetail($book_id);
+            $recommendation = $bookSOAPClient->recommendationBook($result->category);
 
             $data = [
                 "book" => $result,
+                "recommendation" => $recommendation,
             ];
 
             render('bookDetail.php', $data);

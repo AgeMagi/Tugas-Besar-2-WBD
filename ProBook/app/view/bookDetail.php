@@ -4,6 +4,7 @@
 
 <link rel="stylesheet" href="/static/css/base.css">
 <link rel="stylesheet" href="/static/css/book_detail.css">
+<link rel="stylesheet" href="/static/css/search_result.css">
 
 <input
 	type="hidden"
@@ -113,6 +114,33 @@
 				</div>
 			");
 		}
+	?>
+
+	<h2 id="subtitle">Recommendation</h2>
+	<?php
+		$author = $recommendation->authors[0];
+		echo("
+		<div class=\"result row justify-content-between\">
+			<div class=\"result-img\">
+				<img 
+					src=$recommendation->imgPath
+					src=\"/static/img/contoh_buku.png\"
+				/>
+			</div>
+			<div class=\"result-content\">
+				<h1 class=\"result-title\">$recommendation->title</h1>
+				<h2 class=\"result-author\">$author - $recommendation->rating/5.0 ($recommendation->jumlah_review votes)</h2>
+				<p class=\"result-description\">
+					$recommendation->description
+				</p>
+				<div class=\"justify-content-end\">
+					<a href=\"/book/$recommendation->book_id/\">
+						<button type=\"submit\"><span>Detail</span></button>
+					</a>
+				</div>
+			</div>
+		</div>
+		")
 	?>
 </div>
 
