@@ -71,6 +71,18 @@
 		</div>
 	</div>
 
+	<h2 id="subtitle">Kategori:</h2>
+	<?php
+		echo("<ul>");
+		for($i = 0; $i < sizeof($book->categories); $i++) {
+			$category = $book->categories[$i];
+			echo("
+				<li>$category</li>
+			");
+		}
+		echo("</ul>")
+	?>
+
 	<h2 id="subtitle">Order</h2>
 	Jumlah:		
 	<select id="banyak-jumlah">

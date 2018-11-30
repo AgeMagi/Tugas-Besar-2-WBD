@@ -14,7 +14,7 @@
 
             $bookSOAPClient = new SOAPClientUtility();
             $book = $bookSOAPClient->bookDetail($book_id);
-            $recommendation = $bookSOAPClient->recommendationBook([$book->category]);
+            $recommendation = $bookSOAPClient->recommendationBook($book->categories);
 
             $data = [
                 "book" => $book,
