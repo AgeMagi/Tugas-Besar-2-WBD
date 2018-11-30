@@ -73,14 +73,22 @@
 
 	<h2 id="subtitle">Kategori:</h2>
 	<?php
-		echo("<ul>");
-		for($i = 0; $i < sizeof($book->categories); $i++) {
-			$category = $book->categories[$i];
+		if (sizeOf($book->categories) <= 1) {
+			echo("<ul>");
 			echo("
-				<li>$category</li>
+				<li>$book->categories</li>
 			");
+			echo("</ul>");
+		} else {
+			echo("<ul>");
+			for($i = 0; $i < sizeof($book->categories); $i++) {
+				$category = $book->categories[$i];
+				echo("
+					<li>$category</li>
+				");
+			}
+			echo("</ul>");
 		}
-		echo("</ul>")
 	?>
 
 	<h2 id="subtitle">Order</h2>

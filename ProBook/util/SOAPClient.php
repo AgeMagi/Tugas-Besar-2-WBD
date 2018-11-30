@@ -41,10 +41,16 @@
                 'encoding'=>'UTF-8',
                 'exceptions'=>true,
             );
-
-            $params = array(
-                'arg0' => $categories,
-            );
+            
+            if (sizeOf($categories) <= 1) {
+                $params = array(
+                    'arg0' => [$categories],
+                );
+            } else {
+                $params = array(
+                    'arg0' => $categories,
+                );
+            }            
             $wsdl = "http://localhost:8888/ws/book/?wsdl";
 
             try {
@@ -96,7 +102,7 @@
                 'encoding'=>'UTF-8',
                 'exceptions'=>true,
             );
-            
+
             $params = array(
                 'arg0' => $id, 
                 'arg1' => $counts, 
