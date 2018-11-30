@@ -337,7 +337,6 @@ public class BookServiceImpl implements  BookService {
 
         for (int i = 0; i < categories.length; i++ ) {
             String category = categories[i];
-            System.out.println(category);
             List<Book> bookResults;
             bookResults = this.getBooksByCategoryDb(category);
             for (int j = 0; j < bookResults.size(); j++) {
@@ -348,7 +347,7 @@ public class BookServiceImpl implements  BookService {
         Collections.sort(results, new Comparator<Book>() {
             @Override
             public int compare(Book book, Book t1) {
-                return book.getOrderedCount() - t1.getOrderedCount();
+                return t1.getOrderedCount() - book.getOrderedCount();
             }
         });
 

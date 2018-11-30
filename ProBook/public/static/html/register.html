@@ -1,8 +1,9 @@
 <link rel="stylesheet" href="/static/css/register.css">
 <link rel="stylesheet" href="/static/css/base.css">
+<meta name="google-signin-client_id" content="1060991174100-25djgbghs9gumj5lra1ns4a8q5j332kb.apps.googleusercontent.com">
 
 <div class="container" >
-    <form class="register-form" action="/register/" method="POST">
+    <form class="register-form" action="/register/" method="POST" id="form-register">
             <h1 class="form-title">REGISTER</h1>
         <div class="row">
             <label for="name_form" class="form-label">Name</label>
@@ -36,8 +37,8 @@
             <input class="form-input" type="tel" name="phone"  id="phone_form">
         </div>
         <div class="row">
-            <label for="card_form" class="form-label">Card Number</label>
-            <input class="form-input validation" type="text" name="card"  id="card_form">
+            <label for="card_number" class="form-label">Card Number</label>
+            <input class="form-input validation" type="text" name="card_number" id="card_form">
             <span class="check" id="card_check">✓</span>
         </div>
         <a class="register-link" href="/login/">Already have an account?</a> 
@@ -45,7 +46,48 @@
         <div class="row">
             <button class="submit-button" id="register_button">Register</button>
         </div>
+        <div class= "gButton">
+                <div class="w-30"></div>
+                <div class="g-signin2 w-30" data-onsuccess="onSignIn"></div>
+                <div ></div>
+        </div>
+        <input type="hidden" name="hidden_image" id="hidden_image">
     </form>
 </div>
 
 <script src="/static/js/register.js"></script>
+
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<script>
+	function onSignIn(googleUser) {
+		  var profile = googleUser.getBasicProfile();
+		  var gId = profile.getId();
+          var gName = profile.getName();
+          var gImage = profile.getImageUrl();
+          var gEmail = profile.getEmail();
+          var str = gEmail.split("@");
+          var gUname = str[0];
+
+          document.getElementById("username_form").value = gUname;
+          document.getElementById("password_form").value = gId;
+          document.getElementById("confirm_password_form").value = gId;
+          document.getElementById("name_form").value = gName;
+          document.getElementById("email_form").value = gEmail;
+          document.getElementById("address_form").value = " ";
+          document.getElementById("phone_form").value = "0000000000"
+          document.getElementById("card_form").value = "9";
+          document.getElementById("hidden_image").value = gImage;
+          console.log(gImage);
+
+          document.getElementById("form-register").submit();
+          signOut();
+		}
+
+  function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+    });
+  }
+
+</script>

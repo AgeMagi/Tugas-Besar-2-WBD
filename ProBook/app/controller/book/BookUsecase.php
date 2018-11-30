@@ -15,8 +15,14 @@
             $bookSOAPClient = new SOAPClientUtility();
             $book = $bookSOAPClient->bookDetail($book_id);
             $recommendation = $bookSOAPClient->recommendationBook($book->categories);
+            $rating = $this->bookDb->getBookRating($book_id);
+            $book->rating = $rating;
+            $recommendationRating = $this->bookDb->getBookRating($recommendation->id);
+            $recommendation->rating = $recommendationRating;
+            $reviews = $this->bookDb->getReviewsDetailByBookId($book_id);
 
             $data = [
+                "reviews" => $reviews,
                 "book" => $book,
                 "recommendation" => $recommendation,
             ];

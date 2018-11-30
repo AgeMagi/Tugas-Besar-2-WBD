@@ -82,3 +82,12 @@ input, textarea {
     color:white;
     background-color: #FF6029;
 }
+
+.gButton{
+    display: flex;
+    padding-top: 15px;
+}
+
+.w-30{
+    width:37%;
+}

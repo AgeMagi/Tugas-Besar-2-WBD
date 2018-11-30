@@ -22,11 +22,21 @@ function doOrder() {
 
         doAjax('/api/order/', "POST", orderPayload, function(response){
             console.log(response);
-            document.getElementById("no-transaksi").innerHTML =response.data.order_book_id;
-            orderModal.style.display = "block";
-            close.onclick = function(){
-                orderModal.style.display = "none";
-            }
+            if (response.data.order_status.status !== 0) {
+                document.getElementById("checklist").src = "/static/img/wrong.png";
+                document.getElementById("berhasil").innerHTML = "Transaksi gagal dilakukan";
+                document.getElementById("no-transaksi").innerHTML = response.data.order_status.message;
+                orderModal.style.display = "block";
+                close.onclick = function(){
+                    orderModal.style.display = "none";
+                }
+            } else {
+                document.getElementById("no-transaksi").innerHTML = "No. Transaksi: " + response.data.order.order_book_id;
+                orderModal.style.display = "block";
+                close.onclick = function(){
+                    orderModal.style.display = "none";
+                }
+            }            
         });
         window.onclick = function(event){
             if (event.target == orderModal) {
