@@ -28,7 +28,7 @@
                 render('profile.php', $data);
             }
 
-            
+
         }
 
         function registerUser(Request $request){
@@ -40,9 +40,12 @@
             $card_number= $request->payload["card_number"];
             $password = $request->payload["password"];
             $hpass = hash('sha256', $password);
-
+            $image = $request->payload["hidden_image"];
+    
+            
             if (!$this->userDb->isEmailOrUsernameExist($email,$username)){
-                $user = new User(null,$username,$fullname,$email,$address,$phone,$card_number,$hpass);
+                $user = new User(null,$username,$fullname,$email,$address,$phone,$card_number,$hpass,$image);
+                
                 $user = $this->userDb->createUser($user);
                 if ($user){
                     $payload = array(
@@ -50,9 +53,9 @@
                         "exp"=> time()+APP_CONFIG["jwt_duration"],
                         "username" => $username
                     );
+                    $jwt =  generateJWT($payload);
                     setcookie("Authorization", $jwt["token"], time()+APP_CONFIG["cookie_duration"],"/");
-                    header('Location: /browse/');                
-                } else {
+                    header('Location: /browse/');                } else {
                     writeResponse(500, "Failed register user");
                 }
             }

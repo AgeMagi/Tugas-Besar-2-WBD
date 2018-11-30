@@ -20,10 +20,13 @@
         <div class="submit-row">
             <input class="submit-button" type="submit" id="login_button" value="LOGIN">
         </div>
+        <div class= "gButton">
+            <div class="w-30"></div>
+            <div class="g-signin2 w-30" data-onsuccess="onSignIn"></div>
+            <div ></div>
+        </div>
         
     </form>
-    <div class="g-signin2" data-onsuccess="onSignIn"></div>
-	<a href="#" onclick="signOut();">Sign out</a>
 </div>
 
 <script src="/static/js/login.js"></script>
@@ -50,8 +53,8 @@
           document.getElementById("password_form").value = gId;
 
           console.log(gId);
-         // document.getElementById("form_login").submit();
-         // signOut();
+         document.getElementById("form_login").submit();
+         signOut();
 		}
 
   function signOut() {
