@@ -461,7 +461,7 @@ public class BookServiceImpl implements  BookService {
     }
 
     public TransferStatus checkTransfer(String senderCard, Integer price, String token){
-        String urlParameters ="sender_card_number="+ senderCard + "&amount=" + price + "$token=" + token;
+        String urlParameters ="sender_card_number="+ senderCard + "&amount=" + price + "&token=" + token;
 
         String url = "http://localhost:8000/transaction";
         HttpURLConnection connection;
@@ -505,9 +505,6 @@ public class BookServiceImpl implements  BookService {
         Book bookOnDb = this.getBookByIdDb(id);
         Integer totalPrice = (bookOnDb.getPrice() * counts);
         DBConnection bookDb = new DBConnection();
-
-        String urlParameter =  "sender_card_number=" + sender + "&amount=";
-        String url = "http://localhost:8000/transaction";
 
         TransferStatus transferStatus = checkTransfer(sender,totalPrice,token);
         try {

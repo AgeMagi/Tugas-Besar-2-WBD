@@ -116,6 +116,7 @@ app.post('/transaction', (req, res) => {
 	if (!req.body) {
 		return res.sendStatus(400);
 	} else {
+		console.log(req.body);
 		const token = req.body.token;
 		console.log(token);
 		const querySelect = "SELECT * FROM key_generator";
