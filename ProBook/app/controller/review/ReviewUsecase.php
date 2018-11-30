@@ -1,5 +1,6 @@
 <?php
     require_once __ROOT__.'/app/controller/review/ReviewDb.php';
+    require_once __ROOT__.'/util/SOAPClient.php';
 
     class ReviewUseCase {
         private $reviewDb;
@@ -16,7 +17,7 @@
 
         function addReview(Request $request) {
             $user_id = (int)$request->payload["user_id"];
-            $book_id = (int)$request->payload["book_id"];
+            $book_id = $request->payload["book_id"];
             $content = $request->payload["content"];
             $rating = (int)$request->payload["rating"];
             $order_id = (int)$request->payload["order_id"];
@@ -32,13 +33,13 @@
         }
 
         function getReviewBookDetail(Request $request) {
-            $book_id = (int)$request->params["book_id"];
-            $books = $this->reviewDb->getBookById($book_id);
-            $user_id = getJwtData($_COOKIE["Authorization"])->user_id;
-            $books->user_id = $user_id;
+            $book_id = $request->queries["book_id"];
+
+            $bookSOAPClient = new SOAPClientUtility();
+            $book = $bookSOAPClient->bookDetail($book_id);
 
             $data = [
-                "books" => $books,
+                "book" => $book,
             ];
             render("review.php", $data);
         }

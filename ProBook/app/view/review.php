@@ -1,10 +1,17 @@
 <?php
     render('header.php');
-    // echo $_COOKIE["user"];
+
+    $result = getUserDetail();
+
+    $user_id = $result["user_id"];
 ?>
 <title>Review</title>
 <link rel="stylesheet" href="/static/css/base.css">
 <link rel="stylesheet" href="/static/css/review.css">
+
+<?php
+    $author = $book->authors[0];
+?>
 
 <div class="review-container content">
     <div class="row justify-content-between"> 
@@ -12,13 +19,13 @@
             <div class="title">
                     <h1 id="review-title">
                         <?php
-                            echo($books[0]->title)
+                            echo($book->title)
                         ?>
                     </h1>
             </div>
             <h2 id="review-author">
                 <?php
-                    echo($books[0]->author)
+                    echo($author)
                 ?>
             </h2>
         </div>
@@ -26,7 +33,7 @@
             <div id="image-box" class="justify-content-center">
                 <img 
                     class="book-img"
-                    src=<?= $books[0]->img_path?>
+                    src=<?= $book->imgPath?>
                 >
             </div>
         </div>
@@ -77,8 +84,6 @@
             id="rating"
         />
         <?php
-            $user_id = getJwtData($_COOKIE["Authorization"])->user_id;
-
             echo("
                 <input 
                     type=\"hidden\"
@@ -88,8 +93,7 @@
             ")
         ?>
         <?php
-            $book_id = $books[0]->book_id;
-
+            $book_id = $book->id;
             echo("
                 <input 
                     type=\"hidden\"

@@ -59,7 +59,7 @@
 
         function createReview($review) {
             $reviewRes = null;
-            $sql = 'INSERT INTO review(user_id, book_id, content, rating, order_id) VALUES(?,?,?,?, ?)';
+            $sql = 'INSERT INTO review(user_id, book_id, content, rating, order_book_id) VALUES(?,?,?,?, ?)';
             $stmt = $this->conn->prepare($sql);
             if ($stmt->execute([$review->user_id, $review->book_id, $review->content, $review->rating, $review->order_id])) {
                 $review_id = 0;

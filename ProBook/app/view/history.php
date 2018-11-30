@@ -10,8 +10,6 @@
 
 	<?php
 		foreach($orders as $order) {
-			$book_id = (int)$order->book_id;
-
 			if ($order->has_review) {
 				$status = 'Anda sudah memberikan review';
 				$button = '';
@@ -19,7 +17,7 @@
 				$status = 'Belum direview';
 				$button = "
 					<div class=\"submit-review\">	
-						<a href=\"/review/$book_id/?order_id=$order->order_id\">
+						<a href=\"/review/?order_id=$order->order_id&book_id=$order->book_id\">
 							<button class=\"submit-button\">Review</button>
 						</a>
 					</div>
