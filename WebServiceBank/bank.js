@@ -85,7 +85,7 @@ app.post('/transaction', (req, res) => {
 	if (!req.body) return res.sendStatus(400);
 	const sender_card_number = req.body.sender_card_number;
 	const receiver_card_number = '7371130607980003';
-	const amount = req.body.amount;
+	const amount = parseInt(req.body.amount);
 	const now = new Date().getTime();
 	let getUserQuery = 'SELECT * FROM customer where card_number=?';
 	db.query(getUserQuery, [sender_card_number], (err, rows, fields) => {
@@ -108,7 +108,7 @@ app.post('/transaction', (req, res) => {
 				db.query(insertTransactionQuery, [sender_card_number, receiver_card_number, amount, now], (err, result) => {
 					if (err) {
 						res.send({
-							'message': 'failed to transfer',
+							'message': 'failed to insert transaction',
 							'error': err,
 						})
 					} else {
@@ -118,7 +118,7 @@ app.post('/transaction', (req, res) => {
 						db.query(updateBalanceQuery, [nowBalance, sender_card_number], (err, result) => {
 							if (err) {
 								res.send({
-									'message': 'failed to transfer',
+									'message': 'failed to update balance sender',
 									'error': err,
 									'status': -1,
 								})
@@ -127,7 +127,7 @@ app.post('/transaction', (req, res) => {
 								db.query(getUserQuery, [receiver_card_number], (err, rows) => {
 									if (err) {
 										res.send({
-											'message': 'failed to transfer',
+											'message': 'failed to get data receiver',
 											'error': err,
 											'status': -1,
 										})
@@ -137,7 +137,7 @@ app.post('/transaction', (req, res) => {
 										db.query(updateBalanceQuery, [nowBalance, receiver_card_number], (err, result) => {
 											if (err) {
 												res.send({
-													'message': 'failed to transfer',
+													'message': 'failed to update balance receiver',
 													'error': err,
 													'status': -1,
 												})

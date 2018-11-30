@@ -422,11 +422,10 @@ public class BookServiceImpl implements  BookService {
     }
 
     public TransferStatus checkTransfer(String senderCard, Integer price ){
-        String urlParameters ="sender_card_number"+ senderCard + "&amount=" + price;
-        String url = "http://localhost:8000/transacton";
+        String urlParameters ="sender_card_number="+ senderCard + "&amount=" + price;
+        String url = "http://localhost:8000/transaction";
         HttpURLConnection connection;
-        TransferStatus transferStatus = null;
-        connection = null;
+        TransferStatus transferStatus = new TransferStatus();
 
         try {
             connection = (HttpURLConnection) new URL(url).openConnection();
@@ -434,19 +433,11 @@ public class BookServiceImpl implements  BookService {
             connection.setRequestProperty("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
             connection.setRequestProperty("Accept-Charset",urlParameters);
             connection.setRequestMethod("POST");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-
-        try (OutputStream output= connection.getOutputStream()){
+            OutputStream output = connection.getOutputStream();
             output.write(urlParameters.getBytes(StandardCharsets.UTF_8));
-        } catch (Exception e){
-            System.out.println(e.getMessage());
-        }
 
 
-        try {
             InputStream response = connection.getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(response));
             StringBuilder sb = new StringBuilder();
@@ -459,11 +450,8 @@ public class BookServiceImpl implements  BookService {
             Gson gson = new Gson();
             String parsedString = sb.toString();
 
-            System.out.println(parsedString);
-
             transferStatus = gson.fromJson(parsedString, TransferStatus.class);
-
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -493,5 +481,5 @@ public class BookServiceImpl implements  BookService {
         }
 
         return transferStatus;
-        }
-    }   
+    }
+}
