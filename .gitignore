@@ -1,8 +1,7 @@
 .idea/
-.DS_Store/
 ProBook/.idea/
+ProBook/config/devel.php
 WebServiceBank/node_modules/
-WebServiceBook/.idea/
 WebServiceBank/.idea/
+WebServiceBook/.idea/
 WebServiceBook/out/
-ProBook/config/

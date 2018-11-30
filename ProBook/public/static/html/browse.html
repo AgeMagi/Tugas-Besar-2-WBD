@@ -1,39 +1,45 @@
+<!DOCTYPE html>
+<html>
+
 <link rel="stylesheet" href="/static/css/base.css">
 <link rel="stylesheet" href="/static/css/browse.css">
 <link rel="stylesheet" href="/static/css/search_result.css">
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-<div ng-app = "myApp" ng-controller = "bookCtrl" class="content search-result">
+<body ng-app = "myApp" ng-controller = "bookCtrl" >
+
+<div class="content search-result">
     <div class="search-result-title row">
         <h1 class="title">Search</h1>
     </div>
     <div>
-        <input type="text"
-               class="search-book"
-               name="title"
-               placeholder="Input search terms..."
-               ng-model="query"
+            <input type="text"
+                   class="search-book"
+                   name="title"
+                   placeholder="Input search terms..."
+                   ng-model="searchText"
+            />
 
-        />
-        <div class="justify-content-end">
-            <button ng-click="searchQuery('{{query}}')" class="button-search-book" id="button-search-book"><span>Search</span></button>
-        </div>
+            <div class="justify-content-end">
+                <button ng-click="change()" class="button-search-book" id="button-search-book"><span>Search</span></button>
+            </div>
 
-        <div ng-show = "search" id="results">
-            <div ng-repeat= "book in books" class="result row justify-content-between">
+        <div ng-show="load" class="loader"></div>
+        <div id="results">
+            <div ng-show ="search" ng-repeat= "book in books" class="result row justify-content-between">
                 <div class="result-img">
                     <img
-                        src={{book.img_path}}
+                        src= {{book.imgPath}}
                     />
                 </div>
-                <div class=\"result-content\">
-                    <h1 class=\"result-title\">{{book.title}}</h1>
-                    <h2 class=\"result-author\">{{book.author}} - {{book.rating}}</h2>
-                    <p class=\"result-description\">
+                <div class="result-content">
+                    <h1 class="result-title">{{book.title}}</h1>
+                    <h2 class="result-author">{{book.authors}} - {{book.price}}</h2>
+                    <p class="result-description">
                         {{book.description}}
                     </p>
-                    <div class=\"justify-content-end\">
-                        <a href="/book/$book->1/">
-                            <button type=\"submit\"><span>Detail</span></button>
+                    <div class="justify-content-end">
+                        <a href="http://localhost:4000/book/?book_id={{book.id}}">
+                            <button type="submit"><span>Detail</span></button>
                         </a>
                     </div>
                 </div>
@@ -44,4 +50,6 @@
 
 
 <script src="/static/js/browse.js"></script>
-<script src="/static/js/book.js"
+<script src="/static/js/book.js"></script>
+</body>
+</html>
