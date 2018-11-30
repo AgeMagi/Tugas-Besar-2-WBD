@@ -50,6 +50,7 @@ function doOrder() {
     }
 
     orderBtn.onclick = function(){
+        console.log('HABBIIB');
         doAjax('http://localhost:8000/token', "GET", null, function(response) {
             console.log(response.status);
             if (response.status == 0) {

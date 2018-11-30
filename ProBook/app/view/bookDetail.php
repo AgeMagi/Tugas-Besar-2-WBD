@@ -91,18 +91,43 @@
 		}
 	?>
 
-	<h2 id="subtitle">Order</h2>
-	Jumlah:		
-	<select id="banyak-jumlah">
-		<?php 
-			for ($i=1;$i<101;$i++){
+	<?php
+		if ($book->price != 0) {
+			echo("<h2 id=\"subtitle\">Order</h2>");
+			echo("<select id=\"banyak-jumlah\">");
+			for ($i = 1; $i < 101; $i++) {
 				echo("<option value=$i>$i</option>");
 			}
-		?>
-	</select>
+			echo("</select>");
 
+			echo("<button class=submit-button id=submit-button>Order</button>");
 
-	<button class="submit-button" id="submit-button")">Order</button>
+			echo(`
+				<div class="submit-order" id="submit-order">
+					<div class="modal-content">
+						<span class="close">&times;</span>
+						<img src="/static/img/checklist.png" id="checklist" alt="photo">
+						<div id="tulisan">
+							<p id="berhasil">Pemesanan berhasil!</p>
+							<p id="no-transaksi"></p>
+						</div>
+					</div>
+				</div><br>
+				<h2 id="subtitle">Reviews</h2>
+				
+				<div class="token-order" id="token-order">
+					<div class="modal-content">
+						<span class="close">&times;</span>
+						<input type="text" name="token" id="token"/>
+						<button class="submit-token-button" id="submit-token-button")">Submit Token</button>
+					</div>
+				</div>
+			`);
+		} else {
+			echo("<h2 id=\"subtitle\">Not For Sale</h2>");
+		}
+		
+	?>
 
 	<div class="submit-order" id="submit-order">
 		<div class="modal-content">
