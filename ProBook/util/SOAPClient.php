@@ -84,7 +84,7 @@
 
             return $data->return;
         }
-        public function buyBook($query) {
+        public function buyBook($id, $counts, $sender) {
             $options = array(
                 'uri'=>'http://schemas.xmlsoap.org/soap/envelope/',
                 'style'=>SOAP_RPC,
@@ -96,7 +96,7 @@
                 'encoding'=>'UTF-8',
                 'exceptions'=>true,
             );
-            $params = array('arg0' => $query);
+            $params = array('arg0' => $id, $counts, $sender);
             $wsdl = "http://localhost:8888/ws/book/?wsdl";
             
             try {

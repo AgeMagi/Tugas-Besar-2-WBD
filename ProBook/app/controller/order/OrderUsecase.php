@@ -22,15 +22,21 @@
 
         function addOrder(Request $request){
             $user_id = (int)$request->payload["userid"];
+            $sender = $request->payload["sender"];
             $book_id = (int)$request->payload["bookid"];
-            $item_count = (int)$request->payload["itemcount"];
+            $order_count = (int)$request->payload["ordercount"];
             $date = $request->payload["date"];
+            $categories = $request->queries["categories"];
+
+            $orderSOAPClient = new SOAPClientUtility();
+            $orderStatus = $orderSOAPClient->buyBook($book_id,$order,$sender);
 
             $order = new Order(null,$user_id,$book_id,$item_count,$date);
-            $order = $this->orderDb->createOrder($order);
-            if ($order) {
-                writeResponse(200, "Success add order", $order);
-            } else {
+           if ($orderStatus["status"]== 0 ) {
+            $order = $this->orderDb->createOrder($order);   
+            writeResponse(200, "Success add order", $order);
+            } 
+            else {
                 writeResponse(500, "Failed add order");
             }
         }
