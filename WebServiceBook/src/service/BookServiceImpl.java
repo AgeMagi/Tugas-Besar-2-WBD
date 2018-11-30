@@ -421,7 +421,7 @@ public class BookServiceImpl implements  BookService {
 
     public TransferStatus checkTransfer(String senderCard, Integer price ){
         String urlParameters ="sender_card_number"+ senderCard + "&amount=" + price;
-        String url = "http://localhost:8000/transacton";
+        String url = "http://localhost:8000/transaction";
         HttpURLConnection connection;
         TransferStatus transferStatus = null;
         connection = null;
