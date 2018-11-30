@@ -3,6 +3,8 @@ package model;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Book implements Serializable {
     private String id = "";
@@ -10,28 +12,28 @@ public class Book implements Serializable {
     private String[] authors = {""};
     private String description = "";
     private Integer price = 0;
-    private String category = "";
+    private List<String> categories = new ArrayList<>();
     private int orderedCount = 0;
     private String imgPath = "";
 
     public Book() {}
 
-    public Book(String id, String title, String[] authors, String description, Integer price, String category, int orderedCount, String imgPath) {
+    public Book(String id, String title, String[] authors, String description, Integer price, List<String>  categories, int orderedCount, String imgPath) {
         this.id = id;
         this.title = title;
         this.authors = authors;
         this.description = description;
         this.price = price;
-        this.category = category;
+        this.categories = categories;
         this.orderedCount = orderedCount;
         this.imgPath = imgPath;
     }
 
-    public Book(String id, int price, int orderedCount, String category) {
+    public Book(String id, int price, int orderedCount, List<String>  categories) {
         this.id = id;
         this.price = price;
         this.orderedCount = orderedCount;
-        this.category = category;
+        this.categories = categories;
     }
 
     public String getId() {
@@ -54,8 +56,8 @@ public class Book implements Serializable {
         return price;
     }
 
-    public String getCategory() {
-        return category;
+    public List<String>  getCategories() {
+        return categories;
     }
 
     public int getOrderedCount() {
@@ -86,8 +88,8 @@ public class Book implements Serializable {
         this.price = price;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategories(List<String>  categories) {
+        this.categories = categories;
     }
 
     public void setOrderedCount(int orderedCount) {

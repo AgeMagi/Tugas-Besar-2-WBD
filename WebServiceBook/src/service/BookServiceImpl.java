@@ -26,22 +26,51 @@ import utility.DBConnection;
 
 @WebService()
 public class BookServiceImpl implements  BookService {
-    public Integer getOrderedCount(String id) {
-         DBConnection bookDb = new DBConnection();
-         Integer ordered_count = 0;
-         ResultSet result = bookDb.doGetQuery(String.format("SELECT SUM(ordered_count) AS ordered_count FROM ordered_book WHERE book_id=\"%s\"", id));
-         try {
-             while(result.next()) {
-                 ordered_count = result.getInt("ordered_count");
+    public int saveCategoryBook(String id, String category) {
+        DBConnection bookDb = new DBConnection();
+        ResultSet resultSet = bookDb.doGetQuery(String.format("SELECT * FROM category_book WHERE book_id=\"%s\" " +
+                "                                       AND category=\"%s\"", id, category));
+        int result = 0;
 
-                 return ordered_count;
-             }
-         } catch (Exception err) {
-             System.out.println(err);
-         }
+        try {
+            if (!resultSet.next()) {
+                result = bookDb.doPostQuery(String.format("INSERT INTO category_book(book_id, category) " +
+                        "                                           VALUES(\"%s\", \"%s\")", id, category));
+            }
+        } catch (Exception err) {
+            System.out.println(err);
+        }
 
-         return ordered_count;
+        return result;
     }
+
+    public List<String> getCategoriesBook(String id) {
+        DBConnection bookDb = new DBConnection();
+        List<String> categories = new ArrayList<>();
+        ResultSet result = bookDb.doGetQuery(String.format("SELECT * FROM category_book WHERE book_id=\"%s\"", id));
+        try {
+            while(result.next()) {
+                categories.add(result.getString("category"));
+            }
+        } catch (Exception err) {
+            System.out.println(err);
+        }
+
+        return categories;
+    }
+
+    public int addBook(String id, int price, List<String> categories) {
+        DBConnection bookDb = new DBConnection();
+        int result = bookDb.doPostQuery(String.format("INSERT INTO book(book_id, price)" +
+                "                                      VALUES(\"%s\", %d)", id, price));
+
+        for(int i = 0; i < categories.size(); i++) {
+            result = this.saveCategoryBook(id, categories.get(i));
+        }
+
+        return result;
+    }
+
 
     public Book getBookByIdDb(String id) {
         DBConnection bookDb = new DBConnection();
@@ -51,9 +80,10 @@ public class BookServiceImpl implements  BookService {
             while(result.next()) {
                 String book_id = result.getString("book_id");
                 int price = result.getInt("price");
-                String category = result.getString("category");
                 Integer orderedCount = this.getOrderedCount(book_id);
-                Book resultBook = new Book(book_id, price, orderedCount, category);
+                List<String> categories = getCategoriesBook(book_id);
+
+                Book resultBook = new Book(book_id, price, orderedCount, categories);
 
                 return resultBook;
             }
@@ -64,12 +94,43 @@ public class BookServiceImpl implements  BookService {
         return null;
     }
 
-    public int addBook(String id, int price, String category) {
+    public Integer getOrderedCount(String id) {
         DBConnection bookDb = new DBConnection();
-        int result = bookDb.doPostQuery(String.format("INSERT INTO book(book_id, price, category)" +
-            "                                      VALUES(\"%s\", %d, \"%s\")", id, price, category));
+        Integer ordered_count = 0;
+        ResultSet result = bookDb.doGetQuery(String.format("SELECT SUM(ordered_count) AS ordered_count FROM ordered_book WHERE book_id=\"%s\"", id));
+        try {
+            while(result.next()) {
+                ordered_count = result.getInt("ordered_count");
 
-        return result;
+                return ordered_count;
+            }
+        } catch (Exception err) {
+            System.out.println(err);
+        }
+
+        return ordered_count;
+    }
+
+    public List<Book> getBooksByCategoryDb(String category) {
+        DBConnection bookDb = new DBConnection();
+        ResultSet result = bookDb.doGetQuery(String.format("SELECT * FROM category_book WHERE category LIKE \"%s\"", category));
+
+        List<Book> bookResults = new ArrayList<>();
+
+        try {
+            while(result.next()) {
+                String book_id = result.getString("book_id");
+                Book bookResult = getBookByIdDb(book_id);
+
+                bookResults.add(bookResult);
+            }
+
+            return bookResults;
+        } catch (Exception err) {
+            System.out.println(err);
+        }
+
+        return bookResults;
     }
 
     public List<Book> getBooksByCategoryGBA(String category) {
@@ -84,7 +145,7 @@ public class BookServiceImpl implements  BookService {
                 String id = "";
                 String title = "";
                 String[] authors = {""};
-                String category_result = "";
+                List<String> categories = new ArrayList<>();
                 String description = "";
                 Integer price = 0;
                 Integer ordered_count = 0;
@@ -109,8 +170,7 @@ public class BookServiceImpl implements  BookService {
                 if (volumeInfo.has("categories")) {
                     JSONArray categoriesJSON = new JSONArray(volumeInfo.get("categories").toString());
                     for (int j = 0; j < categoriesJSON.length(); j++) {
-                        category_result = categoriesJSON.get(j).toString();
-                        break;
+                        categories.add(categoriesJSON.get(j).toString());
                     }
                 }
 
@@ -149,19 +209,17 @@ public class BookServiceImpl implements  BookService {
                         }
                     }
 
-                    int rowBook = this.addBook(id, price, category_result);
+                    int rowBook = this.addBook(id, price, categories);
                 } else {
                     price = bookOnDb.getPrice();
                     ordered_count = bookOnDb.getOrderedCount();
                 }
 
 
-                Book bookResult = new Book(id, title, authors, description, price, category_result, ordered_count, imgPath);
-
+                Book bookResult = new Book(id, title, authors, description, price, categories, ordered_count, imgPath);
 
                 bookResults.add(bookResult);
             }
-
             return bookResults;
         } catch (JSONException err) {
             System.out.println(err);
@@ -178,7 +236,7 @@ public class BookServiceImpl implements  BookService {
             String book_id = "";
             String title = "";
             String[] authors = {""};
-            String category = "";
+            List<String> categories = new ArrayList<>();
             String description = "";
             Integer price = 0;
             Integer ordered_count = 0;
@@ -202,8 +260,7 @@ public class BookServiceImpl implements  BookService {
             if (volumeInfo.has("categories")) {
                 JSONArray categoriesJSON = new JSONArray(volumeInfo.get("categories").toString());
                 for (int j = 0; j < categoriesJSON.length(); j++) {
-                    category = categoriesJSON.get(j).toString();
-                    break;
+                    categories.add(categoriesJSON.get(j).toString());
                 }
             }
 
@@ -232,18 +289,29 @@ public class BookServiceImpl implements  BookService {
 
             Book bookOnDb = this.getBookByIdDb(book_id);
             if (bookOnDb != null) {
-                if (category == "") {
-                    category = bookOnDb.getCategory();
-                }
                 if (price == 0) {
                     price = bookOnDb.getPrice();
                 }
                 if (ordered_count == 0) {
                     ordered_count = bookOnDb.getOrderedCount();
                 }
+                for(int j = 0; j < categories.size(); j++) {
+                    this.saveCategoryBook(book_id, categories.get(j));
+                }
+            } else {
+                if (price == 0) {
+                    int not_for_sale = ThreadLocalRandom.current().nextInt(0, 2);
+                    if (not_for_sale == 1) {
+                        price = ThreadLocalRandom.current().nextInt(10000, 100000);
+                    } else {
+                        price = 0;
+                    }
+                }
+
+                this.addBook(book_id, price, categories);
             }
 
-            Book bookResult = new Book(book_id, title, authors, description, price, category, ordered_count, imgPath);
+            Book bookResult = new Book(book_id, title, authors, description, price, categories, ordered_count, imgPath);
 
             return bookResult;
         } catch (Exception err) {
@@ -253,40 +321,13 @@ public class BookServiceImpl implements  BookService {
         return null;
     }
 
-    public List<Book> getBooksByCategoryDb(String category) {
-        DBConnection bookDb = new DBConnection();
-        ResultSet result = bookDb.doGetQuery(String.format("SELECT * FROM book WHERE category LIKE \"%s\"", category));
-
-        List<Book> bookResults = new ArrayList<>();
-
-        try {
-            while(result.next()) {
-                String book_id = result.getString("book_id");
-                int price = result.getInt("price");
-                String categoryDb = result.getString("category");
-                Integer ordered_count = this.getOrderedCount(book_id);
-
-                Book bookResult = new Book(book_id, price, ordered_count, categoryDb);
-                bookResults.add(bookResult);
-            }
-
-            return bookResults;
-        } catch (Exception err) {
-            System.out.println(err);
-        }
-
-        return bookResults;
-    }
-
     @Override
     public Book getBookDetail(String id) {
-        Book bookOnDb = this.getBookByIdDb(id);
-        if (bookOnDb != null) {
-            Book bookResult = this.getBookByIdGBA(id);
+        Book bookResult = this.getBookByIdGBA(id);
 
+        if (bookResult != null) {
             return bookResult;
         }
-
         return new Book();
     }
 
@@ -296,6 +337,7 @@ public class BookServiceImpl implements  BookService {
 
         for (int i = 0; i < categories.length; i++ ) {
             String category = categories[i];
+            System.out.println(category);
             List<Book> bookResults;
             bookResults = this.getBooksByCategoryDb(category);
             for (int j = 0; j < bookResults.size(); j++) {
@@ -313,9 +355,6 @@ public class BookServiceImpl implements  BookService {
         if (results.size() != 0) {
             Book bestBook = results.get(0);
             Book bookResult = this.getBookByIdGBA(bestBook.getId());
-
-            bookResult.setOrderedCount(bestBook.getOrderedCount());
-            bookResult.setCategory(bestBook.getCategory());
 
             return bookResult;
         } else {
@@ -340,7 +379,7 @@ public class BookServiceImpl implements  BookService {
                 String id = "";
                 String title = "";
                 String[] authors = {""};
-                String category = "";
+                List<String> categories = new ArrayList<>();
                 String description = "";
                 Integer price = 0;
                 Integer ordered_count = 0;
@@ -365,8 +404,7 @@ public class BookServiceImpl implements  BookService {
                 if (volumeInfo.has("categories")) {
                     JSONArray categoriesJSON = new JSONArray(volumeInfo.get("categories").toString());
                     for (int j = 0; j < categoriesJSON.length(); j++) {
-                        category = categoriesJSON.get(j).toString();
-                        break;
+                        categories.add(categoriesJSON.get(j).toString());
                     }
                 }
 
@@ -398,19 +436,19 @@ public class BookServiceImpl implements  BookService {
                     if (price == 0) {
                         int not_for_sale = ThreadLocalRandom.current().nextInt(0, 2);
                         if (not_for_sale == 1) {
-                            price = ThreadLocalRandom.current().nextInt(10000, 100000);
-                        } else {
                             price = 0;
+                        } else {
+                            price = ThreadLocalRandom.current().nextInt(10000, 100000);
                         }
                     }
 
-                    int rowBook = this.addBook(id, price, category);
+                    int rowBook = this.addBook(id, price, categories);
                 } else {
                     price = bookOnDb.getPrice();
                     ordered_count = bookOnDb.getOrderedCount();
                 }
 
-                Book bookResult = new Book(id, title, authors, description, price, category, ordered_count, imgPath);
+                Book bookResult = new Book(id, title, authors, description, price, categories, ordered_count, imgPath);
 
                 bookResults.add(bookResult);
             }
@@ -481,7 +519,7 @@ public class BookServiceImpl implements  BookService {
         catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(transferStatus);
+
         return transferStatus;
     }
 }

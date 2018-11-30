@@ -3,6 +3,7 @@ package utility;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.net.URL;
+import java.net.URLEncoder;
 
 import utility.HTTPRequest;
 
@@ -16,7 +17,8 @@ public class GoogleBookAPI {
 
     public JSONObject searchBook() {
         try {
-            HTTPRequest googleBookAPIRequest = new HTTPRequest(String.format("https://www.googleapis.com/books/v1/volumes?q=%s&key=%s", this.query, this.API_KEY));
+            String query = URLEncoder.encode(this.query, "UTF-8");
+            HTTPRequest googleBookAPIRequest = new HTTPRequest(String.format("https://www.googleapis.com/books/v1/volumes?q=intitle:%s&key=%s", query, this.API_KEY));
             String resultRequest = googleBookAPIRequest.doRequest("GET");
             JSONObject hasilJSON = new JSONObject(resultRequest);
             return hasilJSON;
@@ -29,7 +31,8 @@ public class GoogleBookAPI {
 
     public JSONObject searchByCategory() {
         try {
-            HTTPRequest googleBookAPIRequest = new HTTPRequest(String.format("https://www.googleapis.com/books/v1/volumes?q=subject:%s&key=%s", this.query, this.API_KEY));
+            String query = URLEncoder.encode(this.query, "UTF-8");
+            HTTPRequest googleBookAPIRequest = new HTTPRequest(String.format("https://www.googleapis.com/books/v1/volumes?q=subject:%s&key=%s", query, this.API_KEY));
             String resultRequest = googleBookAPIRequest.doRequest("GET");
             JSONObject hasilJSON = new JSONObject(resultRequest);
             return hasilJSON;
@@ -42,7 +45,8 @@ public class GoogleBookAPI {
 
     public JSONObject searchById() {
         try {
-            HTTPRequest googleBookAPIRequest = new HTTPRequest(String.format("https://www.googleapis.com/books/v1/volumes/%s", this.query));
+            String query = URLEncoder.encode(this.query, "UTF-8");
+            HTTPRequest googleBookAPIRequest = new HTTPRequest(String.format("https://www.googleapis.com/books/v1/volumes/%s", query));
             String resultRequest = googleBookAPIRequest.doRequest("GET");
             JSONObject hasilJSON = new JSONObject(resultRequest);
             return hasilJSON;
