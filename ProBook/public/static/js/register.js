@@ -137,12 +137,12 @@ function enableValidateCardNumber(){
                 console.log(data);
                 if (data['card_number']!=0){
                     checkIcon.innerHTML= '✓';
-                    isUsernameValid = true;
+                    isCardValid = true;
                     cardNumber.style.border = "";
                     checkIcon.style.display = "inline";
                 }else{
                     checkIcon.innerHTML= '✗';
-                    isUsernameValid = false;
+                    isCardValid = false;
                     cardNumber.style.border = errorStyle;
                     checkIcon.style.display = "none";
                     checkIcon.style.display = "inline";

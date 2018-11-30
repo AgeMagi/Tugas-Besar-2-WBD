@@ -50,9 +50,9 @@
                         "exp"=> time()+APP_CONFIG["jwt_duration"],
                         "username" => $username
                     );
-                    $jwt =  generateJWT($payload);
                     setcookie("Authorization", $jwt["token"], time()+APP_CONFIG["cookie_duration"],"/");
-                    header('Location: /browse/');                } else {
+                    header('Location: /browse/');                
+                } else {
                     writeResponse(500, "Failed register user");
                 }
             }
