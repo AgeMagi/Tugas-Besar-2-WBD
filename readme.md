@@ -1,6 +1,8 @@
-# Tugas 2 IF3110 Pengembangan Aplikasi Berbasis Web 
+# Tugas 2 IF3110 Pengembangan Aplikasi Berbasis Web NguduDSkuy
 
-Melakukan *upgrade* Website toko buku online pada Tugas 1 dengan mengaplikasikan **arsitektur web service REST dan SOAP**.
+## Deskripsi 
+
+Website ini merupakan  *upgrade* Website toko buku online pada Tugas 1 dengan mengaplikasikan **arsitektur web service REST dan SOAP**.
 
 ### Tujuan Pembuatan Tugas
 
@@ -12,23 +14,56 @@ Diharapkan dengan tugas ini anda dapat mengerti:
 
 ## Anggota Tim
 
-Setiap kelompok beranggotakan **3 orang dari kelas yang sama**. Jika jumlah mahasiswa dalam satu kelas modulo 3 menghasilkan 1, maka hanya 1 kelompok terdiri dari 4 mahasiswa. Jika jumlah mahasiswa modulo 3 menghasilkan 2, maka ada dua kelompok yang beranggotakan 4 orang. Seluruh anggota kelompok **harus berbeda dengan tugas 1**.
+1. Thareq Muhammad Yusuf Hasnul Aziz  -  13516004
+2. Muhammad Habibi Haidir - 13516085
+3. Yasya Rusyda  - 13516091
 
-## Petunjuk Pengerjaan
+## Struktur Basis Data
 
-1. Buatlah organisasi pada gitlab dengan format "IF3110-2018-KXX-nama kelompok", dengan XX adalah nomor kelas.
-2. Tambahkan anggota tim pada organisasi anda.
-3. Fork pada repository ini dengan organisasi yang telah dibuat.
-4. Ubah hak akses repository hasil Fork anda menjadi **private**.
-5. [DELIVERABLE] Buat tugas sesuai spesifikasi dan silakan commit pada repository anda (hasil fork). Lakukan berberapa commit dengan pesan yang bermakna, contoh: `add register form`, `fix logout bug`, jangan seperti `final`, `benerin dikit`. Disarankan untuk tidak melakukan commit dengan perubahan yang besar karena akan mempengaruhi penilaian (contoh: hanya melakukan satu commit kemudian dikumpulkan). Sebaiknya commit dilakukan setiap ada penambahan fitur. **Commit dari setiap anggota tim akan mempengaruhi penilaian individu.** Jadi, setiap anggota tim harus melakukan sejumlah commit yang berpengaruh terhadap proses pembuatan aplikasi.
-6. Hapus bagian yang tidak perlu dari *readme* ini.
-7. [DELIVERABLE] Berikan penjelasan mengenai hal di bawah ini pada bagian **Penjelasan** dari *readme* repository git Anda: ((masih spek taun lalu))
-    - Basis data dari sistem yang Anda buat, yaitu basis data aplkasi pro-book, webservice bank, dan webservice buku.
-    - Konsep *shared session* dengan menggunakan REST.
-    - Mekanisme pembangkitan token dan expiry time pada aplikasi Anda.
-    - Kelebihan dan kelemahan dari arsitektur aplikasi tugas ini, dibandingkan dengan aplikasi monolitik (login, CRUD DB, dll jadi dalam satu aplikasi)
-8. Pada *readme* terdapat penjelasan mengenai pembagian tugas masing-masing anggota (lihat formatnya pada bagian **pembagian tugas**).
-9. Merge request dari repository anda ke repository ini dengan format **Nama kelompok** - **NIM terkecil** - **Nama Lengkap dengan NIM terkecil** sebelum **Jumat, 30 November 2018 pukul 23.59**.
+### ProBook
+Untuk Probook berada di database tayo_book_store dan memiliki struktur yang sama dengan tugas 1 namun ditambahkan tabel session_storage yang berisikan informasi yang digunakan untuk cookies pengguna
+
+### Webservice_Bank
+Webservice bank dengan database Webservice_Bank memiliki 2 tabel yaitu customer yang berisikan informasi seluruh customer yang ada di database bank dan kedua adalah transaction yang berisikan seluruh informasi transaksi yang dilakukan oleh customer
+
+### Webservice_Book
+Dengan nama database webservicce_book berisikan seluruh buku yang sudah dilakukan search menggunakan google book api. Berisikan book yang merupakan deskripsi seluruh informasi book, category_book merupakan seluruh kategori buku tersebut dan ordered_book berisikan seluruh buku dari db yang sudah di order
+
+
+## Cara Kerja Aplikasi
+
+Secara garis besar aplikasi dibagi menjadi tiga modul besar yaitu main website (Probook), service untuk book, dan service untuk bank. Di setiap halaman website akan memanggil service untuk mendapatkan query yang dibutuhkan oleh website. Untuk service book meretrive data yang dibutuhkan dengan Google Book API dan diimplementasikan dengan Node JS. Service mencakup kebutuhan data website untuk hasil search, books recommendation, dan detail books. Untuk service bank menggunakan database yang didefine sendiri dan juga menggunakan Node JS. Service akan dipanggil bila kita melakukan order suatu buku.
+
+### Konsep Shared Session
+
+Shared Session yang digunakan menggunakan REST yang merupakan konsep melakukan transfer state yang diimplementasikan di HTTP dikarenakan web biasanya bersifat stateless
+
+Bentuk REST ini menggunakan beberapa konsep elemennya yaitu:
+1. Resource
+2. Server
+3. Client
+4. Request dan Response
+5. Representation
+
+REST ini menggunakan beberapa prinsip seperti state dari resource hanya  internal server yang digunakan, server lalu tidak memiliki client, request dari client menyebarkan semua informasi dari proses server, lalu session di implementasikan oleh client, resource dapat dilakukan beberapa representasi, response mengindikasikan cacheability dan cliend bisa fetch sebagian code dari server
+
+
+### Mekanisme pembangkitan token dan expiry time
+
+Membangkitan token dan expiry time dilakukan saat user melakukan login ke website. Saat user yang tidak ada di session_storage login maka digenerate random string sebagai token tersebut. Setelah itu expiry time di website di set 10 menit dan di database 1 jam. Lalu setiap request(mengganti page) Dilakukan refresh untuk expiry time token tersebut
+
+### Kelebihan dan kelemahan
+
+Kelebihan dan kelemahan dari arsitektur aplikasi tugas ini, dibandingkan dengan aplikasi monolitik (login, CRUD DB, dll jadi dalam satu aplikasi)
+
+#### Kelebihan
+1. Modular, sehingga bila salah satu service tidak dapat digunakan tidak mempengaruhi fitur yang tidak dependent dengan service tersebut
+2. Apps Scaling, bila suatu service membutuhkan resource yang lebih besar dapat di scale dengan mudah karena tiap aplikasi terdiri dari service yang independent satu sama lain
+3. Lebih mudah dilakukan penambahan fitur dan maintaining changes
+
+#### Kekurangan
+1. Resource dependant, modul yang di deploy membutuhkan lebih banyak resource untuk memantain segala routing yang ada di aplikasi
+2. Performance Issue, model aplikasi yang digunakan membuat performansi aplikasi kurang cepat dan efektif dengan monolith
 
 ### Deskripsi Tugas
 ![](temp/architecture.png)
@@ -136,29 +171,27 @@ Anda tidak dituntut untuk mengerjakan ini. Fokus terlebih dahulu menyelesaikan s
 *Harap semua anggota kelompok mengerjakan SOAP dan REST API kedua-duanya*. Tuliskan pembagian tugas seperti berikut ini.
 
 REST :
-1. Validasi nomor kartu : 1351xxxx
-2. ...
+1. Validasi nomor kartu : 13516091
+2. Validasi Transfer : 13516004
 
 SOAP :
-1. Add Produce : 1351xxxx
-2. Fungsionalitas Y : 1351xxxx
-3. ...
+1. Service pencarian buku : 1351085
+2. Service detail buku : 13516004
+3. Service pembelian : 13516091
+4. Service rekomendasi : 13516085
 
 Perubahan Web app :
-1. Halaman Search : 
-2. Halaman X :
-3. ...
+1. Halaman Search : 13516004
+2. Perubahan database buku : 13516085 
+3. Penambahan rekomendasi buku : 13516085
+4. Penambahan informasi nomer kartu : 13516091
+5. Penambahan Akses Token : 13516085
 
 Bonus :
-1. Pembangkitan token HTOP/TOTP : 
-2. Validasi token : 
-3. ...
+1. Pembangkitan token HTOP/TOTP : 13516085
+2. Login via google : 13516091
 
 ## About
 
-Asisten IF3110 2018
-
-Audry | Erick | Holy | Kevin J. | Tasya | Veren | Vincent H.
-
-Dosen : Yudistira Dwi Wardhana | Riza Satria Perdana | Muhammad Zuhri Catur Candra
+NgududSkuy mantap classmild
 
