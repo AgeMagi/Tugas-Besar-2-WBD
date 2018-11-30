@@ -3,6 +3,7 @@ function doAjax(url, method, data, successCallback,failCallback) {
     req.open(method, url, true);
     req.setRequestHeader("Content-Type", "application/json");
     req.onload = function(){
+        console.log(this);
         if (this.status==200){
             successCallback(JSON.parse(req.responseText));
         } else {

@@ -96,7 +96,12 @@
                 'encoding'=>'UTF-8',
                 'exceptions'=>true,
             );
-            $params = array('arg0' => $id, $counts, $sender);
+            
+            $params = array(
+                'arg0' => $id, 
+                'arg1' => $counts, 
+                'arg2' => $sender
+            );
             $wsdl = "http://localhost:8888/ws/book/?wsdl";
             
             try {

@@ -73,7 +73,18 @@
         	return $orderRes;
         }
 
+		function getCardNumberOrder($user_id) {
+			$card_number = "";
+			$sql = 'SELECT card_number FROM user where user_id=?';
+			$stmt = $this->conn->prepare($sql);
 
+			if ($stmt->execute([$user_id])) {
+				$row = $stmt->fetch();
+				$card_number = $row["card_number"];
+			}
+
+			return $card_number;
+		}
     }
 
 ?>

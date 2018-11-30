@@ -21,22 +21,20 @@
         }
 
         function addOrder(Request $request){
-            $user_id = (int)$request->payload["userid"];
-            $sender = $request->payload["sender"];
-            $book_id = (int)$request->payload["bookid"];
-            $order_count = (int)$request->payload["ordercount"];
+            $user_id = (int)$request->payload["user_id"];
+            $sender_card_number = $this->orderDb->getCardNumberOrder($user_id);
+            $book_id = $request->payload["book_id"];
+            $ordered_count = $request->payload["ordered_count"];
             $date = $request->payload["date"];
-            $categories = $request->queries["categories"];
 
             $orderSOAPClient = new SOAPClientUtility();
-            $orderStatus = $orderSOAPClient->buyBook($book_id,$order,$sender);
-
-            $order = new Order(null,$user_id,$book_id,$item_count,$date);
-           if ($orderStatus["status"]== 0 ) {
-            $order = $this->orderDb->createOrder($order);   
-            writeResponse(200, "Success add order", $order);
-            } 
-            else {
+            $orderStatus = $orderSOAPClient->buyBook($book_id, $ordered_count, $sender_card_number);
+   
+            $order = new Order(null,$user_id,$book_id,$ordered_count,$date);
+            if ($orderStatus->status == 0 ) {
+                $order = $this->orderDb->createOrder($order);   
+                writeResponse(200, "Success add order", $order);
+            } else {
                 writeResponse(500, "Failed add order");
             }
         }

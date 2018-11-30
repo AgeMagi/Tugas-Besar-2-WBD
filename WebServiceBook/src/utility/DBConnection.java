@@ -50,6 +50,7 @@ public class DBConnection {
     public int doPostQuery(String query) {
         try {
             Statement stmt = this.conn.createStatement();
+            System.out.println(query);
             int result = stmt.executeUpdate(query);
 
             return result;

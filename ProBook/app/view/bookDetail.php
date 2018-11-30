@@ -9,13 +9,13 @@
 <input
 	type="hidden"
 	id="user_id"
-	value=<?=getJwtData($_COOKIE["Authorization"])->user_id?>
+	value=<?=getUserDetail()["user_id"]?>
 >
 
 <input
 	type="hidden"
 	id="book_id"
-	value=<?=$book->book_id?>
+	value=<?=$book->id?>
 >
 
 

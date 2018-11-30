@@ -1,11 +1,13 @@
 package service;
 
+import java.awt.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.net.URL;
 
@@ -422,8 +424,8 @@ public class BookServiceImpl implements  BookService {
     }
 
     public TransferStatus checkTransfer(String senderCard, Integer price ){
-        String urlParameters ="sender_card_number"+ senderCard + "&amount=" + price;
-=
+        String urlParameters ="sender_card_number="+ senderCard + "&amount=" + price;
+
         String url = "http://localhost:8000/transaction";
         HttpURLConnection connection;
         TransferStatus transferStatus = new TransferStatus();
@@ -461,8 +463,7 @@ public class BookServiceImpl implements  BookService {
     }
 
     @Override
-    public TransferStatus buyBook(String id, Integer counts, String sender ){
-
+    public TransferStatus buyBook(String id, Integer counts, String sender){
         Integer countOrder = getOrderedCount(id);
         Book bookOnDb = this.getBookByIdDb(id);
         Integer totalPrice = (bookOnDb.getPrice() * counts);
@@ -474,13 +475,13 @@ public class BookServiceImpl implements  BookService {
         TransferStatus transferStatus = checkTransfer(sender,totalPrice);
         try {
             if (transferStatus.status == 0){
-                bookDb.doGetQuery(String.format("INSERT INTO ordered_book ( book_id, sender_card_number, ordered_count) VALUES (\"%s\",\"%s\",%d) WHERE book_id = \"%s\"",id,sender,counts, id));
+                bookDb.doPostQuery(String.format("INSERT INTO ordered_book ( book_id, sender_card_number, ordered_count) VALUES (\"%s\",\"%s\",%d)",id,sender,counts));
             }
         }
         catch (Exception e) {
             e.printStackTrace();
         }
-
+        System.out.println(transferStatus);
         return transferStatus;
     }
 }
