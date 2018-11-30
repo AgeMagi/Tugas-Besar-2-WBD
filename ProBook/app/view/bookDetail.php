@@ -110,7 +110,7 @@
 			<img src="/static/img/checklist.png" id="checklist" alt="photo">
 			<div id="tulisan">
 				<p id="berhasil">Pemesanan berhasil!</p>
-				<p>Nomor Transaksi : <span id="no-transaksi"></span></p>
+				<p id="no-transaksi"></p>
 			</div>
 		</div>
 	</div><br>

@@ -33,10 +33,12 @@
             $order = new Order(null,$user_id,$book_id,$ordered_count,$date);
             if ($orderStatus->status == 0 ) {
                 $order = $this->orderDb->createOrder($order);   
-                writeResponse(200, "Success add order", $order);
-            } else {
-                writeResponse(500, "Failed add order");
-            }
+            } 
+            $data = [
+                "order" => $order,
+                "order_status" => $orderStatus,
+            ];
+            writeResponse(200, "Success add order", $data);
         }
 
     }
