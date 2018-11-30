@@ -23,5 +23,5 @@ public interface BookService {
     public Book recommendationBook(String[] categories);
 
     @WebMethod
-    public TransferStatus buyBook(String id, Integer counts, String sender );
+    public TransferStatus buyBook(String id, Integer counts, String sender, String token);
 }

@@ -460,8 +460,8 @@ public class BookServiceImpl implements  BookService {
         return bookResults;
     }
 
-    public TransferStatus checkTransfer(String senderCard, Integer price ){
-        String urlParameters ="sender_card_number="+ senderCard + "&amount=" + price;
+    public TransferStatus checkTransfer(String senderCard, Integer price, String token){
+        String urlParameters ="sender_card_number="+ senderCard + "&amount=" + price + "$token=" + token;
 
         String url = "http://localhost:8000/transaction";
         HttpURLConnection connection;
@@ -500,7 +500,7 @@ public class BookServiceImpl implements  BookService {
     }
 
     @Override
-    public TransferStatus buyBook(String id, Integer counts, String sender){
+    public TransferStatus buyBook(String id, Integer counts, String sender, String token){
         Integer countOrder = getOrderedCount(id);
         Book bookOnDb = this.getBookByIdDb(id);
         Integer totalPrice = (bookOnDb.getPrice() * counts);
@@ -509,7 +509,7 @@ public class BookServiceImpl implements  BookService {
         String urlParameter =  "sender_card_number=" + sender + "&amount=";
         String url = "http://localhost:8000/transaction";
 
-        TransferStatus transferStatus = checkTransfer(sender,totalPrice);
+        TransferStatus transferStatus = checkTransfer(sender,totalPrice,token);
         try {
             if (transferStatus.status == 0){
                 bookDb.doPostQuery(String.format("INSERT INTO ordered_book ( book_id, sender_card_number, ordered_count) VALUES (\"%s\",\"%s\",%d)",id,sender,counts));

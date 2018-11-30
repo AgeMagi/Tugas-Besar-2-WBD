@@ -63,6 +63,7 @@ app.get('/token', (req, res) => {
 				data: {
 					'token': token,
 				},
+				'status': 0,
 			})
 		}	
 		
@@ -172,6 +173,7 @@ app.post('/transaction', (req, res) => {
 												res.send({
 													'message': 'failed to insert transaction',
 													'error': err,
+													'status': -1,
 												})
 											} else {
 												let nowBalance = balance - amount;

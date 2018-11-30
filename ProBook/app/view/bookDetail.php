@@ -116,6 +116,14 @@
 	</div><br>
 	<h2 id="subtitle">Reviews</h2>
 	
+	<div class="token-order" id="token-order">
+		<div class="modal-content">
+			<span class="close">&times;</span>
+			<input type="text" name="token" id="token"/>
+			<button class="submit-token-button" id="submit-token-button")">Submit Token</button>
+		</div>
+	</div>
+
 	<?php
 		foreach($reviews as $review) {
 			echo("

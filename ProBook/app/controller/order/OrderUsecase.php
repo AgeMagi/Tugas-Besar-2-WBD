@@ -26,9 +26,10 @@
             $book_id = $request->payload["book_id"];
             $ordered_count = $request->payload["ordered_count"];
             $date = $request->payload["date"];
+            $token = $request->payload["token"];
 
             $orderSOAPClient = new SOAPClientUtility();
-            $orderStatus = $orderSOAPClient->buyBook($book_id, $ordered_count, $sender_card_number);
+            $orderStatus = $orderSOAPClient->buyBook($book_id, $ordered_count, $sender_card_number, $token);
    
             $order = new Order(null,$user_id,$book_id,$ordered_count,$date);
             if ($orderStatus->status == 0 ) {
