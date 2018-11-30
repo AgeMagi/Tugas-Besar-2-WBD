@@ -82,6 +82,14 @@
 
 #number_results span {
     text-decoration: underline;
+    color: #4d4d4d;
+    justify-content: center;
+}
+
+.result_empty{
+    text-decoration: underline;
+    color: #4d4d4d;
+    justify-content: center;
 }
 
 .loader {

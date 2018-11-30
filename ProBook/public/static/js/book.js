@@ -6,11 +6,13 @@ app.controller('bookCtrl', function($scope, $http, $timeout) {
         {id:2, imgPath:'/static/img/contoh_buku.png', title:'Untuk Masa Depan Kita', authors:'habibi', price:'5', description:'Kenangan begitu indah untukmu sayang'},
         {id:3, imgPath:'/static/img/contoh_buku.png', title:'Demi Kehidupan yang Indah', authors:'yasya', price:'5', description:'Pege'}
     ];
+    $scope.empty = false;
     $scope.search = false;
-    $scope.load = false
+    $scope.load = false;
 
     $scope.change = function() {
         $scope.books = [];
+        $scope.empty = false;
         $scope.load = true;
         send = $scope.searchText;
         console.log(send);
@@ -19,6 +21,10 @@ app.controller('bookCtrl', function($scope, $http, $timeout) {
                 $scope.books = response.data.data;
                 $scope.load = false;
                 $scope.search = true;
+                if ($scope.books === undefined || $scope.books.length == 0) {
+                    console.log(16);
+                    $scope.empty = true;
+                }
                 console.log($scope);
             });
         }, 1000);
