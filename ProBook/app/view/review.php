@@ -103,13 +103,13 @@
             ")
         ?>
         <?php
-            $order_id = (int)$_GET["order_id"];
+            $order_book_id = (int)$_GET["order_book_id"];
 
             echo("
                 <input
                     type=\"hidden\"
-                    name=\"order_id\"
-                    value=$order_id
+                    name=\"order_book_id\"
+                    value=$order_book_id
                 />
             ")
         ?>

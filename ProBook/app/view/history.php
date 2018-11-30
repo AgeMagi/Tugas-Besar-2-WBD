@@ -17,7 +17,7 @@
 				$status = 'Belum direview';
 				$button = "
 					<div class=\"submit-review\">	
-						<a href=\"/review/?order_id=$order->order_id&book_id=$order->book_id\">
+						<a href=\"/review/?order_book_id=$order->order_book_id&book_id=$order->book_id\">
 							<button class=\"submit-button\">Review</button>
 						</a>
 					</div>
@@ -30,12 +30,12 @@
 						<img src=$order->book_img_path class=\"imghistory\">
 						<div class=\"booktitle\">$order->book_title</div>
 						<div id=\"jumlah\">Jumlah :&nbsp</div>
-						<div class=\"banyakjumlah\">$order->item_count</div>
+						<div class=\"banyakjumlah\">$order->ordered_count</div>
 						<div class=\"status\">$status</div>
 					</div>
 					<div class=\"bc2\">
 						<div class=\"waktupesan\">$order->date</div><br>
-						<div class=\"order\">$order->order_id</div>
+						<div class=\"order\">$order->order_book_id</div>
 						<div id=\"NoOrder\">Nomor Order : #</div>
 						$button
 					</div>

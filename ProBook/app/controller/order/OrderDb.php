@@ -15,13 +15,13 @@
         	$stmt = $this->conn->prepare($sql);
         	if ($stmt->execute([$id])) {
         		$row = $stmt->fetch();
-        		$order_id = (int) $row["order_book_id"];
+        		$order_book_id = (int) $row["order_book_id"];
         		$user_id = (int) $row["user_id"];
         		$book_id = $row["book_id"];
-        		$item_count = $row["item_count"];
+        		$ordered_count = $row["ordered_count"];
         		$date = $row["order_date"];
 
-        		$order = new Order($order_id, $user_id, $book_id, $item_count, $date);
+        		$order = new Order($order_book_id, $user_id, $book_id, $ordered_count, $date);
         	};
         	return $order;
         }
@@ -33,15 +33,15 @@
         	$stmt->execute([$id]);
 
         	while($row = $stmt->fetch()){
-        		$order_id = (int) $row["order_book_id"];
+        		$order_book_id = (int) $row["order_book_id"];
         		$user_id = (int) $row["user_id"];
         		$book_id = $row["book_id"];
-        		$item_count = $row["item_count"];
+        		$ordered_count = $row["ordered_count"];
         		$date = $row["order_date"];
 
-				$sqlBook = 'SELECT * FROM review WHERE user_id = ? AND book_id = ? AND order_id = ?';
+				$sqlBook = 'SELECT * FROM review WHERE user_id = ? AND book_id = ? AND order_book_id = ?';
 				$stmtBook = $this->conn->prepare($sqlBook);
-				$stmtBook->execute([$user_id, $book_id, $order_id]);
+				$stmtBook->execute([$user_id, $book_id, $order_book_id]);
 				if ($stmtBook->fetch()) {
 					$has_review = true;
 				} else {
@@ -51,7 +51,7 @@
 				$bookSOAPClient = new SOAPClientUtility();
             	$book = $bookSOAPClient->bookDetail($book_id);
 
-				$order = new Order($order_id, $user_id, $book_id, $item_count, $date, $has_review, $book->title, $book->imgPath);
+				$order = new Order($order_book_id, $user_id, $book_id, $ordered_count, $date, $has_review, $book->title, $book->imgPath);
         		array_push($orders,$order);
 			};
         	return $orders;
@@ -59,16 +59,16 @@
 
         function createOrder($order) {
         	$orderRes = null;
-        	$sql = 'INSERT INTO order_book(user_id,book_id,item_count,order_date) VALUES (?,?,?,?)';
+        	$sql = 'INSERT INTO order_book(user_id,book_id,ordered_count,order_date) VALUES (?,?,?,?)';
         	$stmt = $this->conn->prepare($sql);
 
-        	if ($stmt->execute([$order->user_id, $order->book_id, $order->item_count, $order->date])) {
-        		$order_id = 0;
+        	if ($stmt->execute([$order->user_id, $order->book_id, $order->ordered_count, $order->date])) {
+        		$order_book_id = 0;
         		$last_insert_id = $this->conn->query("SELECT LAST_INSERT_ID()");
         		foreach($last_insert_id as $row){
-        			$order_id = $row["LAST_INSERT_ID()"];
+        			$order_book_id = $row["LAST_INSERT_ID()"];
         		}
-        		$orderRes = new Order($order_id,$order->user_id, $order->book_id, $order->item_count, $order->date);
+        		$orderRes = new Order($order_book_id,$order->user_id, $order->book_id, $order->ordered_count, $order->date);
         	}
         	return $orderRes;
         }

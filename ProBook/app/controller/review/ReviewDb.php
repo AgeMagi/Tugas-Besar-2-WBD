@@ -61,13 +61,13 @@
             $reviewRes = null;
             $sql = 'INSERT INTO review(user_id, book_id, content, rating, order_book_id) VALUES(?,?,?,?, ?)';
             $stmt = $this->conn->prepare($sql);
-            if ($stmt->execute([$review->user_id, $review->book_id, $review->content, $review->rating, $review->order_id])) {
+            if ($stmt->execute([$review->user_id, $review->book_id, $review->content, $review->rating, $review->order_book_id])) {
                 $review_id = 0;
                 $last_insert_id = $this->conn->query("SELECT LAST_INSERT_ID()");
                 foreach($last_insert_id as $row) {
                     $review_id = $row["LAST_INSERT_ID()"];
                 };
-                $reviewRes = new Review($review_id, $review->user_id, $review->book_id, $review->content, $review->rating, $review->order_id);
+                $reviewRes = new Review($review_id, $review->user_id, $review->book_id, $review->content, $review->rating, $review->order_book_id);
 
                 $banyak_review = $this->getReviewsCount($review->book_id);
                 $bookDb = new BookDb($this->conn);

@@ -21,7 +21,7 @@ function doOrder() {
         }
         
         doAjax('/api/order/', "POST", orderPayload, function(response){
-            document.getElementById("no-transaksi").innerHTML =response.data.order_id;
+            document.getElementById("no-transaksi").innerHTML =response.data.order_book_id;
             orderModal.style.display = "block";
             close.onclick = function(){
                 orderModal.style.display = "none";

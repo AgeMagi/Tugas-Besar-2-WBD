@@ -20,9 +20,9 @@
             $book_id = $request->payload["book_id"];
             $content = $request->payload["content"];
             $rating = (int)$request->payload["rating"];
-            $order_id = (int)$request->payload["order_id"];
+            $order_book_id = (int)$request->payload["order_book_id"];
 
-            $review = new Review(null, $user_id, $book_id, $content, $rating, $order_id);
+            $review = new Review(null, $user_id, $book_id, $content, $rating, $order_book_id);
             $review = $this->reviewDb->createReview($review);
             if ($review) {
                 header('Location: /history/');
