@@ -33,9 +33,8 @@
 
         function createUser($user){
             $userRes = null;
-            $sql = 'INSERT INTO user(username,fullname,email,address,phone,card_number,hpass) VALUES(?,?,?,?,?,?)';
+            $sql = 'INSERT INTO user(username,fullname,email,address,phone,card_number,hpass) VALUES(?,?,?,?,?,?,?)';
             $stmt = $this->conn->prepare($sql);
-
             if ($stmt->execute([$user->username, $user->fullname, $user->email, $user->address,$user->phone, $user->card_number, $user->getPassword()])){
                 $user_id = 0;
                 $last_insert_id = $this->conn->query("SELECT LAST_INSERT_ID()");
