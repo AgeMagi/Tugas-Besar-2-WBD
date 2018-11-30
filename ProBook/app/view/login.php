@@ -35,6 +35,9 @@
     if ($isError){
         echo "<script>alert(\"Wrong username or password\")</script>";
     }
+    if ($isLogin) {
+        echo "<script>alert(\"Kamu telah login di tempat lain\")</script>";
+    }
     include __STATIC__.'/html/footer.html';
 ?>
 

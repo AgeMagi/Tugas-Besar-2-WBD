@@ -132,15 +132,29 @@
             if ($user_id) {
                 $http_user_agent = $_SERVER['HTTP_USER_AGENT'];
                 $ip_address = $_SERVER['REMOTE_ADDR'];
-                $session_storage_id = generateRandomString(16);
-                $expired_time = microtime(true) + 3600;
-                $session_storage_id = $this->userDb->createSessionStorage($session_storage_id,
-                                        $username, $hpass, $user_id, $http_user_agent, $ip_address, $expired_time);
-                setcookie("Authorization", $session_storage_id, time() + 600, '/');
-                if ($session_storage_id) {
-                    header('Location: /browse/');
-                    exit;
-                }            
+                $result_ss = $this->userDb->getSSByUsername($username);
+                if ($result_ss) {
+                    if ($result["http_user_agent"] != $http_user_agent || $result["ip_address"] != $ip_address) {
+                        render('login.php',array("isLogin"=>true));
+                    } else {
+                        $session_storage_id = $result["session_storage_id"];
+                        setcookie("Authorization", $session_storage_id, time() + 600, '/');
+                        if ($session_storage_id) {
+                            header('Location: /browse/');
+                            exit;
+                        }  
+                    }
+                } else {
+                    $session_storage_id = generateRandomString(16);
+                    $expired_time = microtime(true) + 3600;
+                    $session_storage_id = $this->userDb->createSessionStorage($session_storage_id,
+                                            $username, $hpass, $user_id, $http_user_agent, $ip_address, $expired_time);
+                    setcookie("Authorization", $session_storage_id, time() + 600, '/');
+                    if ($session_storage_id) {
+                        header('Location: /browse/');
+                        exit;
+                    }  
+                }                          
             } else {
                 render('login.php',array("isError"=>true));
             }

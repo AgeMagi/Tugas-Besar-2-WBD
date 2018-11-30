@@ -126,6 +126,26 @@
             }
         }
 
+        function getSSByUsername($username) {
+            $sql = 'SELECT * FROM session_storage WHERE username=?';
+            $stmt = $this->conn->prepare($sql);
+
+            if ($stmt->execute([$username])) {
+                $row = $stmt->fetch();
+                if ($row) {
+                    $result = array(
+                        "http_user_agent" => $row["http_user_agent"],
+                        "ip_address" => $row["ip_address"],
+                    );
+                } else {
+                    return null;
+                }
+                return $result;
+            } else {
+                return null;
+            }
+        }
+
         function getSessionStorage($session_storage_id, $http_user_agent, $ip_address) {
             $timeNow = microtime(true);
 
